@@ -1,0 +1,1896 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beekal — Build the business behind the business</title>
+<meta name="description" content="Beekal designs and builds the software, automation and AI systems that make growing businesses easier to operate and easier to scale. Start with a Business System Assessment.">
+<meta name="theme-color" content="#1F4FE0">
+<meta property="og:title" content="Beekal — Build the business behind the business">
+<meta property="og:description" content="We find what is slowing your business down, then build the systems that fix it. Start with a Business System Assessment.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='512' height='512' role='img' aria-label='BeeKal icon'%3E%3Ctitle%3EBeeKal%3C/title%3E%3Crect width='512' height='512' rx='112' fill='%231F4FE0'/%3E%3Cg transform='translate(-37.76,-46.40) scale(1.08)'%3E%3Cdefs%3E%3CclipPath id='fav-clip'%3E%3Cpath d='M-176,0 C-146,-6 -118,-42 -72,-42 C-36,-42 -10,-34 -10,0 C-10,34 -36,42 -72,42 C-118,42 -146,6 -176,0Z'/%3E%3C/clipPath%3E%3C/defs%3E %3Cpath d='M431.96,323.27 A134,134 0 1 1 386.13,197.35' fill='none' stroke='%23FFB81C' stroke-width='15' stroke-linecap='round'/%3E %3Cg transform='translate(300,300) rotate(-16)'%3E%3Cpath d='M-176,0 C-146,-6 -118,-42 -72,-42 C-36,-42 -10,-34 -10,0 C-10,34 -36,42 -72,42 C-118,42 -146,6 -176,0Z' fill='%23FFFFFF' stroke='%231F4FE0' stroke-width='16' stroke-linejoin='round'/%3E%3Cpath d='M-176,0 C-146,-6 -118,-42 -72,-42 C-36,-42 -10,-34 -10,0 C-10,34 -36,42 -72,42 C-118,42 -146,6 -176,0Z' fill='%23FFFFFF'/%3E%3Cg clip-path='url(%23fav-clip)'%3E%3Crect x='-76' y='-60' width='20' height='120' fill='%23FFB81C' transform='rotate(22 -66 0)'/%3E%3Crect x='-114' y='-60' width='20' height='120' fill='%23FFB81C' transform='rotate(22 -104 0)'/%3E%3Crect x='-152' y='-60' width='20' height='120' fill='%23FFB81C' transform='rotate(22 -142 0)'/%3E%3C/g%3E%3Ccircle cx='0' cy='0' r='51' fill='%231F4FE0'/%3E%3Ccircle cx='55' cy='-6' r='31' fill='%231F4FE0'/%3E%3Ccircle cx='0' cy='0' r='44' fill='%23FFFFFF'/%3E%3Ccircle cx='55' cy='-6' r='24' fill='%23FFFFFF'/%3E%3Cpath d='M64,-26 C76,-46 96,-56 118,-54' fill='none' stroke='%23FFFFFF' stroke-width='7' stroke-linecap='round'/%3E%3Ccircle cx='118' cy='-54' r='7' fill='%23FFFFFF'/%3E%3Cpath d='M-196,10 L-268,15 L-196,20Z' fill='%23FFB81C' stroke='%23FFB81C' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M-196,-10 L-240,-6 L-196,-2Z' fill='%23FFB81C' stroke='%23FFB81C' stroke-width='2' stroke-linejoin='round'/%3E%3C/g%3E %3Cpath d='M0,0 C34.2,-31.0 129.2,-28.5 190.0,0 C129.2,12.4 34.2,14.0 0,0Z' transform='translate(300,300) rotate(-110)' fill='%23FFB81C' stroke='%231F4FE0' stroke-width='7' stroke-linejoin='round'/%3E %3Cpath d='M0,0 C23.4,-28.0 88.4,-25.8 130.0,0 C88.4,11.2 23.4,12.6 0,0Z' transform='translate(300,300) rotate(-134)' fill='%23FFB81C' stroke='%231F4FE0' stroke-width='7' stroke-linejoin='round'/%3E %3Ccircle cx='300' cy='300' r='11' fill='%231F4FE0'/%3E%3Ccircle cx='300' cy='300' r='5.5' fill='%23FFFFFF'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+/* Applies the saved theme before first paint so there is no flash (P1-8). */
+document.documentElement.className+=' has-js';
+try{var t=localStorage.getItem('bk-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t;}catch(e){}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   BEEKAL — tokens
+   Palette is unchanged from the brand (cobalt / amber / navy).
+   --field is new: an accessible border colour (WCAG 1.4.11).
+   ============================================================ */
+:root{
+  --cobalt:#1F4FE0; --amber:#FFB81C; --navy:#0A1640;
+  --bg:#FFFFFF; --bg-alt:#F0F3FE; --surface:#FFFFFF;
+  --ink:#0A1640; --ink-2:#44507E; --line:#DDE3F7; --line-2:#B7C4F0;
+  --field:#6B7BB8;                    /* 4.08:1 on white, 3.68:1 on #F0F3FE */
+  --brand:#1F4FE0; --brand-hover:#1640BC; --on-brand:#FFFFFF; --brand-soft:#E4EAFF;
+  --h1:#1F4FE0; --focus:#1F4FE0; --net:#1F4FE0;
+  --accent:#FFB81C; --on-accent:#0A1640;
+  --foot:#0A1640;
+  --shadow:0 1px 2px rgba(10,22,64,.06),0 18px 40px -18px rgba(10,22,64,.28);
+  --shadow-sm:0 1px 2px rgba(10,22,64,.05),0 10px 24px -16px rgba(10,22,64,.30);
+  --lg-a:#1F4FE0; --lg-b:var(--bg);
+  --display:'Sora','Poppins','Segoe UI',system-ui,sans-serif;
+  --text:'Instrument Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --gut:clamp(20px,5vw,48px);
+  --head:76px;
+  --sec:clamp(52px,6.2vw,88px);       /* one rhythm for every section */
+  --r-lg:26px; --r-md:18px; --r-sm:13px;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1235;--bg-alt:#0E1842;--surface:#12205A;--ink:#F3F6FF;--ink-2:#AEBAE6;
+    --line:#22317C;--line-2:#3A4CA6;--field:#7C8FE0;
+    --brand:#FFB81C;--brand-hover:#FFC94D;--on-brand:#0A1640;--brand-soft:#1A2A70;
+    --h1:#FFFFFF;--focus:#FFB81C;--net:#6F90F6;--lg-a:#FFFFFF;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.7);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 10px 24px -16px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1235;--bg-alt:#0E1842;--surface:#12205A;--ink:#F3F6FF;--ink-2:#AEBAE6;
+  --line:#22317C;--line-2:#3A4CA6;--field:#7C8FE0;
+  --brand:#FFB81C;--brand-hover:#FFC94D;--on-brand:#0A1640;--brand-soft:#1A2A70;
+  --h1:#FFFFFF;--focus:#FFB81C;--net:#6F90F6;--lg-a:#FFFFFF;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.7);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 10px 24px -16px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+
+/* ---------- Base ---------- */
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--head) + 16px);-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p,ul,ol,figure,blockquote,dl,dd{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+img,svg{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:6px}
+.band :focus-visible{outline-color:#fff}
+.skip{position:absolute;left:12px;top:-60px;background:var(--brand);color:var(--on-brand);padding:10px 16px;border-radius:10px;z-index:100;text-decoration:none}
+.skip:focus{top:calc(env(safe-area-inset-top,0px) + 8px)}
+.wrap{width:min(1200px,100% - 2*var(--gut));margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.03em;text-wrap:balance}
+h2{font-size:clamp(1.8rem,1.1rem + 2.5vw,2.85rem);line-height:1.09;max-width:21ch}
+p{text-wrap:pretty}
+
+/* ---------- Section rhythm ----------
+   Every section uses the same vertical rhythm so the page reads as
+   evenly-sized screens rather than random blocks. */
+.sec{padding-block:var(--sec)}
+.sec-alt{background:var(--bg-alt)}
+.sec-head{max-width:46rem;margin-bottom:clamp(26px,3.2vw,44px)}
+.sec-head p{margin-top:16px;font-size:1.12rem;color:var(--ink-2);max-width:56ch}
+.band .sec-head p{color:rgba(255,255,255,.88)}
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:14px;font:600 .9rem var(--text);color:var(--ink-2)}
+.eyebrow::before{content:"";width:22px;height:3px;border-radius:99px;background:var(--accent);flex:none}
+.band .eyebrow{color:rgba(255,255,255,.88)}
+
+/* ---------- Bridge: the hand-off line that ends each section ----------
+   One job: name the question the next section answers. */
+.bridge{display:inline-flex;align-items:center;gap:12px;margin-top:clamp(22px,2.4vw,32px);padding:14px 4px;text-decoration:none;font:600 1.02rem/1.35 var(--display);letter-spacing:-.015em;color:var(--ink);max-width:40ch;min-height:44px}
+.bridge s{text-decoration:none;display:block}
+.bridge em{display:block;font:500 .9rem var(--text);letter-spacing:0;color:var(--ink-2);margin-bottom:2px;font-style:normal}
+.bridge i{flex:none;width:34px;height:34px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;transition:transform .2s}
+.bridge i svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.bridge:hover i{transform:translateY(3px)}
+.bridge:hover s{text-decoration:underline;text-underline-offset:3px}
+.band .bridge{color:#fff}
+.band .bridge em{color:rgba(255,255,255,.9)}
+.band .bridge i{background:rgba(255,255,255,.16);color:#fff}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:52px;padding:13px 24px;border-radius:999px;border:1.5px solid transparent;font:600 1rem/1.2 var(--text);text-decoration:none;cursor:pointer;transition:background .18s,border-color .18s,color .18s;text-align:center}
+.btn-primary{background:var(--brand);color:var(--on-brand)}
+.btn-primary:hover{background:var(--brand-hover)}
+.btn-primary[disabled]{opacity:.55;cursor:not-allowed;background:var(--brand)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--field)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-amber{background:var(--amber);color:var(--navy)}
+.btn-amber:hover{background:#FFC94D}
+.btn-sm{min-height:44px;padding:9px 18px;font-size:.95rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cta-row .note{font-size:.92rem;color:var(--ink-2)}
+.band .cta-row .note{color:rgba(255,255,255,.88)}
+
+/* ---------- Header ---------- */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:color-mix(in srgb,var(--bg) 93%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.head-in{display:flex;align-items:center;gap:20px;height:var(--head)}
+.brand{display:block;flex:none;border-radius:8px}
+.lockup{height:46px;width:auto;aspect-ratio:1198/352}
+.nav{display:flex;gap:2px;margin-left:auto}
+.nav a{padding:10px 13px;border-radius:999px;text-decoration:none;font-weight:500;font-size:.97rem;color:var(--ink-2);transition:color .15s,background .15s}
+.nav a:hover{color:var(--ink);background:var(--bg-alt)}
+.head-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--field);background:transparent;display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{border-color:var(--ink)}
+.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#theme .i-sun{display:none}
+#theme[aria-pressed="true"] .i-sun{display:block}
+#theme[aria-pressed="true"] .i-moon{display:none}
+#menu{display:none}
+@media (max-width:980px){
+  #menu{display:grid}
+  .nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);padding:8px var(--gut) 18px;border-bottom:1px solid var(--line);margin:0;box-shadow:var(--shadow-sm)}
+  .site-head.open .nav{display:flex}
+  .nav a{padding:14px 4px;border-radius:0;border-bottom:1px solid var(--line);font-size:1.05rem}
+  .head-actions{margin-left:auto}
+}
+@media (max-width:620px){.head-actions .btn{display:none}}
+/* Compact mobile header (P1-6) */
+@media (max-width:560px){
+  :root{--head:60px}
+  .lockup{height:38px}
+}
+@media (max-width:360px){
+  #theme{display:none}          /* moves into the menu at 320px */
+  .nav .theme-in-menu{display:flex}
+}
+.nav .theme-in-menu{display:none;align-items:center;gap:10px;padding:14px 4px;border-bottom:0;font-size:1.05rem;color:var(--ink-2)}
+
+/* ---------- Hero ----------
+   Mobile order: headline → CTA → the diagram → the quote.
+   Keeps the signature moment inside the first scroll (P0-6). */
+.hero{overflow-x:clip;padding-block:clamp(26px,4.4vw,72px) clamp(38px,5.6vw,84px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);grid-template-areas:"copy stage" "trust stage";gap:0 clamp(32px,5vw,72px);align-items:center}
+.hero-copy{grid-area:copy}
+.hero-trust{grid-area:trust}
+.stage-wrap{grid-area:stage;width:min(100%,540px);justify-self:end;margin:0}
+.hero h1{font-size:clamp(2.1rem,1.05rem + 3.1vw,3.9rem);line-height:1.04;letter-spacing:-.04em;color:var(--h1)}
+.lede{margin-top:20px;font-size:clamp(1.06rem,1rem + .38vw,1.26rem);line-height:1.55;color:var(--ink);max-width:33em}
+.hero .cta-row{margin-top:26px;flex-wrap:nowrap}
+.hero .cta-row .btn{white-space:nowrap}
+@media (max-width:1180px) and (min-width:961px){.hero .cta-row{flex-wrap:wrap}}
+.hero-quote{margin-top:30px;padding-left:16px;border-left:4px solid var(--accent);color:var(--ink-2);max-width:32em;font-size:.98rem}
+.hero-quote q{display:block;color:var(--ink);font:600 1.05rem/1.45 var(--display);letter-spacing:-.01em;quotes:"\201C" "\201D"}
+.hero-quote span{display:block;margin-top:6px}
+/* Trust strip: the first verifiable, human thing on the page (P0-1) */
+.trust-strip{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.trust-strip li{display:flex;align-items:center;gap:8px;font-size:.94rem;color:var(--ink-2)}
+.trust-strip svg{width:17px;height:17px;flex:none;color:var(--brand);stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.trust-strip a{color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--field)}
+.trust-strip a:hover{border-color:var(--ink)}
+
+.stage{position:relative;aspect-ratio:1;container-type:inline-size}
+.stage::before{content:"";position:absolute;inset:11%;border-radius:50%;background:var(--bg-alt)}
+.stage .ring,.stage .lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ring path{fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round}   /* P2-4 */
+.lines path{fill:none;stroke-width:1.6;vector-effect:non-scaling-stroke;stroke-linecap:round;transition:stroke .35s}
+.lines path.off{stroke:var(--field);stroke-dasharray:3 6}
+.lines path.on{stroke:var(--net)}
+.pulse{fill:var(--accent)}
+.hub{position:absolute;left:50%;top:50%;width:25%;aspect-ratio:1;border-radius:50%;background:var(--cobalt);display:grid;place-items:center;--lg-a:#fff;--lg-b:var(--cobalt);box-shadow:0 0 0 5px var(--bg-alt),0 0 0 7px var(--net);opacity:0;transform:translate(-50%,-50%) scale(.8)}
+.hub svg{width:84%;height:auto}
+.chip{position:absolute;display:inline-flex;align-items:center;gap:.55em;padding:.58em 1em;border-radius:999px;background:var(--surface);color:var(--ink-2);border:1.5px dashed var(--field);font-size:clamp(11px,2.4cqw,14.5px);font-weight:600;line-height:1.1;white-space:nowrap;transform:translate(-50%,-50%);transition:color .3s,border-color .3s;box-shadow:0 6px 16px -8px rgba(10,22,64,.28)}
+.chip i{width:.62em;height:.62em;border-radius:50%;border:1.5px solid var(--field);transition:background .3s,border-color .3s}
+.chip.on{color:var(--ink);border:1.5px solid var(--net)}
+.chip.on i{background:var(--accent);border-color:var(--accent)}
+.stage-ui{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;margin-top:18px}
+.stage-cap{font:600 1rem/1.35 var(--display);letter-spacing:-.01em;max-width:19em;min-height:2.7em}
+.seg{display:inline-grid;grid-auto-flow:column;gap:2px;padding:4px;border:1.5px solid var(--field);border-radius:999px;background:var(--surface)}
+.seg button,.seg-opt span{display:flex;align-items:center;justify-content:center;min-height:44px;padding:9px 16px;border-radius:999px;border:0;background:transparent;font-weight:600;font-size:.95rem;cursor:pointer;text-align:center}
+.seg button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
+@container (max-width:470px){.chip{padding:.5em .8em;gap:.45em}}
+@media (max-width:960px){
+  .hero-grid{grid-template-columns:1fr;grid-template-areas:"copy" "stage" "trust";gap:clamp(24px,4vw,36px) 0}
+  .stage-wrap{justify-self:center;width:min(100%,480px)}
+  .hero-quote{margin-top:0}
+}
+@media (max-width:420px){.hero .cta-row{flex-direction:column;align-items:stretch}.hero .cta-row .btn{width:100%}}
+
+/* ---------- Problem picker ---------- */
+.pick{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,4vw,52px);align-items:start}
+.pick-list{display:grid;gap:8px}
+.pick-tab{display:grid;gap:3px;text-align:left;padding:16px 20px;border-radius:var(--r-md);border:1.5px solid var(--line);background:var(--surface);cursor:pointer;transition:border-color .18s,box-shadow .18s;min-height:44px}
+.pick-tab strong{font:600 1.05rem/1.3 var(--display);letter-spacing:-.015em}
+.pick-tab span{font-size:.9rem;color:var(--ink-2)}
+.pick-tab:hover{border-color:var(--field)}
+.pick-tab[aria-selected="true"]{border-color:var(--brand);box-shadow:inset 6px 0 0 var(--accent)}
+/* All panels share one grid cell, so switching never shifts the layout (P2-1) */
+.pick-stack{display:grid}
+.pick-stack>.pick-panel{grid-area:1/1}
+.pick-panel{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:clamp(24px,3.2vw,42px)}
+.pick-panel[hidden]{display:block;visibility:hidden;pointer-events:none}
+.pick.touched .pick-panel:not([hidden]){animation:pin .28s ease}
+@keyframes pin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pick-panel h3{font-size:clamp(1.75rem,1.25rem + 1.8vw,2.6rem);line-height:1.05}
+.solved{display:inline-block;margin-top:12px;padding:5px 14px;border-radius:999px;background:var(--brand-soft);font-weight:600;font-size:.92rem}
+.pick-lede{margin-top:18px;font-size:1.1rem;max-width:34em}
+.pick-cols{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:26px}
+.pick-cols h4{font:600 1rem var(--display);letter-spacing:-.01em;margin-bottom:10px}
+.pick-cols li{position:relative;padding-left:18px;margin-bottom:8px;color:var(--ink-2)}
+.pick-cols li::before{content:"";position:absolute;left:0;top:.7em;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.pick-cols p{color:var(--ink-2)}
+.pick-foot{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+.pick-foot span{color:var(--ink-2);font-size:.95rem}
+@media (max-width:860px){
+  .pick{grid-template-columns:1fr}
+  .pick-list{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;margin-inline:calc(-1*var(--gut));padding-inline:var(--gut);scrollbar-width:thin}
+  .pick-tab{flex:0 0 min(78%,270px);scroll-snap-align:start}
+  .pick-cols{grid-template-columns:1fr;gap:18px}
+  .pick-stack{display:block}
+  .pick-panel[hidden]{display:none}
+}
+
+/* ---------- Cobalt band: outcome ---------- */
+.band{background:var(--cobalt);color:#fff}
+.band h2,.band h3{color:#fff}
+.o-head,.o-row{display:grid;grid-template-columns:1fr 64px 1fr;align-items:center;max-width:1000px}
+.o-head{padding-bottom:12px;color:rgba(255,255,255,.88);font-size:.95rem;font-weight:500}
+.o-row{padding-block:20px;border-top:1px solid rgba(255,255,255,.26)}
+.o-before{color:rgba(255,255,255,.88);font-size:1.06rem}   /* P2-6: raised to 88% */
+.o-mid{display:grid;place-items:center}
+.o-mid i{width:12px;height:12px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 5px rgba(255,184,28,.25)}
+.o-after{font:600 clamp(1.15rem,1rem + .85vw,1.6rem)/1.2 var(--display);letter-spacing:-.02em}
+@media (max-width:720px){
+  .o-head{display:none}
+  .o-row{grid-template-columns:1fr;gap:4px}
+  .o-mid{display:none}
+  .o-before::before{content:"Today: ";font-weight:600;color:#fff}
+}
+
+/* ---------- Solutions ---------- */
+.sol{border-top:1.5px solid var(--field)}
+.sol-row{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,4.4fr) minmax(0,5.2fr);gap:clamp(14px,3vw,40px);padding-block:clamp(20px,2.4vw,32px);border-bottom:1.5px solid var(--field)}
+.sol-name{font-size:clamp(1.6rem,1.15rem + 1.5vw,2.25rem);line-height:1.05}
+.sol-name span{display:block;font:500 .95rem var(--text);letter-spacing:0;color:var(--ink-2);margin-bottom:4px}
+.sol-what p{font-size:1.1rem;line-height:1.5;max-width:30em}
+.sol-ex{display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}
+.sol-ex li{padding:6px 14px;border-radius:999px;border:1px solid var(--field);font-size:.9rem;color:var(--ink-2)}
+.sol-more{display:none;padding:6px 14px;border-radius:999px;border:1px dashed var(--field);background:transparent;font:600 .9rem var(--text);color:var(--brand);cursor:pointer;min-height:34px}
+.sol-row.care{background:var(--bg-alt);box-shadow:inset 7px 0 0 var(--accent);margin-inline:calc(-1*clamp(18px,3vw,36px));padding-inline:clamp(18px,3vw,36px)}
+.sol-link{display:inline-block;margin-top:12px;font-weight:600;font-size:.95rem;color:var(--brand);text-decoration:none;border-bottom:1.5px solid currentColor;padding-block:4px}
+@media (max-width:900px){
+  .sol-row{grid-template-columns:1fr;gap:10px;padding-block:18px}
+  /* Shorter on mobile: the example tags sit behind one tap (P1-9).
+     The last list item holds the button, so it must stay visible. */
+  .sol-ex:not(.open) li:not(:last-child){display:none}
+  .sol-ex:not(.open) .sol-more{display:inline-block}
+  .sol-link{margin-top:8px}
+}
+
+/* ---------- Case studies ---------- */
+.case-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:22px;scrollbar-width:thin;margin-inline:calc(-1*var(--gut));padding-inline:var(--gut)}
+.case-tab{flex:none;display:grid;gap:1px;text-align:left;padding:11px 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;min-height:48px;transition:border-color .18s}
+.case-tab b{font:600 .98rem var(--display);letter-spacing:-.01em}
+.case-tab span{font-size:.82rem;color:var(--ink-2)}
+.case-tab:hover{border-color:var(--field)}
+.case-tab[aria-selected="true"]{border-color:var(--brand);background:var(--brand-soft)}
+.case-stack{display:grid}
+.case-stack>.case-panel{grid-area:1/1}
+.case-panel[hidden]{display:grid;visibility:hidden;pointer-events:none}
+.case-panel{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(22px,3.5vw,48px);align-items:start;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3.2vw,40px)}
+.cases.touched .case-panel:not([hidden]){animation:pin .28s ease}
+.case-kicker{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:14px}
+.tag-sample{padding:5px 12px;border-radius:999px;background:var(--brand-soft);font:600 .84rem var(--text)}
+.tag-note{font-size:.84rem;color:var(--ink-2)}
+.case-panel h3{font-size:clamp(1.5rem,1.15rem + 1.3vw,2.15rem);line-height:1.08;max-width:18ch}
+.case-meta{margin-top:8px;color:var(--ink-2);font-size:.96rem}
+.case-dl{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:16px 26px}
+.case-dl>div{min-width:0}
+.case-dl dt{font:600 .82rem var(--text);color:var(--brand);margin-bottom:3px}
+.case-dl dd{color:var(--ink-2);line-height:1.5;font-size:.99rem}
+.case-dl .span-2{grid-column:1/-1}
+.case-res{background:var(--bg-alt);border-radius:var(--r-md);padding:clamp(18px,2.4vw,26px)}
+.case-res h4{font:600 1.02rem var(--display);letter-spacing:-.01em;margin-bottom:14px}
+.metric{padding-block:12px;border-top:1px solid var(--line-2)}
+.metric:first-of-type{border-top:0;padding-top:0}
+.metric b{display:block;font:700 clamp(1.4rem,1.1rem + 1vw,1.85rem)/1.1 var(--display);letter-spacing:-.03em;color:var(--brand)}
+.metric span{display:block;margin-top:3px;color:var(--ink-2);font-size:.93rem}
+.case-lesson{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-2);font-size:.95rem;color:var(--ink-2)}
+.case-lesson b{display:block;color:var(--ink);font:600 .95rem var(--display);margin-bottom:3px}
+.cases-foot{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:24px}
+.cases-foot p{color:var(--ink-2);font-size:.95rem;max-width:46ch}
+@media (max-width:900px){
+  .case-panel{grid-template-columns:1fr}
+  .case-dl{grid-template-columns:1fr;gap:14px}
+  /* On one column the reserved height would be dead space, so hide properly */
+  .case-stack{display:block}
+  .case-panel[hidden]{display:none}
+}
+
+/* ---------- Assessment ---------- */
+.assess{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4.5vw,72px);align-items:start}
+.assess-copy p{margin-top:16px;font-size:1.08rem;max-width:34em}
+.assess-copy .lead{font:600 1.25rem/1.35 var(--display);letter-spacing:-.02em}
+.assess-copy .cta-row{margin-top:26px}
+/* What it takes: answers cost / time / effort before they are asked (P1-1) */
+.takes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin-top:26px;background:var(--line-2);border:1.5px solid var(--line-2);border-radius:var(--r-md);overflow:hidden}
+.takes div{background:var(--surface);padding:16px 18px}
+.takes dt{font:500 .85rem var(--text);color:var(--ink-2);margin-bottom:4px}
+.takes dd{font:600 1.02rem/1.3 var(--display);letter-spacing:-.015em}
+@media (max-width:820px){.takes{grid-template-columns:1fr 1fr}}
+.doc{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
+.doc-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:15px 20px;border-bottom:1.5px solid var(--line);font:600 1rem var(--display)}
+.doc-bar small{font:500 .82rem var(--text);padding:4px 12px;border-radius:999px;background:var(--brand-soft)}
+.doc-row{display:grid;grid-template-columns:92px minmax(0,1fr) auto auto;gap:6px 16px;align-items:center;padding:15px 20px;border-bottom:1px solid var(--line)}
+.doc-row:last-of-type{border-bottom:0}
+.doc-row.first{background:var(--bg-alt);box-shadow:inset 5px 0 0 var(--accent)}
+.doc-when{font-weight:600;font-size:.9rem}
+.doc-what{font-weight:500;line-height:1.35}
+.meter{display:grid;gap:5px;font-size:.78rem;color:var(--ink-2)}
+.dots{display:flex;gap:4px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--field)}
+.dots i.on{background:var(--brand)}
+.doc-foot{padding:13px 20px;font-size:.85rem;color:var(--ink-2);border-top:1.5px solid var(--line)}
+.assess-lists{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,72px);margin-top:clamp(30px,4vw,56px);align-items:start}
+.fold>summary{display:flex;align-items:center;gap:12px;font:700 1.28rem var(--display);letter-spacing:-.03em;margin-bottom:16px;cursor:pointer;list-style:none;min-height:44px}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary .count{font:500 .85rem var(--text);letter-spacing:0;color:var(--ink-2);margin-left:auto}
+.fold>summary::after{content:"";flex:none;width:11px;height:11px;border-right:2.2px solid var(--brand);border-bottom:2.2px solid var(--brand);transform:rotate(45deg) translate(-3px,-3px);transition:transform .2s;display:none}
+.fold[open]>summary::after{transform:rotate(225deg) translate(-3px,-3px)}
+@media (max-width:820px){
+  .fold{border-bottom:1px solid var(--line)}
+  .fold>summary{font-size:1.1rem;margin-bottom:0;padding-block:12px}
+  .fold>summary::after{display:block}
+  .fold>summary .count{margin-left:0}
+  .fold[open]>summary{margin-bottom:14px}
+  .fold[open]{padding-bottom:16px}
+}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags li{padding:7px 15px;border-radius:999px;background:var(--surface);border:1px solid var(--field);font-size:.95rem}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px}
+.checks li{display:flex;gap:10px;align-items:flex-start;font-weight:500;line-height:1.35}
+.checks svg{width:20px;height:20px;flex:none;color:var(--brand);margin-top:1px}
+@media (max-width:900px){.assess,.assess-lists{grid-template-columns:1fr}}
+@media (max-width:560px){
+  .doc-row{grid-template-columns:1fr 1fr}
+  .doc-when,.doc-what{grid-column:1/-1}
+  .checks{grid-template-columns:1fr}
+}
+
+/* ---------- FAQ / accordions ---------- */
+.faq{margin-top:clamp(28px,3.4vw,48px);border-top:1.5px solid var(--field)}
+.faq h3{font-size:1.28rem;margin-block:26px 6px}
+.acc{border-bottom:1px solid var(--line)}
+.acc summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:13px;min-height:48px;cursor:pointer;font:600 1.05rem/1.4 var(--display);letter-spacing:-.015em;list-style:none}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"";flex:none;width:12px;height:12px;border-right:2.2px solid var(--brand);border-bottom:2.2px solid var(--brand);transform:rotate(45deg) translate(-3px,-3px);transition:transform .2s}
+.acc[open] summary::after{transform:rotate(225deg) translate(-3px,-3px)}
+.acc-body{padding-bottom:18px;color:var(--ink-2);max-width:62ch}
+.acc-body p+p{margin-top:10px}
+
+/* ---------- Method ---------- */
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.step{position:relative;padding-right:24px}
+.step-n{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;font:700 1.02rem var(--display)}
+.step:not(:last-child)::after{content:"";position:absolute;top:21px;left:55px;right:10px;height:2px;background:var(--field)}
+.step h3{margin-top:18px;font-size:1.28rem}
+.step p{margin-top:8px;color:var(--ink-2);font-size:.99rem;line-height:1.5}
+.loop{margin-top:28px;color:var(--ink-2);max-width:44em}
+.path-wrap{margin-top:clamp(28px,3.4vw,48px);padding-top:24px;border-top:1.5px solid var(--line)}
+.path-wrap h3{font-size:1.28rem;margin-bottom:18px}
+.path{display:flex;flex-wrap:nowrap;justify-content:space-between;gap:0}
+.path li{position:relative;display:flex;align-items:center;font-weight:600;padding-right:42px}
+.path li::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--accent);margin-right:12px;flex:none}
+.path li:not(:last-child)::after{content:"";position:absolute;right:8px;top:50%;width:24px;height:2px;background:var(--field)}
+@media (max-width:1100px){
+  .path{flex-direction:column;gap:12px;justify-content:flex-start}
+  .path li{padding-right:0}
+  .path li:not(:last-child)::after{display:none}
+}
+@media (max-width:900px){
+  .steps{grid-template-columns:1fr}
+  .step{padding:0 0 26px 62px}
+  .step-n{position:absolute;left:0;top:0}
+  .step h3{margin-top:6px}
+  .step:not(:last-child)::after{top:50px;bottom:4px;left:21px;right:auto;width:2px;height:auto}
+}
+
+/* ---------- Risk ---------- */
+.risk{border-top:1.5px solid var(--field)}
+.risk-head,.risk-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(16px,4vw,52px)}
+.risk-head{padding-block:13px;color:var(--ink-2);font-size:.95rem;font-weight:500}
+.risk-row{padding-block:19px;border-top:1px solid var(--line)}
+.risk-row b{font:600 1.1rem/1.3 var(--display);letter-spacing:-.015em}
+.risk-row p{color:var(--ink-2)}
+/* On mobile the 8 rows become an accordion so the section stays one screen (P1-9) */
+.risk-acc{display:none;border-top:1.5px solid var(--field)}
+@media (max-width:760px){
+  .risk{display:none}
+  .risk-acc{display:block}
+  .risk-acc .acc summary{font-size:1rem}
+}
+
+/* ---------- Maturity score ---------- */
+.score{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(26px,4.4vw,64px);align-items:start}
+.score-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;margin-bottom:16px;padding:12px 16px;border-radius:var(--r-sm);background:var(--surface);border:1.5px solid var(--line)}
+.score-bar p{font-weight:600;font-size:.98rem}
+.score-bar button{background:transparent;border:0;color:var(--brand);font:600 .95rem var(--text);cursor:pointer;text-decoration:underline;text-underline-offset:3px;min-height:44px;padding-inline:4px}
+/* Legend sits on the real slider stops, not spaced evenly (P1-12) */
+.scale{position:relative;height:1.35em;margin-bottom:12px;color:var(--ink-2);font-size:.82rem;font-weight:500}
+.scale span{position:absolute;top:0;white-space:nowrap;transform:translateX(-50%)}
+.scale span:nth-child(1){left:0;transform:none}
+.scale span:nth-child(2){left:25%}
+.scale span:nth-child(3){left:50%}
+.scale span:nth-child(4){left:75%}
+.scale span:nth-child(5){left:auto;right:0;transform:none}
+@media (max-width:540px){.scale span:nth-child(2),.scale span:nth-child(4){display:none}}
+.dims{display:grid;gap:15px}
+.dim{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;row-gap:2px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.dim:last-child{border-bottom:0}
+.dim label{font-weight:600}
+.dim label small{display:block;font-weight:400;color:var(--ink-2);font-size:.9rem}
+.dim output{font:600 .95rem var(--display);text-align:right;min-width:7.2em;align-self:start;padding-top:2px;color:var(--ink-2)}
+.dim output.set{color:var(--brand)}
+.dim input{grid-column:1/-1}
+.anchor{grid-column:1/-1;font-size:.93rem;color:var(--ink-2);min-height:1.5em;margin-top:-2px}
+.anchor.set{color:var(--ink)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer;margin:0;--pct:0%}   /* 44px hit area (P1-5) */
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:linear-gradient(to right,var(--brand) var(--pct),var(--field) var(--pct))}
+input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:var(--field)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:99px;background:var(--brand)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-9px;border-radius:50%;background:var(--surface);border:5px solid var(--brand);box-shadow:0 2px 6px rgba(10,22,64,.25)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--surface);border:5px solid var(--brand)}
+input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:10px}
+/* Unanswered sliders look unanswered (P0-2) */
+input[type=range].unset::-webkit-slider-runnable-track{background:var(--field)}
+input[type=range].unset::-webkit-slider-thumb{border-color:var(--field);background:var(--bg-alt)}
+input[type=range].unset::-moz-range-thumb{border-color:var(--field);background:var(--bg-alt)}
+input[type=range].unset::-moz-range-progress{background:var(--field)}
+.res{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--head) + 20px);background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:clamp(20px,2.6vw,30px);box-shadow:var(--shadow)}
+.radar{width:100%;height:auto}
+.rd-grid{fill:none;stroke:var(--line-2);stroke-width:1}
+.rd-axis{stroke:var(--line);stroke-width:1}
+.rd-area{fill:var(--brand);fill-opacity:.16;stroke:var(--brand);stroke-width:2.5;stroke-linejoin:round}
+.rd-dot{fill:var(--surface);stroke:var(--brand);stroke-width:2.5}
+.rd-dot.weak{fill:var(--accent);stroke:var(--accent)}
+.rd-lbl{font:600 12.5px var(--text);fill:var(--ink-2)}
+.res-empty{color:var(--ink-2);font-size:.98rem}
+.res-level{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:6px}
+.res-level b{font:700 2.2rem/1 var(--display);letter-spacing:-.04em}
+.res-level span{font:600 1.25rem var(--display);letter-spacing:-.02em}
+.res p{margin-top:10px;color:var(--ink-2);font-size:.98rem}
+.res .btn{margin-top:18px;width:100%}
+/* Ranked list, easier to read than the radar alone (P1-12) */
+.ranks{margin-top:18px;display:grid;gap:9px}
+.ranks li{display:grid;grid-template-columns:7.2em 1fr;align-items:center;gap:10px;font-size:.9rem}
+.ranks .bar{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.ranks .bar i{height:8px;border-radius:99px;background:var(--line-2)}
+.ranks .bar i.on{background:var(--brand)}
+.ranks li.low .bar i.on{background:var(--accent)}
+.ranks li.low{font-weight:600}
+@media (max-width:900px){.score{grid-template-columns:1fr}.res{position:static}}
+
+/* ---------- Founder ---------- */
+.founder{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:clamp(24px,3.2vw,44px);box-shadow:var(--shadow-sm)}
+.avatar{width:clamp(84px,9vw,124px);aspect-ratio:1;border-radius:50%;background:var(--cobalt);color:#fff;display:grid;place-items:center;font:700 clamp(1.8rem,3vw,2.6rem) var(--display);letter-spacing:-.03em;flex:none;box-shadow:0 0 0 4px var(--bg-alt),0 0 0 6px var(--accent)}
+.founder h3{font-size:clamp(1.35rem,1.1rem + .9vw,1.8rem)}
+.founder .role{color:var(--ink-2);margin-top:3px}
+.founder blockquote{margin-top:16px;font-size:1.08rem;line-height:1.55;max-width:52ch}
+.founder .sig{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.contact-link{display:inline-flex;align-items:center;gap:9px;min-height:44px;font-weight:600;text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--field)}
+.contact-link:hover{border-color:var(--brand);color:var(--brand)}
+.contact-link svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;color:var(--brand)}
+@media (max-width:620px){.founder{grid-template-columns:1fr}}
+
+/* ---------- Start (form) ---------- */
+.start{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:start}
+.start h2{max-width:15ch}
+.start-copy>p{margin-top:18px;font-size:1.15rem;color:rgba(255,255,255,.9);max-width:28em}
+.next{margin-top:32px;display:grid;gap:14px;counter-reset:n}
+.next li{display:flex;gap:14px;align-items:flex-start;color:rgba(255,255,255,.92)}
+.next li::before{counter-increment:n;content:counter(n);flex:none;width:30px;height:30px;border-radius:50%;background:var(--amber);color:var(--navy);display:grid;place-items:center;font:700 .88rem var(--display)}
+.or-contact{margin-top:30px;padding-top:22px;border-top:1px solid rgba(255,255,255,.26)}
+.or-contact p{font-weight:600;margin-bottom:10px}
+.or-contact ul{display:grid;gap:4px}
+.or-contact .contact-link{color:#fff;border-bottom-color:rgba(255,255,255,.5)}
+.or-contact .contact-link:hover{color:#fff;border-bottom-color:#fff}
+.or-contact .contact-link svg{color:var(--amber)}
+.form-card{background:var(--surface);color:var(--ink);border-radius:var(--r-lg);padding:clamp(22px,3vw,36px);box-shadow:0 30px 60px -30px rgba(5,12,50,.6)}
+.form-card .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%}
+.seg-opt{position:relative;display:block}
+.seg-opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg-opt input:checked + span{background:var(--brand);color:var(--on-brand)}
+.seg-opt input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.fields{display:grid;gap:15px;margin-top:18px}
+.field{display:grid;gap:5px}
+.field label{font-weight:600;font-size:.95rem}
+.field label .opt{font-weight:400;color:var(--ink-2)}
+.field input,.field select,.field textarea{width:100%;padding:13px 15px;border-radius:14px;border:1.5px solid var(--field);background:var(--bg);color:var(--ink)}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand)}
+.field [aria-invalid="true"]{border-color:#B4231F;border-width:2px}
+:root[data-theme="dark"] .field [aria-invalid="true"],:root:not([data-theme="light"]) .field [aria-invalid="true"]{border-color:#FF9B96}
+.err{font-size:.88rem;font-weight:500;color:#B4231F;min-height:0}
+.err:empty{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .err{color:#FF9B96}}
+:root[data-theme="dark"] .err{color:#FF9B96}
+:root[data-theme="light"] .err{color:#B4231F}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.consent{display:flex;gap:11px;align-items:flex-start;font-size:.92rem;color:var(--ink-2);line-height:1.45}
+.consent input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--brand)}
+.consent a{color:var(--ink);text-underline-offset:3px}
+.form-card .btn{width:100%;margin-top:4px}
+.form-note{margin-top:12px;font-size:.88rem;color:var(--ink-2);text-align:center}
+.form-alert{margin-top:12px;padding:11px 14px;border-radius:var(--r-sm);background:#FDECEA;color:#7A1512;font-size:.92rem;font-weight:500}
+.form-alert:empty{display:none}
+#done{display:none}
+#done h3{font-size:1.8rem}
+#done p{margin-top:10px;color:var(--ink-2)}
+.form-card.sent #lead{display:none}
+.form-card.sent #done{display:block}
+@media (max-width:900px){.start{grid-template-columns:1fr}.start h2{max-width:none}}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+
+/* ---------- Footer ---------- */
+.foot{background:var(--foot);color:rgba(255,255,255,.84);padding-block:clamp(44px,5vw,66px) 26px;--lg-a:#fff;--lg-b:var(--foot)}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(0,1fr));gap:clamp(26px,4vw,52px)}
+.foot .lockup{height:78px}
+.foot-promise{margin-top:18px;font:600 1.12rem/1.35 var(--display);color:#fff;letter-spacing:-.02em;max-width:14em}
+.foot h3{font:600 1rem var(--display);color:#fff;letter-spacing:-.01em;margin-bottom:12px}
+.foot li{margin-bottom:2px}
+.foot a{text-decoration:none;display:inline-block;padding-block:10px}   /* 44px-friendly (P1-5) */
+.foot a:hover{color:#fff;text-decoration:underline}
+.foot .contact-link{color:#fff;border-bottom:0;padding-block:10px}
+.foot .contact-link svg{color:var(--amber)}
+.foot .addr{font-style:normal;color:rgba(255,255,255,.84)}
+.foot small{display:block;margin-top:8px;font-size:.85rem;color:rgba(255,255,255,.68)}
+.foot-base{margin-top:clamp(34px,4.4vw,56px);padding-top:20px;border-top:1px solid rgba(255,255,255,.2);font-size:.9rem;color:rgba(255,255,255,.7);display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+.foot-base a{padding-block:8px}
+@media (max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}}
+@media (max-width:480px){.foot-grid{grid-template-columns:1fr}}
+
+/* ---------- Sticky mobile CTA (P1-2) ---------- */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--bg) 94%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);transform:translateY(120%);transition:transform .25s ease}
+.dock.show{transform:none}
+.dock .btn{width:100%}
+@media (max-width:620px){.dock{display:block}body{padding-bottom:0}}
+
+/* ---------- No JS ---------- */
+html.has-js .no-js-note{display:none}
+.no-js-note{margin-top:16px;padding:12px 16px;border-radius:var(--r-sm);background:var(--brand-soft);font-size:.94rem}
+html:not(.has-js) .js-only{display:none}
+html:not(.has-js) .dock{display:none}
+
+
+/* ============================================================
+   Mobile density pass
+   The page has to read as a sequence of comfortable screens, not
+   a scroll. Everything below only tightens spacing on small
+   viewports; nothing changes above 620px.
+   ============================================================ */
+@media (max-width:620px){
+  :root{--sec:52px}
+  h2{font-size:clamp(1.6rem,1.15rem + 1.7vw,2.1rem)}
+  .sec-head{margin-bottom:22px}
+  .sec-head p{margin-top:12px;font-size:1.04rem}
+  .eyebrow{margin-bottom:10px}
+  .bridge{margin-top:22px;padding:8px 4px;gap:11px;font-size:.99rem}
+  .bridge i{width:30px;height:30px}
+  .bridge i svg{width:15px;height:15px}
+  .o-row{padding-block:15px}
+  .pick-panel{padding:22px 20px}
+  .pick-lede{margin-top:14px;font-size:1.04rem}
+  .pick-cols{margin-top:20px}
+  .pick-foot{margin-top:22px;padding-top:18px}
+  .case-panel{padding:20px}
+  .case-panel h3{margin-top:2px}
+  .case-dl{margin-top:18px}
+  .case-dl dd{font-size:.95rem}
+  .case-res{padding:18px}
+  .metric{padding-block:9px}
+  .metric b{font-size:1.28rem}
+  .cases-foot{margin-top:18px}
+  .takes div{padding:12px 14px}
+  .doc-row{padding:12px 16px}
+  .doc-bar{padding:12px 16px}
+  .faq{margin-top:26px}
+  .faq h3{margin-block:20px 2px}
+  .acc summary{padding-block:13px;min-height:48px;font-size:1rem}
+  .steps{gap:0}
+  .step{padding:0 0 20px 56px}
+  .step h3{font-size:1.18rem}
+  .loop{margin-top:20px}
+  .path-wrap{margin-top:28px;padding-top:22px}
+  .dims{gap:12px}
+  .dim{padding-bottom:10px}
+  .dim label{font-size:.99rem}
+  .dim label small{font-size:.87rem;line-height:1.35}
+  .dim output{font-size:.88rem;min-width:6.2em}
+  .anchor{font-size:.89rem;line-height:1.35}
+  .res{padding:20px}
+  .founder{padding:22px 20px}
+  .next{margin-top:24px;gap:12px}
+  .or-contact{margin-top:22px;padding-top:18px}
+  .form-card{padding:20px}
+  .foot{padding-block:40px 24px}
+  .foot .lockup{height:62px}
+  .foot-promise{margin-top:14px}
+  .foot-base{margin-top:26px}
+}
+/* Two footer columns stay usable well below 480px */
+@media (max-width:480px){.foot-grid{grid-template-columns:1fr 1fr;gap:22px}}
+@media (max-width:380px){.foot-grid{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body id="top">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<clipPath id="bk-clip"><path d="M-176,0 C-146,-6 -118,-42 -72,-42 C-36,-42 -10,-34 -10,0 C-10,34 -36,42 -72,42 C-118,42 -146,6 -176,0Z"/></clipPath>
+<g id="bk-ring"><path d="M431.96,323.27 A134,134 0 1 1 386.13,197.35" fill="none" stroke="#FFB81C" stroke-width="15" stroke-linecap="round"/></g>
+<g id="bk-bee-art"><g transform="translate(300,300) rotate(-16)"><path d="M-176,0 C-146,-6 -118,-42 -72,-42 C-36,-42 -10,-34 -10,0 C-10,34 -36,42 -72,42 C-118,42 -146,6 -176,0Z" fill="var(--lg-a,#1F4FE0)" stroke="var(--lg-b,#FFFFFF)" stroke-width="16" stroke-linejoin="round"/><path d="M-176,0 C-146,-6 -118,-42 -72,-42 C-36,-42 -10,-34 -10,0 C-10,34 -36,42 -72,42 C-118,42 -146,6 -176,0Z" fill="var(--lg-a,#1F4FE0)"/><g clip-path="url(#bk-clip)"><rect x="-76" y="-60" width="20" height="120" fill="#FFB81C" transform="rotate(22 -66 0)"/><rect x="-114" y="-60" width="20" height="120" fill="#FFB81C" transform="rotate(22 -104 0)"/><rect x="-152" y="-60" width="20" height="120" fill="#FFB81C" transform="rotate(22 -142 0)"/></g><circle cx="0" cy="0" r="51" fill="var(--lg-b,#FFFFFF)"/><circle cx="55" cy="-6" r="31" fill="var(--lg-b,#FFFFFF)"/><circle cx="0" cy="0" r="44" fill="var(--lg-a,#1F4FE0)"/><circle cx="55" cy="-6" r="24" fill="var(--lg-a,#1F4FE0)"/><path d="M64,-26 C76,-46 96,-56 118,-54" fill="none" stroke="var(--lg-a,#1F4FE0)" stroke-width="7" stroke-linecap="round"/><circle cx="118" cy="-54" r="7" fill="var(--lg-a,#1F4FE0)"/><path d="M-196,10 L-268,15 L-196,20Z" fill="#FFB81C" stroke="#FFB81C" stroke-width="2" stroke-linejoin="round"/><path d="M-196,-10 L-240,-6 L-196,-2Z" fill="#FFB81C" stroke="#FFB81C" stroke-width="2" stroke-linejoin="round"/></g>
+<path d="M0,0 C34.2,-31.0 129.2,-28.5 190.0,0 C129.2,12.4 34.2,14.0 0,0Z" transform="translate(300,300) rotate(-110)" fill="#FFB81C" stroke="var(--lg-b,#FFFFFF)" stroke-width="7" stroke-linejoin="round"/><path d="M0,0 C23.4,-28.0 88.4,-25.8 130.0,0 C88.4,11.2 23.4,12.6 0,0Z" transform="translate(300,300) rotate(-134)" fill="#FFB81C" stroke="var(--lg-b,#FFFFFF)" stroke-width="7" stroke-linejoin="round"/><circle cx="300" cy="300" r="11" fill="var(--lg-b,#FFFFFF)"/><circle cx="300" cy="300" r="5.5" fill="var(--lg-a,#1F4FE0)"/></g>
+<g id="bk-word"><path d="M622 191Q622 103 560.5 51.5Q499 0 389 0H62V702H378Q485 702 545.5 653.0Q606 604 606 520Q606 458 573.5 417.0Q541 376 487 360Q548 347 585.0 299.5Q622 252 622 191ZM233 418H345Q387 418 409.5 436.5Q432 455 432 491Q432 527 409.5 546.0Q387 565 345 565H233ZM449 214Q449 251 424.5 272.0Q400 293 357 293H233V138H359Q402 138 425.5 157.5Q449 177 449 214Z" transform="translate(600.00,300) scale(0.19000,-0.19000)" fill="var(--lg-a,#1F4FE0)"/><path d="M585 238H198Q202 186 231.5 158.5Q261 131 304 131Q368 131 393 185H575Q561 130 524.5 86.0Q488 42 433.0 17.0Q378 -8 310 -8Q228 -8 164.0 27.0Q100 62 64.0 127.0Q28 192 28 279Q28 366 63.5 431.0Q99 496 163.0 531.0Q227 566 310 566Q391 566 454.0 532.0Q517 498 552.5 435.0Q588 372 588 288Q588 264 585 238ZM413 333Q413 377 383.0 403.0Q353 429 308 429Q265 429 235.5 404.0Q206 379 199 333Z" transform="translate(718.56,300) scale(0.19000,-0.19000)" fill="var(--lg-a,#1F4FE0)"/><path d="M585 238H198Q202 186 231.5 158.5Q261 131 304 131Q368 131 393 185H575Q561 130 524.5 86.0Q488 42 433.0 17.0Q378 -8 310 -8Q228 -8 164.0 27.0Q100 62 64.0 127.0Q28 192 28 279Q28 366 63.5 431.0Q99 496 163.0 531.0Q227 566 310 566Q391 566 454.0 532.0Q517 498 552.5 435.0Q588 372 588 288Q588 264 585 238ZM413 333Q413 377 383.0 403.0Q353 429 308 429Q265 429 235.5 404.0Q206 379 199 333Z" transform="translate(828.95,300) scale(0.19000,-0.19000)" fill="var(--lg-a,#1F4FE0)"/><path d="M469 0 233 310V0H62V702H233V394L467 702H668L396 358L678 0Z" transform="translate(937.44,300) scale(0.19000,-0.19000)" fill="#FFB81C"/><path d="M274 566Q333 566 377.5 542.0Q422 518 446 479V558H617V0H446V79Q421 40 376.5 16.0Q332 -8 273 -8Q205 -8 149.0 27.5Q93 63 60.5 128.5Q28 194 28 280Q28 366 60.5 431.0Q93 496 149.0 531.0Q205 566 274 566ZM324 417Q273 417 237.5 380.5Q202 344 202 280Q202 216 237.5 178.5Q273 141 324 141Q375 141 410.5 178.0Q446 215 446 279Q446 343 410.5 380.0Q375 417 324 417Z" transform="translate(1059.42,300) scale(0.19000,-0.19000)" fill="#FFB81C"/><path d="M233 740V0H62V740Z" transform="translate(1181.78,300) scale(0.19000,-0.19000)" fill="#FFB81C"/></g>
+<g id="bk-tag"><path d="M581 187Q581 134 553.5 91.5Q526 49 474.0 24.5Q422 0 353 0H75V695H340Q411 695 462.0 671.0Q513 647 539.0 606.5Q565 566 565 516Q565 456 533.0 416.0Q501 376 447 357Q503 347 542.0 298.0Q581 249 581 187ZM189 403H330Q386 403 417.5 428.5Q449 454 449 502Q449 549 417.5 575.5Q386 602 330 602H189ZM467 199Q467 250 432.0 280.0Q397 310 339 310H189V93H343Q401 93 434.0 121.0Q467 149 467 199Z" transform="translate(606.00,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M189 603V399H429V306H189V93H459V0H75V696H459V603Z" transform="translate(638.01,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M524 695V602H339V0H225V602H39V695Z" transform="translate(666.52,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M524 695V602H339V0H225V602H39V695Z" transform="translate(696.35,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M189 603V399H429V306H189V93H459V0H75V696H459V603Z" transform="translate(726.19,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M436 0 276 278H189V0H75V695H315Q395 695 450.5 667.0Q506 639 533.5 592.0Q561 545 561 487Q561 419 521.5 363.5Q482 308 400 288L572 0ZM189 369H315Q379 369 411.5 401.0Q444 433 444 487Q444 541 412.0 571.5Q380 602 315 602H189Z" transform="translate(754.70,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M524 695V602H339V0H225V602H39V695Z" transform="translate(806.57,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M37 349Q37 451 84.5 532.0Q132 613 213.5 658.5Q295 704 392 704Q490 704 571.5 658.5Q653 613 700.0 532.0Q747 451 747 349Q747 247 700.0 165.5Q653 84 571.5 38.5Q490 -7 392 -7Q295 -7 213.5 38.5Q132 84 84.5 165.5Q37 247 37 349ZM630 349Q630 426 599.5 484.0Q569 542 515.0 573.0Q461 604 392 604Q323 604 269.0 573.0Q215 542 184.5 484.0Q154 426 154 349Q154 272 184.5 213.5Q215 155 269.0 123.5Q323 92 392 92Q461 92 515.0 123.5Q569 155 599.5 213.5Q630 272 630 349Z" transform="translate(836.41,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M807 695V0H693V476L481 0H402L189 476V0H75V695H198L442 150L685 695Z" transform="translate(873.50,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M37 349Q37 451 84.5 532.0Q132 613 213.5 658.5Q295 704 392 704Q490 704 571.5 658.5Q653 613 700.0 532.0Q747 451 747 349Q747 247 700.0 165.5Q653 84 571.5 38.5Q490 -7 392 -7Q295 -7 213.5 38.5Q132 84 84.5 165.5Q37 247 37 349ZM630 349Q630 426 599.5 484.0Q569 542 515.0 573.0Q461 604 392 604Q323 604 269.0 573.0Q215 542 184.5 484.0Q154 426 154 349Q154 272 184.5 213.5Q215 155 269.0 123.5Q323 92 392 92Q461 92 515.0 123.5Q569 155 599.5 213.5Q630 272 630 349Z" transform="translate(913.82,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M436 0 276 278H189V0H75V695H315Q395 695 450.5 667.0Q506 639 533.5 592.0Q561 545 561 487Q561 419 521.5 363.5Q482 308 400 288L572 0ZM189 369H315Q379 369 411.5 401.0Q444 433 444 487Q444 541 412.0 571.5Q380 602 315 602H189Z" transform="translate(950.92,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M436 0 276 278H189V0H75V695H315Q395 695 450.5 667.0Q506 639 533.5 592.0Q561 545 561 487Q561 419 521.5 363.5Q482 308 400 288L572 0ZM189 369H315Q379 369 411.5 401.0Q444 433 444 487Q444 541 412.0 571.5Q380 602 315 602H189Z" transform="translate(982.99,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M37 349Q37 451 84.5 532.0Q132 613 213.5 658.5Q295 704 392 704Q490 704 571.5 658.5Q653 613 700.0 532.0Q747 451 747 349Q747 247 700.0 165.5Q653 84 571.5 38.5Q490 -7 392 -7Q295 -7 213.5 38.5Q132 84 84.5 165.5Q37 247 37 349ZM630 349Q630 426 599.5 484.0Q569 542 515.0 573.0Q461 604 392 604Q323 604 269.0 573.0Q215 542 184.5 484.0Q154 426 154 349Q154 272 184.5 213.5Q215 155 269.0 123.5Q323 92 392 92Q461 92 515.0 123.5Q569 155 599.5 213.5Q630 272 630 349Z" transform="translate(1015.07,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/><path d="M980 695 774 0H645L499 526L344 0L216 -1L19 695H140L284 129L440 695H568L713 132L858 695Z" transform="translate(1052.16,372) scale(0.03300,-0.03300)" fill="var(--lg-a,#1F4FE0)"/></g>
+<symbol id="bk-bee" viewBox="40 127 372 268"><use href="#bk-bee-art"/></symbol>
+<symbol id="bk-mark" viewBox="40 127 406 320"><use href="#bk-ring"/><use href="#bk-bee-art"/></symbol>
+<symbol id="bk-lockup" viewBox="34 112 1198 352"><g transform="translate(-9.20,-28.00) scale(1.1)"><use href="#bk-ring"/><use href="#bk-bee-art"/></g><use href="#bk-word"/></symbol>
+<symbol id="bk-lockup-tag" viewBox="34 112 1198 352"><g transform="translate(-9.20,-28.00) scale(1.1)"><use href="#bk-ring"/><use href="#bk-bee-art"/></g><use href="#bk-word"/><use href="#bk-tag"/></symbol>
+<symbol id="i-check" viewBox="0 0 20 20"><path d="M4.5 10.5l3.6 3.6 7.4-8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="#top" aria-label="Beekal, home">
+      <svg class="lockup" viewBox="0 0 1198 352" role="img" aria-label="BeeKal"><use href="#bk-lockup"/></svg>
+    </a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#problems">What we fix</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#cases">Case studies</a>
+      <a href="#assessment">Assessment</a>
+    </nav>
+    <div class="head-actions">
+      <a class="btn btn-primary btn-sm" href="#start" data-intent="assessment">Request an assessment</a>
+      <button class="icon-btn" id="theme" type="button" aria-pressed="false" aria-label="Switch to dark theme">
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1>Build the business behind the business.</h1>
+      <p class="lede">We design and build the software, automation and AI systems that make a growing business easier to operate and easier to scale.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#start" data-intent="assessment">Request an assessment</a>
+        <a class="btn btn-ghost" href="#start" data-intent="talk">Describe your problem</a>
+      </div>
+    </div>
+
+    <figure class="stage-wrap">
+      <div class="stage" id="stage" data-state="after" role="img" aria-label="Six scattered tools (spreadsheets, chats, email, old software and paper) brought together into one connected system.">
+        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><path d="M87.42 56.6A38 38 0 1 1 74.42 20.89"/></svg>
+        <svg class="lines" id="lines" viewBox="0 0 100 100" aria-hidden="true"><g id="pulses"></g></svg>
+        <div class="hub" id="hub" aria-hidden="true"><svg viewBox="0 0 372 268"><use href="#bk-bee"/></svg></div>
+        <span class="chip on" style="left:50%;top:12%" data-bx="24" data-by="20" data-br="-8" data-ax="50" data-ay="12"><i></i>Excel sheets</span>
+        <span class="chip on" style="left:82.9%;top:31%" data-bx="73" data-by="15" data-br="6" data-ax="82.9" data-ay="31"><i></i>Email threads</span>
+        <span class="chip on" style="left:82.9%;top:69%" data-bx="79" data-by="47" data-br="-5" data-ax="82.9" data-ay="69"><i></i>Legacy app</span>
+        <span class="chip on" style="left:50%;top:88%" data-bx="58" data-by="67" data-br="7" data-ax="50" data-ay="88"><i></i>Manual reports</span>
+        <span class="chip on" style="left:17.1%;top:69%" data-bx="22" data-by="76" data-br="-6" data-ax="17.1" data-ay="69"><i></i>Paper forms</span>
+        <span class="chip on" style="left:17.1%;top:31%" data-bx="37" data-by="42" data-br="9" data-ax="17.1" data-ay="31"><i></i>WhatsApp groups</span>
+      </div>
+      <div class="stage-ui">
+        <p class="stage-cap" id="stage-cap">The same work, in one connected system.</p>
+        <div class="seg js-only" role="group" aria-label="See the business before or after Beekal">
+          <button type="button" data-view="before" aria-pressed="false">Before</button>
+          <button type="button" data-view="after" aria-pressed="true">After</button>
+        </div>
+      </div>
+      <p class="sr" id="stage-live" aria-live="polite"></p>
+    </figure>
+
+    <div class="hero-trust">
+      <blockquote class="hero-quote">
+        <q>We have software everywhere, but running the business is still difficult.</q>
+        <span>If that sounds familiar, you are who we build for.</span>
+      </blockquote>
+      <ul class="trust-strip">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Dhaka, Bangladesh. We work on-site and remotely.</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg><a href="mailto:shakil@beekal.com">shakil@beekal.com</a></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Founder-led. Shakil replies within one working day.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROBLEMS ================= -->
+<section class="sec sec-alt" id="problems">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">What we fix</p>
+      <h2>Every project starts with the problem, not the technology.</h2>
+      <p>Pick the one that sounds most like your week. Each answer names the work we would do first.</p>
+    </div>
+    <div class="pick" id="pick">
+      <div class="pick-list" role="tablist" aria-label="Business problems" aria-orientation="vertical">
+        <button class="pick-tab" role="tab" id="tab-0" aria-controls="panel-0" aria-selected="true"><strong>Too much repetitive work?</strong><span>Manual work</span></button>
+        <button class="pick-tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="false" tabindex="-1"><strong>Your software doesn't talk to itself?</strong><span>Disconnected systems</span></button>
+        <button class="pick-tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1"><strong>Your old system is holding you back?</strong><span>Legacy software</span></button>
+        <button class="pick-tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1"><strong>You know AI could help, but not where?</strong><span>AI opportunity</span></button>
+        <button class="pick-tab" role="tab" id="tab-4" aria-controls="panel-4" aria-selected="false" tabindex="-1"><strong>You have a product or business idea?</strong><span>New product</span></button>
+      </div>
+
+      <div class="pick-stack">
+        <div class="pick-panel" role="tabpanel" id="panel-0" aria-labelledby="tab-0">
+          <h3>Automate it.</h3>
+          <span class="solved">Solved by Beekal Automate</span>
+          <p class="pick-lede">If people copy the same data between screens, chase approvals in chat or build the same report every Monday, that work can move by itself.</p>
+          <div class="pick-cols">
+            <div><h4>What it looks like</h4><ul><li>The same data typed into two or three systems</li><li>Approvals chased over WhatsApp and email</li><li>Reports assembled by hand, every week</li></ul></div>
+            <div><h4>What changes</h4><p>Routine work runs on its own and people step in only for exceptions. Reports arrive without anyone building them.</p></div>
+          </div>
+          <div class="pick-foot"><a class="btn btn-primary" href="#start" data-intent="assessment">Request an assessment</a><span>Find out what to automate first.</span></div>
+        </div>
+
+        <div class="pick-panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1" hidden>
+          <h3>Connect them.</h3>
+          <span class="solved">Solved by Beekal Automate</span>
+          <p class="pick-lede">Adding another tool rarely fixes this. The fix is getting the tools you already have to share data and hand work to each other.</p>
+          <div class="pick-cols">
+            <div><h4>What it looks like</h4><ul><li>Different answers depending on which system you ask</li><li>Exporting to Excel to combine data</li><li>One person who knows how it all fits together</li></ul></div>
+            <div><h4>What changes</h4><p>Data is entered once and shows up wherever it is needed. Everyone works from the same numbers.</p></div>
+          </div>
+          <div class="pick-foot"><a class="btn btn-primary" href="#start" data-intent="assessment">Request an assessment</a><span>Map how your systems really connect.</span></div>
+        </div>
+
+        <div class="pick-panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>
+          <h3>Modernize it.</h3>
+          <span class="solved">Solved by Beekal Modernize</span>
+          <p class="pick-lede">We do not start by throwing it away. We find the business logic that still works, keep it, and remove the limits around it.</p>
+          <div class="pick-cols">
+            <div><h4>What it looks like</h4><ul><li>Slow or fragile software nobody wants to touch</li><li>Small requests that take weeks to deliver</li><li>No API, so nothing else can connect to it</li></ul></div>
+            <div><h4>What changes</h4><p>The system keeps doing what it does well, and becomes faster, more secure and open to new integrations. It happens in steps, not one risky rebuild.</p></div>
+          </div>
+          <div class="pick-foot"><a class="btn btn-primary" href="#start" data-intent="assessment">Request an assessment</a><span>See what is worth keeping.</span></div>
+        </div>
+
+        <div class="pick-panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" hidden>
+          <h3>Find the opportunities.</h3>
+          <span class="solved">Solved by Beekal AI</span>
+          <p class="pick-lede">Adding AI because it is fashionable wastes money. We look for the places where intelligence actually changes the work.</p>
+          <div class="pick-cols">
+            <div><h4>What it looks like</h4><ul><li>Staff searching documents and chats for answers</li><li>The same support questions, answered again and again</li><li>Reports that need a person to read and summarize</li></ul></div>
+            <div><h4>What changes</h4><p>Scattered company knowledge becomes an assistant people can ask. AI is used only where it removes work, improves decisions or improves customer experience.</p></div>
+          </div>
+          <div class="pick-foot"><a class="btn btn-primary" href="#start" data-intent="assessment">Request an assessment</a><span>Get an AI opportunity map.</span></div>
+        </div>
+
+        <div class="pick-panel" role="tabpanel" id="panel-4" aria-labelledby="tab-4" hidden>
+          <h3>Build it.</h3>
+          <span class="solved">Solved by Beekal Build</span>
+          <p class="pick-lede">We work out what should exist before we build it, so version one is small, sound and ready to grow.</p>
+          <div class="pick-cols">
+            <div><h4>What it looks like</h4><ul><li>A clear idea, but no shared picture of what to build first</li><li>A prototype that cannot handle real users</li><li>Requirements that keep changing</li></ul></div>
+            <div><h4>What changes</h4><p>You get a system designed around how the business will actually run: a web or mobile product, an internal platform or a SaaS foundation.</p></div>
+          </div>
+          <div class="pick-foot"><a class="btn btn-primary" href="#start" data-intent="assessment">Request an assessment</a><span>Agree what to build first.</span></div>
+        </div>
+      </div>
+    </div>
+    <a class="bridge" href="#outcome"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Next</em>So what does the business actually look like once it is fixed?</s></a>
+  </div>
+</section>
+
+<!-- ================= OUTCOME ================= -->
+<section class="sec band" id="outcome">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">The difference</p>
+      <h2>What changes when the business runs as one system.</h2>
+    </div>
+    <div class="o-head" aria-hidden="true"><span>Today</span><span></span><span>With Beekal</span></div>
+    <div>
+      <div class="o-row"><p class="o-before">Processes live in Excel</p><span class="o-mid"><i></i></span><p class="o-after">One central system</p></div>
+      <div class="o-row"><p class="o-before">The same data typed in again and again</p><span class="o-mid"><i></i></span><p class="o-after">Workflows that run themselves</p></div>
+      <div class="o-row"><p class="o-before">Applications that do not talk to each other</p><span class="o-mid"><i></i></span><p class="o-after">Integrated applications</p></div>
+      <div class="o-row"><p class="o-before">Reports built by hand, every time</p><span class="o-mid"><i></i></span><p class="o-after">Reports that arrive on their own</p></div>
+      <div class="o-row" style="border-bottom:1px solid rgba(255,255,255,.26)"><p class="o-before">Information scattered across teams</p><span class="o-mid"><i></i></span><p class="o-after">One view of the whole business</p></div>
+    </div>
+    <a class="bridge" href="#solutions"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Next</em>Which of the five kinds of work gets you there?</s></a>
+  </div>
+</section>
+
+<!-- ================= SOLUTIONS ================= -->
+<section class="sec" id="solutions">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Solutions</p>
+      <h2>Five ways we improve how you operate.</h2>
+      <p>Most engagements start with an assessment, then use one or more of these.</p>
+    </div>
+    <div class="sol">
+      <article class="sol-row">
+        <h3 class="sol-name"><span>Beekal</span>Build</h3>
+        <div class="sol-what"><p>New systems designed around how your business actually runs.</p>
+          <a class="sol-link" href="#cases" data-case="0">See a worked example</a></div>
+        <ul class="sol-ex"><li>Custom business software</li><li>ERP, CRM and HRM</li><li>Web and mobile apps</li><li>Business portals</li><li>APIs</li><li>Multi-tenant SaaS</li><li><button class="sol-more" type="button">See examples</button></li></ul>
+      </article>
+      <article class="sol-row">
+        <h3 class="sol-name"><span>Beekal</span>Modernize</h3>
+        <div class="sol-what"><p>Business-critical software brought up to date without throwing away what works.</p>
+          <a class="sol-link" href="#cases" data-case="1">See a worked example</a></div>
+        <ul class="sol-ex"><li>Legacy .NET modernization</li><li>Adding APIs</li><li>Database modernization</li><li>Performance and security</li><li>Step-by-step migration</li><li><button class="sol-more" type="button">See examples</button></li></ul>
+      </article>
+      <article class="sol-row">
+        <h3 class="sol-name"><span>Beekal</span>Automate</h3>
+        <div class="sol-what"><p>Repetitive operational work removed by connecting the systems your team already uses.</p>
+          <a class="sol-link" href="#cases" data-case="2">See a worked example</a></div>
+        <ul class="sol-ex"><li>Workflows and approvals</li><li>System integrations</li><li>Data synchronization</li><li>Automated reporting</li><li>Document workflows</li><li>Notifications and schedules</li><li><button class="sol-more" type="button">See examples</button></li></ul>
+      </article>
+      <article class="sol-row">
+        <h3 class="sol-name"><span>Beekal</span>AI</h3>
+        <div class="sol-what"><p>Scattered company knowledge turned into an assistant people can ask, used only where it changes the work.</p>
+          <a class="sol-link" href="#cases" data-case="3">See a worked example</a></div>
+        <ul class="sol-ex"><li>Knowledge assistants</li><li>Enterprise search</li><li>Document intelligence</li><li>Customer support</li><li>AI-powered reporting</li><li>Workflow agents</li><li><button class="sol-more" type="button">See examples</button></li></ul>
+      </article>
+      <article class="sol-row care">
+        <h3 class="sol-name"><span>Beekal</span>Care</h3>
+        <div class="sol-what"><p>Continuous improvement after launch, so the system keeps getting better instead of slowly decaying.</p>
+          <a class="sol-link" href="#cases" data-case="4">See a worked example</a></div>
+        <ul class="sol-ex"><li>Monitoring</li><li>Security updates</li><li>Performance improvements</li><li>Small new features</li><li>Monthly technology review</li><li>Roadmap management</li><li><button class="sol-more" type="button">See examples</button></li></ul>
+      </article>
+    </div>
+    <a class="bridge" href="#cases"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Next</em>What does one of these look like from the first day to the result?</s></a>
+  </div>
+</section>
+
+<!-- ================= CASE STUDIES ================= -->
+<section class="sec sec-alt" id="cases">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Case studies</p>
+      <h2>Proof means results, not screenshots.</h2>
+      <p>Every Beekal case study answers the same eight questions, including the ones most agencies leave out: what we got wrong, and what we would do differently.</p>
+    </div>
+
+    <div class="cases" id="cases-ui">
+      <div class="case-tabs" role="tablist" aria-label="Case studies by type of work">
+        <button class="case-tab" role="tab" id="ctab-0" aria-controls="cpanel-0" aria-selected="true"><b>Beekal Build</b><span>Garment exporter</span></button>
+        <button class="case-tab" role="tab" id="ctab-1" aria-controls="cpanel-1" aria-selected="false" tabindex="-1"><b>Beekal Modernize</b><span>Pharma distributor</span></button>
+        <button class="case-tab" role="tab" id="ctab-2" aria-controls="cpanel-2" aria-selected="false" tabindex="-1"><b>Beekal Automate</b><span>Freight forwarder</span></button>
+        <button class="case-tab" role="tab" id="ctab-3" aria-controls="cpanel-3" aria-selected="false" tabindex="-1"><b>Beekal AI</b><span>Engineering firm</span></button>
+        <button class="case-tab" role="tab" id="ctab-4" aria-controls="cpanel-4" aria-selected="false" tabindex="-1"><b>Beekal Care</b><span>B2B software</span></button>
+      </div>
+
+      <div class="case-stack">
+        <!-- 1: BUILD -->
+        <div class="case-panel" role="tabpanel" id="cpanel-0" aria-labelledby="ctab-0">
+          <div>
+            <div class="case-kicker"><span class="tag-sample">Example scenario</span><span class="tag-note">Written to the format below. Named clients replace these as they approve.</span></div>
+            <h3>One place to answer “where is my order?”</h3>
+            <p class="case-meta">Garment exporter · Dhaka · 180 staff · Beekal Build</p>
+            <dl class="case-dl">
+              <div class="span-2"><dt>The problem</dt><dd>Buyers asked for order status every day. Merchandisers rebuilt the answer each time from spreadsheets, email and a walk to the production floor.</dd></div>
+              <div><dt>Before</dt><dd>Order status lived in four Excel files and a WhatsApp group. Two merchandisers spent most of each morning collecting updates. In one week two buyers were quoted different ship dates for the same order.</dd></div>
+              <div><dt>Diagnosis</dt><dd>Not a reporting problem. There was no single record of an order anywhere. Each department kept its own copy, so there was nothing to report on.</dd></div>
+              <div class="span-2"><dt>What Beekal changed</dt><dd>One order record from sample to shipment, owned by merchandising. Production milestones are entered once on the floor, and buyers get a read-only view of the same record.</dd></div>
+              <div class="span-2"><dt>How it was built</dt><dd>A web application with role-based access, a tablet entry screen for line supervisors, and a nightly export into the accounting package they already used. Three milestones over fourteen weeks, each one reviewable.</dd></div>
+            </dl>
+          </div>
+          <div class="case-res">
+            <h4>Result</h4>
+            <div class="metric"><b>~2 hours</b><span>of each merchandiser's morning returned to actual merchandising</span></div>
+            <div class="metric"><b>One ship date</b><span>per order, visible to the buyer and the factory at the same time</span></div>
+            <div class="metric"><b>No spreadsheets</b><span>order status is no longer maintained in Excel by anyone</span></div>
+            <p class="case-lesson"><b>Lesson</b>The tablet screen had to work with gloves on and weak wifi. Next time we prototype on the factory floor in week one, not week five.</p>
+          </div>
+        </div>
+
+        <!-- 2: MODERNIZE -->
+        <div class="case-panel" role="tabpanel" id="cpanel-1" aria-labelledby="ctab-1" hidden>
+          <div>
+            <div class="case-kicker"><span class="tag-sample">Example scenario</span><span class="tag-note">Written to the format below. Named clients replace these as they approve.</span></div>
+            <h3>A 2011 desktop system, opened up instead of replaced.</h3>
+            <p class="case-meta">Pharmaceutical distributor · 12 depots · Beekal Modernize</p>
+            <dl class="case-dl">
+              <div class="span-2"><dt>The problem</dt><dd>The distribution system still did its job, but nothing could connect to it, and month-end close took three days of manual work.</dd></div>
+              <div><dt>Before</dt><dd>A .NET desktop application on one server. Depot stock arrived as emailed spreadsheets. Any new report was a change request to a developer who had left the company.</dd></div>
+              <div><dt>Diagnosis</dt><dd>The business logic was sound and well tested after a decade of use. The problem was the closed architecture: no API, reports hard-coded into the client, and direct database access as the only way in.</dd></div>
+              <div class="span-2"><dt>What Beekal changed</dt><dd>The logic stayed. We wrapped it in a documented API, moved reporting onto a read replica, and replaced the emailed spreadsheet with a browser form for the depots.</dd></div>
+              <div class="span-2"><dt>How it was built</dt><dd>An API layer over the existing database, a read replica for reporting, depot web forms, then a staged cutover one depot at a time across a quarter. No big-bang migration, and a rollback path at every step.</dd></div>
+            </dl>
+          </div>
+          <div class="case-res">
+            <h4>Result</h4>
+            <div class="metric"><b>3 days → same day</b><span>month-end close, because reporting no longer waits for the desktop client</span></div>
+            <div class="metric"><b>12 depots</b><span>reporting stock through one form instead of twelve spreadsheets</span></div>
+            <div class="metric"><b>Zero rewrites</b><span>of the business logic that already worked</span></div>
+            <p class="case-lesson"><b>Lesson</b>Depot managers trusted their spreadsheet. Adoption only moved once we let them keep it alongside the form for the first month.</p>
+          </div>
+        </div>
+
+        <!-- 3: AUTOMATE -->
+        <div class="case-panel" role="tabpanel" id="cpanel-2" aria-labelledby="ctab-2" hidden>
+          <div>
+            <div class="case-kicker"><span class="tag-sample">Example scenario</span><span class="tag-note">Written to the format below. Named clients replace these as they approve.</span></div>
+            <h3>The same shipment, entered once instead of three times.</h3>
+            <p class="case-meta">Freight forwarder · 40 staff · Beekal Automate</p>
+            <dl class="case-dl">
+              <div class="span-2"><dt>The problem</dt><dd>Every shipment was typed into the carrier portal, the operations tracker and the accounting system. The three never quite agreed, and invoices were raised from whichever was open.</dd></div>
+              <div><dt>Before</dt><dd>Around sixty shipments a week, re-keyed across three systems. Corrections were found at invoicing, sometimes by the customer.</dd></div>
+              <div><dt>Diagnosis</dt><dd>A data-ownership problem, not a discipline problem. No system was authoritative, so careful staff kept a fourth copy of their own to stay safe.</dd></div>
+              <div class="span-2"><dt>What Beekal changed</dt><dd>The portal became the single source for shipment data. Operations and accounting now receive it automatically, and anything that does not match is flagged for a person instead of retyped by one.</dd></div>
+              <div class="span-2"><dt>How it was built</dt><dd>An integration service between the portal, the tracker's API and the accounting package, plus a daily reconciliation report that lists only mismatches. Two weeks to build, two weeks running in parallel before switch-off.</dd></div>
+            </dl>
+          </div>
+          <div class="case-res">
+            <h4>Result</h4>
+            <div class="metric"><b>~6 hours</b><span>of re-keying removed from each operations person's week</span></div>
+            <div class="metric"><b>One source</b><span>of shipment truth, with accounting fed from it automatically</span></div>
+            <div class="metric"><b>Exceptions only</b><span>staff review a short mismatch list instead of every record</span></div>
+            <p class="case-lesson"><b>Lesson</b>The reconciliation report mattered more than the integration. Seeing what did not match is what made people stop keeping their private fourth copy.</p>
+          </div>
+        </div>
+
+        <!-- 4: AI -->
+        <div class="case-panel" role="tabpanel" id="cpanel-3" aria-labelledby="ctab-3" hidden>
+          <div>
+            <div class="case-kicker"><span class="tag-sample">Example scenario</span><span class="tag-note">Written to the format below. Named clients replace these as they approve.</span></div>
+            <h3>Ten years of tender documents, finally answerable.</h3>
+            <p class="case-meta">Engineering services firm · 90 staff · Beekal AI</p>
+            <dl class="case-dl">
+              <div class="span-2"><dt>The problem</dt><dd>Engineers spent hours hunting through old proposals, specifications and drawings for answers that already existed somewhere on the file server.</dd></div>
+              <div><dt>Before</dt><dd>More than forty thousand documents spread across a file server, email and two SharePoint sites. New engineers asked senior ones, who answered from memory.</dd></div>
+              <div><dt>Diagnosis</dt><dd>Not only a search problem. The documents had no consistent structure, and the answers people needed were inside PDFs and scanned drawings that search could not read.</dd></div>
+              <div class="span-2"><dt>What Beekal changed</dt><dd>An internal assistant that answers from the firm's own documents and shows the source page for every answer, so an engineer can check it before using it in a tender.</dd></div>
+              <div class="span-2"><dt>How it was built</dt><dd>A document pipeline (OCR, chunking, indexing), a retrieval assistant that cites its sources, access rules mirroring the existing folder permissions, and a review loop where engineers mark weak answers.</dd></div>
+            </dl>
+          </div>
+          <div class="case-res">
+            <h4>Result</h4>
+            <div class="metric"><b>Every answer cited</b><span>no answer is shown without the source document behind it</span></div>
+            <div class="metric"><b>Permission-aware</b><span>staff see only the documents they could already open</span></div>
+            <div class="metric"><b>One pilot team</b><span>proved the value before anything was rolled out firm-wide</span></div>
+            <p class="case-lesson"><b>Lesson</b>We shipped "show me the source" before answer quality was good. That is what earned trust. Without it the pilot would have been switched off.</p>
+          </div>
+        </div>
+
+        <!-- 5: CARE -->
+        <div class="case-panel" role="tabpanel" id="cpanel-4" aria-labelledby="ctab-4" hidden>
+          <div>
+            <div class="case-kicker"><span class="tag-sample">Example scenario</span><span class="tag-note">Written to the format below. Named clients replace these as they approve.</span></div>
+            <h3>After launch, the system kept getting better.</h3>
+            <p class="case-meta">B2B software platform · Beekal Care</p>
+            <dl class="case-dl">
+              <div class="span-2"><dt>The problem</dt><dd>The platform launched well, then drifted. Nobody owned performance, security updates or the small improvements users kept asking for.</dd></div>
+              <div><dt>Before</dt><dd>Faults were reported by customers rather than detected. Security updates waited for a quiet week that never came. The roadmap was whatever was loudest that month.</dd></div>
+              <div><dt>Diagnosis</dt><dd>Not a skill gap. There was no standing time and no owner for the work that is never urgent right up until it is.</dd></div>
+              <div class="span-2"><dt>What Beekal changed</dt><dd>A monthly cycle: monitor, patch, ship one improvement from the user request list, and review the roadmap together with the client.</dd></div>
+              <div class="span-2"><dt>How it was built</dt><dd>Uptime and error monitoring with alerts, a patch schedule, a fixed monthly improvement budget, and a one-page review each month showing what changed and what comes next.</dd></div>
+            </dl>
+          </div>
+          <div class="case-res">
+            <h4>Result</h4>
+            <div class="metric"><b>Detected first</b><span>faults are found by monitoring, not reported by customers</span></div>
+            <div class="metric"><b>One improvement</b><span>shipped every month from the user request list</span></div>
+            <div class="metric"><b>Monthly review</b><span>a written record of what changed and what is next</span></div>
+            <p class="case-lesson"><b>Lesson</b>The one-page monthly review did more for the relationship than the engineering did. Clients stop worrying when they can see what happened.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cases-foot">
+      <p>The eight questions are the same every time: client and context, the problem, before, diagnosis, what we changed, how it was built, the measured result, and the lesson.</p>
+      <a class="btn btn-primary" href="#start" data-intent="assessment">Request an assessment</a>
+    </div>
+    <a class="bridge" href="#assessment"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Next</em>Every one of those started the same way. Here is what that first step costs and involves.</s></a>
+  </div>
+</section>
+
+<!-- ================= ASSESSMENT ================= -->
+<section class="sec" id="assessment">
+  <div class="wrap">
+    <div class="assess">
+      <div class="assess-copy">
+        <p class="eyebrow">The first step</p>
+        <h2>See what to fix first, before you spend on building.</h2>
+        <p class="lead">The Business System Assessment finds what is slowing the business down and puts it in priority order.</p>
+        <p>It is a paid, structured piece of work with documents at the end of it. You finish with a clear map of how the business runs today and a roadmap you own, whoever builds it.</p>
+        <!-- TODO Shakil: replace the price line below with your real figure or range. -->
+        <dl class="takes">
+          <div><dt>Duration</dt><dd>2 to 3 weeks</dd></div>
+          <div><dt>Your time</dt><dd>About 6 hours</dd></div>
+          <div><dt>Price</dt><dd>Fixed, agreed first</dd></div>
+          <div><dt>You receive</dt><dd>11 documents</dd></div>
+        </dl>
+        <div class="cta-row"><a class="btn btn-primary" href="#start" data-intent="assessment">Request an assessment</a><span class="note">No obligation to build with us afterwards.</span></div>
+      </div>
+
+      <figure class="doc" aria-label="Illustrative example of a prioritized roadmap">
+        <div class="doc-bar"><span>Prioritized roadmap</span><small>Illustrative format, not client data</small></div>
+        <div class="doc-row first">
+          <span class="doc-when">Fix first</span>
+          <span class="doc-what">Remove double entry between sales and finance</span>
+          <span class="meter">Impact<span class="dots" role="img" aria-label="Impact 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span>
+          <span class="meter">Effort<span class="dots" role="img" aria-label="Effort 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+        </div>
+        <div class="doc-row">
+          <span class="doc-when">Then</span>
+          <span class="doc-what">Sync approvals between email and the ERP</span>
+          <span class="meter">Impact<span class="dots" role="img" aria-label="Impact 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span>
+          <span class="meter">Effort<span class="dots" role="img" aria-label="Effort 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+        </div>
+        <div class="doc-row">
+          <span class="doc-when">Next</span>
+          <span class="doc-what">Automate month-end reporting</span>
+          <span class="meter">Impact<span class="dots" role="img" aria-label="Impact 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+          <span class="meter">Effort<span class="dots" role="img" aria-label="Effort 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+        </div>
+        <div class="doc-row">
+          <span class="doc-when">Later</span>
+          <span class="doc-what">Modernize the legacy order module</span>
+          <span class="meter">Impact<span class="dots" role="img" aria-label="Impact 5 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></span>
+          <span class="meter">Effort<span class="dots" role="img" aria-label="Effort 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span>
+        </div>
+        <figcaption class="doc-foot">Every item is ranked by impact and effort, so you know what to do first.</figcaption>
+      </figure>
+    </div>
+
+    <div class="assess-lists">
+      <details class="fold" open>
+        <summary>What we examine</summary>
+        <ul class="tags">
+          <li>Business processes</li><li>People and responsibilities</li><li>Existing software</li><li>Data flow</li><li>Manual work</li><li>Reporting</li><li>Integrations</li><li>Technical debt</li><li>User experience</li><li>Automation opportunities</li><li>AI opportunities</li><li>Scalability</li><li>Security</li>
+        </ul>
+      </details>
+      <details class="fold" open>
+        <summary>What you receive <span class="count">11 documents</span></summary>
+        <ul class="checks">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Current-state process map</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Current-state system map</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Problem register</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Bottleneck analysis</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Automation opportunity map</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>AI opportunity map</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Technology assessment</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Recommended architecture</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Prioritized roadmap</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Implementation phases</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Investment-level roadmap</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="faq">
+      <h3>Questions people ask before they book</h3>
+      <details class="acc"><summary>What does it cost?</summary><div class="acc-body"><p>A fixed price, agreed in writing before we start. We quote it after a short call, because the number depends on the size of the business and how many systems are in play. There is no hourly billing and no surprise on the invoice.</p></div></details>
+      <details class="acc"><summary>How long does it take?</summary><div class="acc-body"><p>Two to three weeks from the kickoff session to the roadmap review. We schedule it around your operations, not the other way round.</p></div></details>
+      <details class="acc"><summary>How much of our time do you need?</summary><div class="acc-body"><p>About six hours in total from your side: interviews with four to six people who actually do the work, a walkthrough of the systems, and one review session at the end. We do the rest without you in the room.</p></div></details>
+      <details class="acc"><summary>Do we have to build with you afterwards?</summary><div class="acc-body"><p>No. The roadmap is yours and it names systems and priorities, not vendors. Another development team can act on it, and some clients use it exactly that way. We would rather be chosen for the build than assumed into it.</p></div></details>
+      <details class="acc"><summary>Is what we share kept confidential?</summary><div class="acc-body"><p>Yes. We sign a mutual NDA before the first interview. Your documents and data stay yours, and nothing appears in a case study without your written approval.</p></div></details>
+      <details class="acc"><summary>We already know what we want built. Do we still need this?</summary><div class="acc-body"><p>Not always. If your requirements are written down and the business agrees on them, we can go straight to a build proposal. The assessment is for when the priority is not settled, or when several people would describe the problem differently.</p></div></details>
+    </div>
+
+    <a class="bridge" href="#method"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Next</em>Before you commit to anyone, see how the work actually runs.</s></a>
+  </div>
+</section>
+
+<!-- ================= METHOD ================= -->
+<section class="sec sec-alt" id="method">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">How we work</p>
+      <h2>We understand the business before we build anything.</h2>
+      <p>Technology is a means, not the product. Every engagement follows the same five moves.</p>
+    </div>
+    <ol class="steps">
+      <li class="step"><span class="step-n">1</span><h3>Understand</h3><p>The business, its users, processes and data. Where work slows down, and why.</p></li>
+      <li class="step"><span class="step-n">2</span><h3>Simplify</h3><p>Remove unnecessary steps and complexity before adding any technology.</p></li>
+      <li class="step"><span class="step-n">3</span><h3>Systemize</h3><p>Design one coherent system where people, processes and data work together.</p></li>
+      <li class="step"><span class="step-n">4</span><h3>Automate</h3><p>Let software and AI take the repetitive work off people.</p></li>
+      <li class="step"><span class="step-n">5</span><h3>Improve</h3><p>Measure the result, learn from it and keep improving after launch.</p></li>
+    </ol>
+    <p class="loop">Then it starts again. What we learn while improving becomes the next thing to understand.</p>
+
+    <div class="path-wrap">
+      <h3>How an engagement runs</h3>
+      <ol class="path">
+        <li>Assessment</li>
+        <li>Roadmap</li>
+        <li>Build, modernize, automate, add AI</li>
+        <li>Launch</li>
+        <li>Continuous improvement</li>
+      </ol>
+    </div>
+    <a class="bridge" href="#risk"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Next</em>You have been burned by a software project before. Here is what we do about each way that happens.</s></a>
+  </div>
+</section>
+
+<!-- ================= RISK ================= -->
+<section class="sec" id="risk">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Risk</p>
+      <h2>Software projects go wrong in predictable ways. We plan for each one.</h2>
+    </div>
+
+    <div class="risk">
+      <div class="risk-head" aria-hidden="true"><span>What worries you</span><span>What we do about it</span></div>
+      <div class="risk-row"><b>Requirements are vague</b><p>Structured discovery before anything is built.</p></div>
+      <div class="risk-row"><b>Scope keeps growing</b><p>A written scope, and a transparent change-control process when things change.</p></div>
+      <div class="risk-row"><b>The project runs late</b><p>Milestones, with something you can review at each one.</p></div>
+      <div class="risk-row"><b>The cost keeps rising</b><p>An assessment first, with an investment-level roadmap before you commit to implementation.</p></div>
+      <div class="risk-row"><b>Nobody knows what is happening</b><p>Decisions and requirements live in one shared record, not in scattered messages.</p></div>
+      <div class="risk-row"><b>You are locked in to one vendor</b><p>Clear ownership and access, with documentation another team could pick up.</p></div>
+      <div class="risk-row"><b>The software gets abandoned</b><p>Post-launch support and an ongoing improvement option through Beekal Care.</p></div>
+      <div class="risk-row"><b>Security and quality slip</b><p>Security reviewed during the assessment, then testing and deployment planning before launch.</p></div>
+    </div>
+
+    <div class="risk-acc">
+      <details class="acc"><summary>Requirements are vague</summary><div class="acc-body"><p>Structured discovery before anything is built.</p></div></details>
+      <details class="acc"><summary>Scope keeps growing</summary><div class="acc-body"><p>A written scope, and a transparent change-control process when things change.</p></div></details>
+      <details class="acc"><summary>The project runs late</summary><div class="acc-body"><p>Milestones, with something you can review at each one.</p></div></details>
+      <details class="acc"><summary>The cost keeps rising</summary><div class="acc-body"><p>An assessment first, with an investment-level roadmap before you commit to implementation.</p></div></details>
+      <details class="acc"><summary>Nobody knows what is happening</summary><div class="acc-body"><p>Decisions and requirements live in one shared record, not in scattered messages.</p></div></details>
+      <details class="acc"><summary>You are locked in to one vendor</summary><div class="acc-body"><p>Clear ownership and access, with documentation another team could pick up.</p></div></details>
+      <details class="acc"><summary>The software gets abandoned</summary><div class="acc-body"><p>Post-launch support and an ongoing improvement option through Beekal Care.</p></div></details>
+      <details class="acc"><summary>Security and quality slip</summary><div class="acc-body"><p>Security reviewed during the assessment, then testing and deployment planning before launch.</p></div></details>
+    </div>
+
+    <a class="bridge" href="#score"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Next</em>Nine questions that tell you where your business actually stands. No email needed.</s></a>
+  </div>
+</section>
+
+<!-- ================= MATURITY SCORE ================= -->
+<section class="sec sec-alt" id="score">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Free tool</p>
+      <h2>How mature is your business system?</h2>
+      <p>Nine questions. Move each slider to the statement that matches your business today. Nothing is sent anywhere, and no email is asked for.</p>
+    </div>
+    <div class="score">
+      <div>
+        <div class="score-bar">
+          <p id="score-progress">Answer all nine to see your level (0 of 9)</p>
+          <button type="button" id="score-reset" class="js-only" hidden>Clear answers</button>
+        </div>
+        <div class="scale" aria-hidden="true"><span>Manual</span><span>Digital</span><span>Connected</span><span>Automated</span><span>Intelligent</span></div>
+        <div class="dims" id="dims">
+          <div class="dim">
+            <label for="d0">Process<small>Are your core processes written down and followed?</small></label>
+            <output id="o0" for="d0">Not answered</output>
+            <input id="d0" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a0">Move the slider to answer.</p>
+          </div>
+          <div class="dim">
+            <label for="d1">Technology<small>Is your software current and fit for the work?</small></label>
+            <output id="o1" for="d1">Not answered</output>
+            <input id="d1" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a1">Move the slider to answer.</p>
+          </div>
+          <div class="dim">
+            <label for="d2">Data<small>Is your data accurate and in one place?</small></label>
+            <output id="o2" for="d2">Not answered</output>
+            <input id="d2" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a2">Move the slider to answer.</p>
+          </div>
+          <div class="dim">
+            <label for="d3">Automation<small>How much routine work runs without a person?</small></label>
+            <output id="o3" for="d3">Not answered</output>
+            <input id="d3" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a3">Move the slider to answer.</p>
+          </div>
+          <div class="dim">
+            <label for="d4">AI<small>Is AI used anywhere it removes real work?</small></label>
+            <output id="o4" for="d4">Not answered</output>
+            <input id="d4" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a4">Move the slider to answer.</p>
+          </div>
+          <div class="dim">
+            <label for="d5">Security<small>Are access, backups and updates managed?</small></label>
+            <output id="o5" for="d5">Not answered</output>
+            <input id="d5" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a5">Move the slider to answer.</p>
+          </div>
+          <div class="dim">
+            <label for="d6">Integration<small>Do your systems share data on their own?</small></label>
+            <output id="o6" for="d6">Not answered</output>
+            <input id="d6" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a6">Move the slider to answer.</p>
+          </div>
+          <div class="dim">
+            <label for="d7">Reporting<small>Do reports arrive without being built by hand?</small></label>
+            <output id="o7" for="d7">Not answered</output>
+            <input id="d7" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a7">Move the slider to answer.</p>
+          </div>
+          <div class="dim">
+            <label for="d8">Scalability<small>Could this cope with twice the volume?</small></label>
+            <output id="o8" for="d8">Not answered</output>
+            <input id="d8" type="range" min="1" max="5" step="1" value="3" class="unset" aria-valuetext="Not answered">
+            <p class="anchor" id="a8">Move the slider to answer.</p>
+          </div>
+        </div>
+        <p class="no-js-note">This tool needs JavaScript to calculate your level. Everything else on the page works without it.</p>
+      </div>
+
+      <aside class="res">
+        <svg class="radar" id="radar" viewBox="-25 0 410 330" role="img" aria-label="Radar chart of the nine dimensions. No answers yet."></svg>
+        <div id="res-empty" class="res-empty">
+          <p><strong>Your result appears here.</strong></p>
+          <p>Answer at least six of the nine to see your level, your weakest dimensions and where to look first.</p>
+        </div>
+        <div id="res-full" hidden>
+          <div class="res-level"><b id="res-level">Level 2</b><span id="res-name">Digital</span></div>
+          <p id="res-desc"></p>
+          <p id="res-focus"></p>
+          <ul class="ranks" id="ranks"></ul>
+        </div>
+        <a class="btn btn-primary" id="take-score" href="#start" data-intent="assessment" aria-disabled="true">Answer six to continue</a>
+        <p class="sr" id="score-live" aria-live="polite"></p>
+      </aside>
+    </div>
+    <a class="bridge" href="#founder"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Next</em>Who you would actually be working with.</s></a>
+  </div>
+</section>
+
+<!-- ================= FOUNDER ================= -->
+<section class="sec" id="founder">
+  <div class="wrap">
+    <!-- TODO Shakil: swap the initials avatar for a real photo (<img class="avatar" src="..." alt="Shakil Mahmud">)
+         and edit the two sentences below so they are yours, not a draft. -->
+    <div class="founder">
+      <div class="avatar" aria-hidden="true">SM</div>
+      <div>
+        <p class="eyebrow">Who you work with</p>
+        <h3>Shakil Mahmud</h3>
+        <p class="role">Founder, Beekal · Dhaka, Bangladesh</p>
+        <blockquote>
+          <p>I kept meeting businesses that had bought plenty of software and were still run on spreadsheets and WhatsApp. The tools were not the problem. Nobody had ever designed how the business should actually work. That is what Beekal does, and I run every assessment myself.</p>
+        </blockquote>
+        <div class="sig">
+          <a class="contact-link" href="mailto:shakil@beekal.com"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>shakil@beekal.com</a>
+          <!-- TODO Shakil: add your WhatsApp number and uncomment. Bangladeshi buyers will use this before email.
+          <a class="contact-link" href="https://wa.me/8801XXXXXXXXX"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>WhatsApp</a>
+          -->
+          <!-- TODO Shakil: add your LinkedIn profile URL and uncomment.
+          <a class="contact-link" href="https://www.linkedin.com/in/YOUR-PROFILE">LinkedIn</a>
+          -->
+        </div>
+      </div>
+    </div>
+    <a class="bridge" href="#start"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i><s><em>Last step</em>Tell me what is slowing you down. You will get the questions I would ask first.</s></a>
+  </div>
+</section>
+
+<!-- ================= START ================= -->
+<section class="sec band" id="start">
+  <div class="wrap start">
+    <div class="start-copy">
+      <p class="eyebrow">Start here</p>
+      <h2>Find what is slowing your business down.</h2>
+      <p>Tell us what you are trying to fix. We will say whether an assessment is the right first step, and say so if it is not.</p>
+      <ol class="next">
+        <li>You describe the problem in your own words.</li>
+        <li>Shakil replies with the questions he would ask first.</li>
+        <li>If it is a fit, we scope your assessment together.</li>
+      </ol>
+      <div class="or-contact">
+        <p>Prefer to write directly?</p>
+        <ul>
+          <li><a class="contact-link" href="mailto:shakil@beekal.com?subject=Business%20System%20Assessment"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>shakil@beekal.com</a></li>
+          <!-- TODO Shakil: add your WhatsApp number and uncomment.
+          <li><a class="contact-link" href="https://wa.me/8801XXXXXXXXX"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>WhatsApp</a></li>
+          -->
+          <li><a class="contact-link" href="#founder"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.2-3.6 4-5.2 7-5.2s5.8 1.6 7 5.2"/></svg>Read who you would be working with</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="form-card" id="form-card">
+      <form id="lead" novalidate>
+        <div class="seg" role="radiogroup" aria-label="What would you like to do?">
+          <label class="seg-opt"><input type="radio" name="intent" value="assessment" checked><span>Request an assessment</span></label>
+          <label class="seg-opt"><input type="radio" name="intent" value="talk"><span>Describe a problem</span></label>
+        </div>
+        <div class="fields">
+          <div class="two">
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" autocomplete="name" required aria-describedby="e-name">
+              <p class="err" id="e-name"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Work email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="e-email">
+              <p class="err" id="e-email"></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-company">Company <span class="opt">(optional)</span></label>
+            <input id="f-company" name="company" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="f-area">Where does it hurt most?</label>
+            <select id="f-area" name="area" required aria-describedby="e-area">
+              <option value="" disabled selected>Choose one</option>
+              <option>Too much manual work</option>
+              <option>Systems that do not connect</option>
+              <option>Legacy software</option>
+              <option>AI: where could it help?</option>
+              <option>A new product or idea</option>
+              <option>Not sure yet</option>
+            </select>
+            <p class="err" id="e-area"></p>
+          </div>
+          <div class="field">
+            <label for="msg">What are you trying to fix?</label>
+            <textarea id="msg" name="message" required aria-describedby="e-msg"></textarea>
+            <p class="err" id="e-msg"></p>
+          </div>
+          <div class="field">
+            <label class="consent" for="f-consent">
+              <input type="checkbox" id="f-consent" name="consent" value="yes" required aria-describedby="e-consent">
+              <span>I agree that Beekal may store what I send here and reply to me about it. Nothing else. <a href="#privacy">How we handle your information</a></span>
+            </label>
+            <p class="err" id="e-consent"></p>
+          </div>
+          <button class="btn btn-primary" type="submit" id="submit"><span id="submit-label">Request an assessment</span></button>
+        </div>
+        <p class="form-note" id="form-note">We reply by email, usually within one working day.</p>
+        <p class="form-alert" id="form-alert" role="alert"></p>
+      </form>
+      <div id="done" tabindex="-1">
+        <h3 id="done-title">Thanks.</h3>
+        <p id="done-text"></p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <svg class="lockup" viewBox="0 0 1198 352" role="img" aria-label="BeeKal, Better Tomorrow"><use href="#bk-lockup-tag"/></svg>
+        <p class="foot-promise">Better systems. Better work. Better tomorrow.</p>
+      </div>
+      <div>
+        <h3>Solutions</h3>
+        <ul><li><a href="#solutions">Beekal Build</a></li><li><a href="#solutions">Beekal Modernize</a></li><li><a href="#solutions">Beekal Automate</a></li><li><a href="#solutions">Beekal AI</a></li><li><a href="#solutions">Beekal Care</a></li></ul>
+      </div>
+      <div>
+        <h3>Start here</h3>
+        <ul><li><a href="#assessment">Business System Assessment</a></li><li><a href="#cases">Case studies</a></li><li><a href="#score">Maturity score</a></li><li><a href="#method">How we work</a></li><li><a href="#risk">How we manage risk</a></li></ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a class="contact-link" href="mailto:shakil@beekal.com"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>shakil@beekal.com</a></li>
+          <!-- TODO Shakil: add your WhatsApp number and uncomment.
+          <li><a class="contact-link" href="https://wa.me/8801XXXXXXXXX"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>WhatsApp</a></li>
+          -->
+        </ul>
+        <address class="addr">Beekal<br>Dhaka, Bangladesh</address>
+        <small>Shakil Mahmud, Founder. Replies within one working day.</small>
+      </div>
+    </div>
+
+    <div id="privacy" style="margin-top:clamp(32px,4vw,48px)">
+      <details class="acc" style="border-bottom-color:rgba(255,255,255,.2)">
+        <summary style="color:#fff">How we handle your information</summary>
+        <div class="acc-body" style="color:rgba(255,255,255,.84)">
+          <p>What you send through this form goes to Shakil's inbox and is used to reply to you about your enquiry. We do not sell it, share it with anyone outside Beekal, or add you to a mailing list.</p>
+          <p>Ask us to delete it at any time by writing to <a href="mailto:shakil@beekal.com" style="color:#fff">shakil@beekal.com</a> and we will. Work we do under an engagement is covered by a mutual NDA signed before the first interview.</p>
+        </div>
+      </details>
+    </div>
+
+    <p class="foot-base">
+      <span>© 2026 Beekal. All rights reserved.</span>
+      <a href="#privacy">Privacy</a>
+      <a href="#top">Back to top</a>
+    </p>
+    <!-- TODO Shakil: if Beekal is a registered entity, add the legal name and registration number here. It raises trust for larger buyers. -->
+  </div>
+</footer>
+
+<div class="dock" id="dock" aria-hidden="true">
+  <a class="btn btn-primary" href="#start" data-intent="assessment" tabindex="-1">Request an assessment</a>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const root = document.documentElement;
+  const NS = 'http://www.w3.org/2000/svg';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  /* Point CONFIG.endpoint at your backend or n8n webhook to receive the form.
+     While it is empty the form validates and shows the thank-you state without sending. */
+  const CONFIG = { endpoint: '' };
+
+  /* ---------- Theme, persisted across visits ---------- */
+  const themeBtn = $('#theme');
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  const syncTheme = () => {
+    const d = isDark();
+    themeBtn.setAttribute('aria-pressed', d);
+    themeBtn.setAttribute('aria-label', d ? 'Switch to light theme' : 'Switch to dark theme');
+  };
+  themeBtn.addEventListener('click', () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    try { localStorage.setItem('bk-theme', root.dataset.theme); } catch (e) {}
+    syncTheme();
+  });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', syncTheme);
+  syncTheme();
+
+  /* ---------- Menu: escape, outside click, focus return ---------- */
+  const head = $('.site-head'), menuBtn = $('#menu'), nav = $('#nav');
+  const backdropEls = [$('#main'), $('footer')];
+  const setMenu = open => {
+    head.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    const small = matchMedia('(max-width:980px)').matches;
+    backdropEls.forEach(el => { if (el) el.inert = open && small; });
+  };
+  const closeMenu = (refocus) => { if (!head.classList.contains('open')) return; setMenu(false); if (refocus) menuBtn.focus(); };
+  menuBtn.addEventListener('click', () => {
+    const open = !head.classList.contains('open');
+    setMenu(open);
+    if (open) nav.querySelector('a')?.focus();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(true); });
+  document.addEventListener('click', e => { if (!head.contains(e.target)) closeMenu(false); });
+  $$('#nav a').forEach(a => a.addEventListener('click', () => closeMenu(false)));
+  addEventListener('resize', () => { if (!matchMedia('(max-width:980px)').matches) closeMenu(false); });
+
+  /* ---------- Hero: scattered tools become one system ---------- */
+  const stage = $('#stage');
+  const linesSvg = $('#lines'), pulsesG = $('#pulses'), hub = $('#hub'), cap = $('#stage-cap'), stageLive = $('#stage-live');
+  const HUB = { x: 50, y: 50 };
+  const CAPS = { 0: 'Work lives in six places. Nobody sees all of it.', 1: 'The same work, in one connected system.' };
+  const P = $$('.chip', stage).map(el => ({
+    el, s: 1, from: 1, to: 1, t0: 0,
+    b: { x: +el.dataset.bx, y: +el.dataset.by, r: +el.dataset.br },
+    a: { x: +el.dataset.ax, y: +el.dataset.ay }
+  }));
+  const paths = P.map(() => { const p = document.createElementNS(NS, 'path'); linesSvg.insertBefore(p, pulsesG); return p; });
+  const ringPath = $('.ring path', stage);
+  function layout() {
+    const r = stage.clientWidth < 470 ? 34.5 : 38;
+    P.forEach((p, i) => { const a = (-90 + i * 60) * Math.PI / 180; p.a = { x: 50 + r * Math.cos(a), y: 50 + r * Math.sin(a) }; });
+    const pt = deg => [50 + r * Math.cos(deg * Math.PI / 180), 50 + r * Math.sin(deg * Math.PI / 180)].map(v => v.toFixed(2));
+    const s = pt(10), e = pt(-50);
+    ringPath.setAttribute('d', `M${s[0]} ${s[1]}A${r} ${r} 0 1 1 ${e[0]} ${e[1]}`);
+  }
+  const pos = p => ({ x: lerp(p.b.x, p.a.x, p.s), y: lerp(p.b.y, p.a.y, p.s) });
+
+  function render() {
+    const cur = P.map(pos);
+    P.forEach((p, i) => {
+      const e = ease(p.s);
+      p.el.style.left = cur[i].x + '%';
+      p.el.style.top = cur[i].y + '%';
+      p.el.style.transform = `translate(-50%,-50%) rotate(${p.b.r * (1 - e)}deg)`;
+      p.el.classList.toggle('on', p.s > .55);
+      const j = (i + 2) % P.length;
+      const tx = lerp(cur[j].x, HUB.x, e), ty = lerp(cur[j].y, HUB.y, e);
+      const mx = (cur[i].x + tx) / 2, my = (cur[i].y + ty) / 2;
+      const dx = tx - cur[i].x, dy = ty - cur[i].y;
+      const k = (1 - e) * .32 * (i % 2 ? 1 : -1);
+      paths[i].setAttribute('d', `M${cur[i].x} ${cur[i].y}Q${mx - dy * k} ${my + dx * k} ${tx} ${ty}`);
+      paths[i].setAttribute('class', p.s > .55 ? 'on' : 'off');
+    });
+    const m = P.reduce((a, p) => a + p.s, 0) / P.length;
+    hub.style.opacity = Math.max(0, (m - .35) / .65);
+    hub.style.transform = `translate(-50%,-50%) scale(${.8 + .2 * m})`;
+  }
+
+  let raf = 0, pulseRaf = 0;
+  function clearPulses() { cancelAnimationFrame(pulseRaf); pulsesG.replaceChildren(); }
+  function pulse() {
+    if (reduce) return;
+    clearPulses();
+    const t0 = performance.now();
+    const dots = P.map(() => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('r', '1.15'); c.setAttribute('class', 'pulse'); c.setAttribute('opacity', '0'); pulsesG.appendChild(c); return c; });
+    const tick = t => {
+      let live = false;
+      dots.forEach((c, i) => {
+        const k = (t - t0 - i * 110) / 850;
+        if (k < 1) live = true;
+        if (k <= 0 || k >= 1) { c.setAttribute('opacity', '0'); return; }
+        const q = pos(P[i]), e = ease(k);
+        c.setAttribute('cx', lerp(q.x, HUB.x, e)); c.setAttribute('cy', lerp(q.y, HUB.y, e)); c.setAttribute('opacity', '1');
+      });
+      if (live && stage.dataset.state === 'after') pulseRaf = requestAnimationFrame(tick); else clearPulses();
+    };
+    pulseRaf = requestAnimationFrame(tick);
+  }
+
+  function setView(target, announce) {
+    stage.dataset.state = target ? 'after' : 'before';
+    cap.textContent = CAPS[target];
+    if (announce) stageLive.textContent = CAPS[target];
+    $$('[data-view]').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.view === 'after') === !!target)));
+  }
+  function go(target, dur = 1000, announce) {
+    cancelAnimationFrame(raf); clearPulses(); setView(target, announce);
+    if (reduce) { P.forEach(p => p.s = target); render(); return; }
+    const now = performance.now();
+    P.forEach((p, i) => { p.from = p.s; p.to = target; p.t0 = now + i * 70; });
+    const tick = t => {
+      let done = true;
+      P.forEach(p => { const k = Math.min(1, Math.max(0, (t - p.t0) / dur)); p.s = p.from + (p.to - p.from) * ease(k); if (k < 1) done = false; });
+      render();
+      if (!done) raf = requestAnimationFrame(tick); else if (target) pulse();
+    };
+    raf = requestAnimationFrame(tick);
+  }
+
+  layout();
+  addEventListener('resize', () => { layout(); render(); });
+  let played = false;
+  if (reduce) {
+    render();
+  } else {
+    P.forEach(p => p.s = 0); render(); setView(0);
+    /* Play when the diagram is actually on screen, not on a timer (P0-6) */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting && !played) { played = true; io.disconnect(); setTimeout(() => go(1, 1150), 260); }
+      });
+    }, { threshold: .6 });
+    io.observe(stage);
+    setTimeout(() => { if (!played) { played = true; io.disconnect(); go(1, 1150); } }, 6000);
+  }
+  $$('[data-view]').forEach(b => b.addEventListener('click', () => { played = true; go(b.dataset.view === 'after' ? 1 : 0, 1000, true); }));
+
+  /* ---------- Generic tab wiring ---------- */
+  function wireTabs(rootEl, tabSel, panelSel) {
+    const tabs = $$(tabSel, rootEl), panels = $$(panelSel, rootEl);
+    const select = (i, focus) => {
+      rootEl.classList.add('touched');
+      tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === i)); t.tabIndex = j === i ? 0 : -1; });
+      panels.forEach((p, j) => p.hidden = j !== i);
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', e => {
+        const n = tabs.length;
+        const next = { ArrowDown: (i + 1) % n, ArrowRight: (i + 1) % n, ArrowUp: (i - 1 + n) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
+        if (next !== undefined) { e.preventDefault(); select(next, true); }
+      });
+    });
+    return select;
+  }
+  wireTabs($('#pick'), '.pick-tab', '.pick-panel');
+  const selectCase = wireTabs($('#cases-ui'), '.case-tab', '.case-panel');
+
+  /* Solution rows link straight to their worked example */
+  $$('.sol-link').forEach(a => a.addEventListener('click', () => selectCase(+a.dataset.case)));
+
+  /* Show the remaining example tags on mobile */
+  $$('.sol-more').forEach(b => b.addEventListener('click', () => { b.closest('.sol-ex').classList.add('open'); b.remove(); }));
+
+  /* The two long assessment lists are open on desktop and folded on small screens */
+  const folds = $$('.fold');
+  let foldGuard = false;
+  const syncFolds = () => {
+    foldGuard = true;
+    const small = matchMedia('(max-width:820px)').matches;
+    folds.forEach(f => { if (!f.dataset.user) f.open = !small; });
+    foldGuard = false;
+  };
+  folds.forEach(f => f.addEventListener('toggle', () => { if (!foldGuard) f.dataset.user = '1'; }));
+  syncFolds();
+  addEventListener('resize', syncFolds);
+
+  /* ---------- Business System Maturity Score ---------- */
+  const DIMS = [
+    ['Process', [
+      'Processes live in people\u2019s heads',
+      'Written down somewhere, rarely followed',
+      'Defined and followed by most teams',
+      'Measured and reviewed regularly',
+      'Owned, measured and continuously improved']],
+    ['Technology', [
+      'Excel, email and chat do most of the work',
+      'Off-the-shelf tools, used loosely',
+      'Fit-for-purpose systems in each area',
+      'Systems chosen and maintained to a plan',
+      'The platform evolves with the business']],
+    ['Data', [
+      'Scattered across files and inboxes',
+      'In systems, but duplicated and often stale',
+      'One source per area, mostly trusted',
+      'A single source of truth, quality checked',
+      'Governed, and used to make decisions']],
+    ['Automation', [
+      'Every step needs a person',
+      'A few shortcuts, macros and templates',
+      'Some workflows run on their own',
+      'Most routine work is automated',
+      'People handle only the exceptions']],
+    ['AI', [
+      'Not used anywhere',
+      'Staff use public chatbots on their own',
+      'Tried in one or two places',
+      'In daily use for real tasks',
+      'Built into the workflow, with human oversight']],
+    ['Security', [
+      'Shared passwords, no tested backups',
+      'Backups exist, nobody checks them',
+      'Access is controlled and backups are tested',
+      'Policies, updates and reviews on a schedule',
+      'Monitored, audited and rehearsed']],
+    ['Integration', [
+      'People carry data between systems',
+      'Exports and imports done by hand',
+      'A few integrations, built one at a time',
+      'Key systems integrated by design',
+      'Everything connects through one layer']],
+    ['Reporting', [
+      'Rebuilt in Excel every time',
+      'Templates that someone fills in',
+      'Standard reports come from the systems',
+      'Dashboards update on their own',
+      'Reporting drives decisions as they happen']],
+    ['Scalability', [
+      'It already strains at today\u2019s volume',
+      'Twice the work would mean twice the people',
+      'It would cope, with effort',
+      'Designed to grow without rework',
+      'Grows without anyone noticing']]
+  ];
+  const LEVELS = [
+    ['Manual', 'Work runs on people, spreadsheets and chat. The first win is usually seeing where the time goes.'],
+    ['Digital', 'You have software, but each tool is an island and people carry the data between them.'],
+    ['Connected', 'Systems share data, but people still push the work along.'],
+    ['Automated', 'Routine work moves on its own. Improvement now comes from better data, intelligence and scale.'],
+    ['Intelligent', 'Automation and AI are working. The job now is keeping the system improving.']
+  ];
+  const MIN_ANSWERS = 6;
+  const N = DIMS.length, CX = 180, CY = 165, R = 100;
+  const ang = i => -Math.PI / 2 + i * 2 * Math.PI / N;
+  const rpt = (i, v) => [CX + Math.cos(ang(i)) * R * v / 5, CY + Math.sin(ang(i)) * R * v / 5];
+  const radar = $('#radar');
+  const mk = (tag, attrs, parent = radar) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+
+  for (let l = 1; l <= 5; l++) mk('polygon', { class: 'rd-grid', points: DIMS.map((_, i) => rpt(i, l).join(',')).join(' ') });
+  DIMS.forEach((d, i) => {
+    const [x, y] = rpt(i, 5); mk('line', { class: 'rd-axis', x1: CX, y1: CY, x2: x, y2: y });
+    const lx = CX + Math.cos(ang(i)) * (R + 17), ly = CY + Math.sin(ang(i)) * (R + 17), c = Math.cos(ang(i)), s = Math.sin(ang(i));
+    const t = mk('text', { class: 'rd-lbl', x: lx, y: ly, 'text-anchor': c > .3 ? 'start' : c < -.3 ? 'end' : 'middle', dy: s > .3 ? '.9em' : s < -.3 ? '-.2em' : '.35em' });
+    t.textContent = d[0];
+  });
+  const area = mk('polygon', { class: 'rd-area', points: '' });
+  const rdots = DIMS.map(() => mk('circle', { class: 'rd-dot', r: 4.5, opacity: 0 }));
+
+  const inputs = DIMS.map((_, i) => $('#d' + i));
+  const answered = DIMS.map(() => false);
+  const resetBtn = $('#score-reset'), progress = $('#score-progress');
+  const resEmpty = $('#res-empty'), resFull = $('#res-full'), ranks = $('#ranks'), takeBtn = $('#take-score'), scoreLive = $('#score-live');
+  let liveTimer = 0;
+
+  function result() {
+    const idx = DIMS.map((_, i) => i).filter(i => answered[i]);
+    if (!idx.length) return null;
+    const vals = idx.map(i => +inputs[i].value);
+    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const lvl = Math.min(5, Math.max(1, Math.round(avg)));
+    const min = Math.min(...vals), max = Math.max(...vals);
+    const lows = idx.filter(i => +inputs[i].value === min).map(i => DIMS[i][0]);
+    const strong = DIMS[idx.find(i => +inputs[i].value === max)][0];
+    return { idx, vals, avg, lvl, min, max, lows, strong, count: idx.length };
+  }
+
+  function update(announce) {
+    DIMS.forEach((d, i) => {
+      const v = +inputs[i].value, set = answered[i];
+      inputs[i].classList.toggle('unset', !set);
+      inputs[i].style.setProperty('--pct', set ? ((v - 1) / 4 * 100) + '%' : '0%');
+      inputs[i].setAttribute('aria-valuetext', set ? `${v} of 5, ${d[1][v - 1]}` : 'Not answered');
+      const out = $('#o' + i), anc = $('#a' + i);
+      out.textContent = set ? LEVELS[v - 1][0] : 'Not answered';
+      out.classList.toggle('set', set);
+      anc.textContent = set ? d[1][v - 1] : 'Move the slider to answer.';
+      anc.classList.toggle('set', set);
+    });
+
+    const r = result();
+    const count = r ? r.count : 0;
+    progress.textContent = count === N
+      ? `All nine answered. Your result is on the right.`
+      : `Answer all nine to see your level (${count} of ${N})`;
+    resetBtn.hidden = count === 0;
+
+    /* radar: a dot for each answered dimension, the shape only once all nine are in */
+    rdots.forEach((c, i) => {
+      if (!answered[i]) { c.setAttribute('opacity', 0); return; }
+      const [x, y] = rpt(i, +inputs[i].value);
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('opacity', 1);
+      const low = r && r.min !== r.max && +inputs[i].value === r.min;
+      c.classList.toggle('weak', !!low); c.setAttribute('r', low ? 6 : 4.5);
+    });
+    area.setAttribute('points', count === N ? DIMS.map((_, i) => rpt(i, +inputs[i].value).join(',')).join(' ') : '');
+    radar.setAttribute('aria-label', r
+      ? `Radar chart. ${count} of ${N} dimensions answered, average ${r.avg.toFixed(1)} of 5.`
+      : 'Radar chart of the nine dimensions. No answers yet.');
+
+    const enough = count >= MIN_ANSWERS;
+    resEmpty.hidden = enough;
+    resFull.hidden = !enough;
+    takeBtn.setAttribute('aria-disabled', String(!enough));
+    takeBtn.textContent = enough ? 'Take this score into an assessment' : `Answer ${MIN_ANSWERS - count} more to continue`;
+
+    if (enough) {
+      const lowText = r.lows.length > 3 ? `${r.lows.length} dimensions` : r.lows.length === 1 ? r.lows[0] : r.lows.slice(0, -1).join(', ') + ' and ' + r.lows[r.lows.length - 1];
+      $('#res-level').textContent = 'Level ' + r.lvl;
+      $('#res-name').textContent = LEVELS[r.lvl - 1][0];
+      $('#res-desc').textContent = LEVELS[r.lvl - 1][1];
+      $('#res-focus').textContent = r.min === r.max
+        ? `Every dimension you answered sits at the same level (average ${r.avg.toFixed(1)} of 5, from ${count} answers).`
+        : `Average ${r.avg.toFixed(1)} of 5, from ${count} answers. Strongest: ${r.strong}. Lowest: ${lowText} — the place to look first.`;
+
+      ranks.replaceChildren();
+      [...r.idx].sort((a, b) => (+inputs[a].value) - (+inputs[b].value)).forEach(i => {
+        const v = +inputs[i].value;
+        const li = document.createElement('li');
+        li.className = (r.min !== r.max && v === r.min) ? 'low' : '';
+        li.innerHTML = `<span>${DIMS[i][0]}</span><span class="bar" role="img" aria-label="${DIMS[i][0]}: ${v} of 5">` +
+          [1, 2, 3, 4, 5].map(k => `<i class="${k <= v ? 'on' : ''}"></i>`).join('') + '</span>';
+        ranks.appendChild(li);
+      });
+    }
+
+    /* One calm announcement after the user stops moving (P0-4) */
+    if (announce) {
+      clearTimeout(liveTimer);
+      liveTimer = setTimeout(() => {
+        scoreLive.textContent = enough
+          ? `Level ${r.lvl}, ${LEVELS[r.lvl - 1][0]}.` + (r.min === r.max ? ' All answers at the same level.' : ` Lowest: ${r.lows.slice(0, 3).join(', ')}.`)
+          : `${count} of ${N} answered.`;
+      }, 700);
+    }
+  }
+
+  inputs.forEach((x, i) => {
+    const mark = () => { answered[i] = true; update(true); };
+    x.addEventListener('input', mark);
+    x.addEventListener('keydown', e => { if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','PageUp','PageDown'].includes(e.key)) answered[i] = true; });
+  });
+  resetBtn.addEventListener('click', () => {
+    DIMS.forEach((_, i) => { answered[i] = false; inputs[i].value = 3; });
+    update(false);
+    scoreLive.textContent = 'Answers cleared.';
+    inputs[0].focus();
+  });
+  update(false);
+
+  /* ---------- Form ---------- */
+  const form = $('#lead'), msg = $('#msg'), label = $('#submit-label'), alertBox = $('#form-alert');
+  const LABELS = { assessment: 'Request an assessment', talk: 'Send this to Beekal' };
+  const setIntent = v => {
+    const el = $(`input[name=intent][value=${v}]`, form);
+    if (el) { el.checked = true; label.textContent = LABELS[v]; }
+  };
+  $$('input[name=intent]', form).forEach(e => e.addEventListener('change', () => setIntent(e.value)));
+  $$('[data-intent]').forEach(a => a.addEventListener('click', () => setIntent(a.dataset.intent)));
+
+  takeBtn.addEventListener('click', e => {
+    const r = result();
+    if (!r || r.count < MIN_ANSWERS) {
+      e.preventDefault();
+      scoreLive.textContent = `Answer at least ${MIN_ANSWERS} of the nine first.`;
+      inputs[answered.findIndex(a => !a)]?.focus();
+      return;
+    }
+    const detail = r.idx.map(i => `${DIMS[i][0]} ${inputs[i].value}/5`).join(', ');
+    const line = `Maturity score (${r.count} of ${N} answered): Level ${r.lvl}, ${LEVELS[r.lvl - 1][0]}, average ${r.avg.toFixed(1)} of 5.\n${detail}.`;
+    msg.value = line + '\n\n' + msg.value.replace(/^Maturity score[\s\S]*?\n\n/, '');
+  });
+
+  const RULES = [
+    { id: 'f-name', err: 'e-name', test: v => v.trim().length > 1, msg: 'Enter your name so we know who we are replying to.' },
+    { id: 'f-email', err: 'e-email', test: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()), msg: 'Enter an email address we can reply to, for example name@company.com.' },
+    { id: 'f-area', err: 'e-area', test: v => !!v, msg: 'Choose the area that hurts most. Pick "Not sure yet" if you do not know.' },
+    { id: 'msg', err: 'e-msg', test: v => v.trim().length >= 10, msg: 'Describe the problem in a sentence or two. That is what we reply to.' },
+    { id: 'f-consent', err: 'e-consent', test: (v, el) => el.checked, msg: 'Tick this so we are allowed to reply to you.' }
+  ];
+  const clearErr = r => { const el = $('#' + r.id); el.removeAttribute('aria-invalid'); $('#' + r.err).textContent = ''; };
+  RULES.forEach(r => {
+    const el = $('#' + r.id);
+    el.addEventListener('input', () => clearErr(r));
+    el.addEventListener('change', () => clearErr(r));
+  });
+
+  function validate() {
+    let first = null;
+    RULES.forEach(r => {
+      const el = $('#' + r.id);
+      const ok = r.test(el.value, el);
+      $('#' + r.err).textContent = ok ? '' : r.msg;
+      if (ok) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid', 'true');
+      if (!ok && !first) first = el;
+    });
+    return first;
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    alertBox.textContent = '';
+    const first = validate();
+    if (first) { first.focus(); return; }
+    const data = Object.fromEntries(new FormData(form));
+    const btn = $('#submit'); btn.disabled = true;
+    try {
+      if (CONFIG.endpoint) {
+        const r = await fetch(CONFIG.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        if (!r.ok) throw new Error('bad response');
+      }
+      $('#done-title').textContent = `Thanks, ${String(data.name).trim().split(' ')[0]}.`;
+      $('#done-text').textContent = `We will reply to ${data.email} with the questions we would ask first, usually within one working day.`;
+      $('#form-card').classList.add('sent');
+      $('#done').focus();
+    } catch {
+      btn.disabled = false;
+      alertBox.textContent = 'That did not send. Check your connection and try again, or email shakil@beekal.com directly.';
+    }
+  });
+
+  /* ---------- Sticky mobile CTA ---------- */
+  const dock = $('#dock'), startSec = $('#start'), hero = $('.hero');
+  let pastHero = false, atForm = false;
+  const syncDock = () => {
+    const show = pastHero && !atForm;
+    dock.classList.toggle('show', show);
+    dock.setAttribute('aria-hidden', String(!show));
+    dock.querySelector('a').tabIndex = show ? 0 : -1;
+  };
+  new IntersectionObserver(es => { es.forEach(en => { pastHero = !en.isIntersecting && en.boundingClientRect.top < 0; syncDock(); }); }, { threshold: 0 }).observe(hero);
+  new IntersectionObserver(es => { es.forEach(en => { atForm = en.isIntersecting; syncDock(); }); }, { threshold: 0 }).observe(startSec);
+})();
+</script>
+</body>
+</html>
