@@ -23,7 +23,12 @@ export const metadata: Metadata = {
  */
 
 const ROADMAP_SAMPLE = [
-  { when: 'Fix first', what: 'Remove double entry between sales and finance', impact: 4, effort: 2 },
+  {
+    when: 'Fix first',
+    what: 'Remove double entry between sales and finance',
+    impact: 4,
+    effort: 2,
+  },
   { when: 'Then', what: 'Sync approvals between email and the ERP', impact: 4, effort: 3 },
   { when: 'Next', what: 'Automate month-end reporting', impact: 3, effort: 2 },
   { when: 'Later', what: 'Modernize the legacy order module', impact: 5, effort: 4 },
@@ -92,7 +97,9 @@ export default function AssessmentPage() {
             {/* Proof of format: what a deliverable actually looks like. */}
             <Card padding="none" className="overflow-hidden">
               <div className="border-line bg-bg-alt flex items-baseline justify-between gap-3 border-b px-5 py-3">
-                <span className="font-display text-[0.95rem] font-semibold">Prioritized roadmap</span>
+                <span className="font-display text-[0.95rem] font-semibold">
+                  Prioritized roadmap
+                </span>
                 <small className="text-ink-2 text-[0.78rem]">
                   Illustrative format, not client data
                 </small>

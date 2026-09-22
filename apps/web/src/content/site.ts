@@ -6,7 +6,24 @@
  * needs a deploy to correct is a fact that stays wrong.
  */
 
-export const SITE = {
+export interface SiteSettings {
+  name: string;
+  tagline: string;
+  promise: string;
+  positioning: string;
+  email: string;
+  /** Empty hides every WhatsApp link. Format: 8801XXXXXXXXX */
+  whatsapp: string;
+  location: string;
+  locationLong: string;
+  replyTime: string;
+  founderName: string;
+  founderRole: string;
+  legalEntity: string;
+  registrationNumber: string;
+}
+
+export const SITE: SiteSettings = {
   name: 'Beekal',
   tagline: 'Better Tomorrow.',
   promise: 'Better systems. Better work. Better tomorrow.',
@@ -22,9 +39,23 @@ export const SITE = {
   /** TODO: add once registered — raises trust with larger buyers. */
   legalEntity: '',
   registrationNumber: '',
-} as const;
+};
 
-export const ASSESSMENT = {
+export interface AssessmentOffer {
+  name: string;
+  promise: string;
+  lede: string;
+  duration: string;
+  clientHours: string;
+  /** Empty renders "Fixed, agreed first". */
+  priceRange: string;
+  documentCount: number;
+  examines: readonly string[];
+  deliverables: ReadonlyArray<{ name: string; answers: string }>;
+  riskReversal: readonly string[];
+}
+
+export const ASSESSMENT: AssessmentOffer = {
   name: 'Business System Assessment',
   promise: 'See what to fix first, before you spend on building.',
   lede: 'The Business System Assessment finds what is slowing the business down and puts it in priority order.',
@@ -56,7 +87,10 @@ export const ASSESSMENT = {
    * Same eleven items as the demo — reframed so each one sells (docs/01 s3.2).
    */
   deliverables: [
-    { name: 'Current-state process map', answers: 'We do not actually know how our own process works' },
+    {
+      name: 'Current-state process map',
+      answers: 'We do not actually know how our own process works',
+    },
     { name: 'Current-state system map', answers: 'Nobody can list every system we run' },
     { name: 'Problem register', answers: 'Everyone describes the problem differently' },
     { name: 'Bottleneck analysis', answers: 'We do not know where the time goes' },
@@ -65,7 +99,10 @@ export const ASSESSMENT = {
     { name: 'Technology assessment', answers: 'Is our current software salvageable?' },
     { name: 'Recommended architecture', answers: 'What should we actually build?' },
     { name: 'Prioritized roadmap', answers: 'What do we do first?' },
-    { name: 'Implementation phases', answers: 'How do we phase this without stopping the business?' },
+    {
+      name: 'Implementation phases',
+      answers: 'How do we phase this without stopping the business?',
+    },
     { name: 'Investment-level roadmap', answers: 'What will this cost?' },
   ],
 
@@ -75,7 +112,7 @@ export const ASSESSMENT = {
     'Every document is yours to keep — whoever ends up building the fix.',
     'If an assessment is not the right next step, we say so on the first call.',
   ],
-} as const;
+};
 
 /** The method. It appears on the site, in proposals and in delivery. */
 export const METHOD = [
@@ -124,11 +161,20 @@ export const BEFORE_AFTER = {
 export const RISKS = [
   { fear: 'Unclear requirements', answer: 'Structured discovery before anything is built.' },
   { fear: 'Scope creep', answer: 'Written scope, with a change process both sides can see.' },
-  { fear: 'Project delays', answer: 'Milestones that deliver working software, not status reports.' },
+  {
+    fear: 'Project delays',
+    answer: 'Milestones that deliver working software, not status reports.',
+  },
   { fear: 'Unexpected cost', answer: 'Fixed price agreed first. No hourly billing.' },
-  { fear: 'Poor communication', answer: 'One named person, reachable, replying within a working day.' },
+  {
+    fear: 'Poor communication',
+    answer: 'One named person, reachable, replying within a working day.',
+  },
   { fear: 'Vendor dependency', answer: 'You own the code, the accounts and the documentation.' },
-  { fear: 'Abandoned software', answer: 'Continuous improvement is an option, not an afterthought.' },
+  {
+    fear: 'Abandoned software',
+    answer: 'Continuous improvement is an option, not an afterthought.',
+  },
   { fear: 'Security problems', answer: 'Access, backups and updates planned before launch.' },
   { fear: 'Bad implementation', answer: 'Testing and a deployment plan, agreed before cutover.' },
 ] as const;

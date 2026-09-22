@@ -90,9 +90,6 @@ export function SiteFooter() {
           <Link href="/privacy" className="hover:text-white">
             Privacy
           </Link>
-          <Link href="/terms" className="hover:text-white">
-            Terms
-          </Link>
           {SITE.legalEntity && (
             <span>
               {SITE.legalEntity}
@@ -108,7 +105,9 @@ export function SiteFooter() {
 function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 className="text-[0.78rem] font-bold tracking-[0.09em] text-white/60 uppercase">{title}</h3>
+      <h3 className="text-[0.78rem] font-bold tracking-[0.09em] text-white/60 uppercase">
+        {title}
+      </h3>
       <ul className="mt-3 space-y-2">{children}</ul>
     </div>
   );

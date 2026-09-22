@@ -62,7 +62,10 @@ export default function HomePage() {
             <ul className="text-ink-2 grid gap-2.5 text-[0.95rem]">
               <li>{SITE.locationLong}</li>
               <li>
-                <a href={`mailto:${SITE.email}`} className="text-ink underline-offset-4 hover:underline">
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="text-ink underline-offset-4 hover:underline"
+                >
                   {SITE.email}
                 </a>
               </li>
@@ -117,7 +120,10 @@ export default function HomePage() {
               <ul className="mt-4 space-y-2.5">
                 {BEFORE_AFTER.before.map((b) => (
                   <li key={b} className="flex items-start gap-3 text-white/75">
-                    <span aria-hidden className="mt-2.5 size-1.5 flex-none rounded-full bg-white/40" />
+                    <span
+                      aria-hidden
+                      className="mt-2.5 size-1.5 flex-none rounded-full bg-white/40"
+                    />
                     {b}
                   </li>
                 ))}
@@ -186,9 +192,7 @@ export default function HomePage() {
                 <Button asChild>
                   <Link href="/assessment">How the assessment works</Link>
                 </Button>
-                <span className="text-ink-2 text-[0.92rem]">
-                  {ASSESSMENT.riskReversal[0]}
-                </span>
+                <span className="text-ink-2 text-[0.92rem]">{ASSESSMENT.riskReversal[0]}</span>
               </div>
             </div>
 

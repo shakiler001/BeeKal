@@ -3,6 +3,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { randomUUID } from 'node:crypto';
 import { SharedModule } from './shared/shared.module.js';
 import { HealthModule } from './modules/platform/health/health.module.js';
+import { LeadsModule } from './modules/leads/leads.module.js';
 import { env } from './config/env.js';
 
 /**
@@ -63,6 +64,7 @@ function prettyTransportAvailable(): boolean {
     }),
     SharedModule,
     HealthModule,
+    LeadsModule,
   ],
 })
 export class AppModule {}

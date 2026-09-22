@@ -64,9 +64,18 @@ export const CASE_STUDIES: CaseStudy[] = [
     howBuilt:
       'A web app with role-based access, a tablet entry screen for line supervisors, and a nightly export into their existing accounting package. Three milestones, fourteen weeks.',
     results: [
-      { value: '~2 hours', label: "of each merchandiser's morning returned to actual merchandising" },
-      { value: 'One ship date', label: 'per order, visible to the buyer and the factory at the same time' },
-      { value: 'No spreadsheets', label: 'order status is no longer maintained in Excel by anyone' },
+      {
+        value: '~2 hours',
+        label: "of each merchandiser's morning returned to actual merchandising",
+      },
+      {
+        value: 'One ship date',
+        label: 'per order, visible to the buyer and the factory at the same time',
+      },
+      {
+        value: 'No spreadsheets',
+        label: 'order status is no longer maintained in Excel by anyone',
+      },
     ],
     lesson:
       'The tablet had to survive gloves and weak wifi. Next time we prototype on the factory floor in week one, not week five.',
@@ -92,8 +101,14 @@ export const CASE_STUDIES: CaseStudy[] = [
     howBuilt:
       'An API layer over the existing database, a read replica for reporting, depot web forms, then a staged cutover — one depot at a time, across a quarter. No big-bang migration.',
     results: [
-      { value: '3 days → same day', label: 'month-end close, because reporting no longer waits for the desktop client' },
-      { value: '12 depots', label: 'reporting stock through one form instead of twelve spreadsheets' },
+      {
+        value: '3 days → same day',
+        label: 'month-end close, because reporting no longer waits for the desktop client',
+      },
+      {
+        value: '12 depots',
+        label: 'reporting stock through one form instead of twelve spreadsheets',
+      },
       { value: 'Zero rewrites', label: 'of the business logic that already worked' },
     ],
     lesson:
@@ -122,7 +137,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     results: [
       { value: '3 entries → 1', label: 'per shipment, with the other two following automatically' },
       { value: 'Invoicing disputes', label: 'now surface within minutes rather than at month-end' },
-      { value: 'No new software', label: 'for the team to learn — the systems they had, connected' },
+      {
+        value: 'No new software',
+        label: 'for the team to learn — the systems they had, connected',
+      },
     ],
     lesson:
       'We automated the sync before agreeing who owned the data. That argument should have happened in week one, not week four.',
@@ -176,8 +194,14 @@ export const CASE_STUDIES: CaseStudy[] = [
     howBuilt:
       'Uptime and error monitoring, a scheduled dependency and security cadence, and a visible roadmap reviewed each month.',
     results: [
-      { value: 'Monitoring first', label: 'failures now surface internally before a customer reports one' },
-      { value: 'Monthly', label: 'improvements ship on a cadence instead of waiting for a project' },
+      {
+        value: 'Monitoring first',
+        label: 'failures now surface internally before a customer reports one',
+      },
+      {
+        value: 'Monthly',
+        label: 'improvements ship on a cadence instead of waiting for a project',
+      },
       { value: 'A written review', label: 'every month, whether or not anything went wrong' },
     ],
     lesson:

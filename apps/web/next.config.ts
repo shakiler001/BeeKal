@@ -21,7 +21,12 @@ const config: NextConfig = {
     ],
   },
 
-  typedRoutes: true,
+  // typedRoutes is off deliberately. From Phase 3 the content — solutions,
+  // problems, case studies, articles — lives in Postgres, so slugs are runtime
+  // values that no compile-time check can validate. Keeping it would mean
+  // casting every data-driven href, which removes the safety while adding
+  // noise. Link integrity is covered by the E2E crawl instead.
+  typedRoutes: false,
 
   async headers() {
     return [

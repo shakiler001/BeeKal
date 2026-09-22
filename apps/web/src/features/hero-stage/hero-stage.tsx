@@ -143,10 +143,7 @@ export function HeroStage() {
               y2={c.ay}
               stroke="var(--net)"
               strokeWidth="0.4"
-              className={cn(
-                'transition-opacity duration-700',
-                after ? 'opacity-40' : 'opacity-0',
-              )}
+              className={cn('transition-opacity duration-700', after ? 'opacity-40' : 'opacity-0')}
             />
           ))}
         </svg>

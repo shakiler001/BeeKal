@@ -106,18 +106,20 @@ export function SiteHeader() {
       >
         <nav aria-label="Main, mobile" className="mx-auto w-[min(1200px,100%-2*var(--gut))] py-4">
           <ul className="grid gap-1">
-            {[...NAV, { href: '/insights', label: 'Insights' }, { href: '/about', label: 'About' }].map(
-              (item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-ink hover:bg-bg-alt flex min-h-12 items-center rounded-[var(--r-sm)] px-3 font-medium"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ),
-            )}
+            {[
+              ...NAV,
+              { href: '/about', label: 'About' },
+              { href: '/contact', label: 'Contact' },
+            ].map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="text-ink hover:bg-bg-alt flex min-h-12 items-center rounded-[var(--r-sm)] px-3 font-medium"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
           <Button asChild full className="mt-3 sm:hidden">
             <Link href="/contact?intent=assessment">Request an assessment</Link>

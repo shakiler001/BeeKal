@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { BrandSprite } from '@/components/brand';
 import { fontVariables } from '@/fonts';
 import { THEME_COLOR } from '@/lib/brand';
+import { organizationSchema, websiteSchema } from '@/lib/schema';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -43,6 +44,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: noFlashTheme }} />
+        {/* Site-wide entity data, generated from the settings record. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema()) }}
+        />
       </head>
       <body>
         <a

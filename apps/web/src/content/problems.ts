@@ -9,11 +9,7 @@ import type { SolutionKey } from './solutions';
  */
 
 export type ProblemKey =
-  | 'manual-work'
-  | 'disconnected-systems'
-  | 'legacy-software'
-  | 'ai-opportunity'
-  | 'new-product';
+  'manual-work' | 'disconnected-systems' | 'legacy-software' | 'ai-opportunity' | 'new-product';
 
 export interface Problem {
   key: ProblemKey;

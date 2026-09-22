@@ -7,7 +7,15 @@ import Link from 'next/link';
  * separates it from a generic "learn more". The demo did this well and it is a
  * big part of why the long page stayed readable.
  */
-export function Bridge({ href, label, children }: { href: string; label?: string; children: React.ReactNode }) {
+export function Bridge({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label?: string;
+  children: React.ReactNode;
+}) {
   return (
     <Link
       href={href}
