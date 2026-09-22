@@ -5,6 +5,21 @@ import { SharedModule } from './shared/shared.module.js';
 import { HealthModule } from './modules/platform/health/health.module.js';
 import { env } from './config/env.js';
 
+/**
+ * True only when we are in development AND pino-pretty can be resolved.
+ * Naming a transport target that is not installed makes pino throw during
+ * construction, so this is checked rather than assumed.
+ */
+function prettyTransportAvailable(): boolean {
+  if (env().NODE_ENV !== 'development') return false;
+  try {
+    require.resolve('pino-pretty');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 @Module({
   imports: [
     LoggerModule.forRoot({
@@ -28,9 +43,15 @@ import { env } from './config/env.js';
           ],
           remove: true,
         },
-        // Spread rather than `transport: undefined` — exactOptionalPropertyTypes
-        // treats an explicit undefined as different from an absent key.
-        ...(env().NODE_ENV === 'development'
+        // Pretty logs only when pino-pretty is actually installed. It is a
+        // devDependency, so a production image does not have it — and pino
+        // fails to construct at all if it is named but missing, which takes
+        // the whole process down at boot.
+        //
+        // Spread rather than `transport: undefined`, because
+        // exactOptionalPropertyTypes treats an explicit undefined as different
+        // from an absent key.
+        ...(prettyTransportAvailable()
           ? {
               transport: {
                 target: 'pino-pretty',

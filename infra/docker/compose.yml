@@ -77,6 +77,26 @@ services:
       "
     restart: 'no'
 
+  # Runs migrations and the seed once, then exits. The API waits for it to
+  # finish successfully, so a container never serves against an older schema.
+  # Built from the `build` stage because the runtime image has no Prisma CLI.
+  migrate:
+    build:
+      context: ../..
+      dockerfile: infra/docker/api.Dockerfile
+      target: build
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-beekal}:${POSTGRES_PASSWORD:-beekal_dev_password}@postgres:5432/${POSTGRES_DB:-beekal}
+      SEED_OWNER_EMAIL: ${SEED_OWNER_EMAIL:-}
+      SEED_OWNER_NAME: ${SEED_OWNER_NAME:-Owner}
+    working_dir: /app/apps/api
+    command: >
+      sh -c "pnpm exec prisma migrate deploy && pnpm exec tsx prisma/seed.ts"
+    restart: 'no'
+
   api:
     build:
       context: ../..
@@ -87,8 +107,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     environment:
-      NODE_ENV: ${NODE_ENV:-development}
+      NODE_ENV: ${NODE_ENV:-production}
       PORT: 4000
       APP_URL: ${APP_URL:-http://localhost:3000}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
@@ -127,7 +149,7 @@ services:
       api:
         condition: service_healthy
     environment:
-      NODE_ENV: ${NODE_ENV:-development}
+      NODE_ENV: ${NODE_ENV:-production}
       API_INTERNAL_URL: http://api:4000
       NEXT_PUBLIC_APP_URL: ${APP_URL:-http://localhost:3000}
     ports:
