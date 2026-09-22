@@ -16,8 +16,8 @@ a single URL cannot rank for four different search intents, and a founder cannot
 paste a useful link into a WhatsApp reply when everything is one anchor on one
 page.
 
-Three-second test for every page: *whose question does this answer, and what is
-the one next step?* If a page cannot answer that, it merges into another.
+Three-second test for every page: _whose question does this answer, and what is
+the one next step?_ If a page cannot answer that, it merges into another.
 
 ---
 
@@ -76,22 +76,22 @@ tiers in [01-strategy-offers-and-copy.md](01-strategy-offers-and-copy.md).
 
 ### 3.1 `/` Homepage
 
-**Job:** in eight seconds, make the visitor think *"that is us"*, then route them.
+**Job:** in eight seconds, make the visitor think _"that is us"_, then route them.
 **Budget:** 550 words visible. The demo has roughly 3,100.
 
-| # | Section | Tier | Budget | Source | Change |
-|---|---|---|---|---|---|
-| 1 | Hero: H1, lede, two CTAs, before/after animation | 1 | 45 | demo hero | **Keep as is.** The H1 and the animation are the strongest assets on the page. |
-| 2 | Trust strip: location, email, reply time | 1 | 25 | demo | Keep |
-| 3 | Buyer's-own-words pull quote | 1 | 20 | demo | Keep. Best line on the site. |
-| 4 | Five problem cards, linking to `/problems/*` | 2 | 120 | demo `#problems` | Keep the five, cut each body to one sentence, **make each a link** |
-| 5 | Before / After transformation | 2 | 80 | demo `#outcome` | Keep, tighten |
-| 6 | Five solution cards, linking to `/solutions/*` | 2 | 100 | demo `#solutions` | Keep names and one line each; details move to their own pages |
-| 7 | Assessment teaser | 1 | 60 | demo `#assessment` | **Reduce to a teaser.** The full section becomes `/assessment` |
-| 8 | Two case study cards plus "see all" | 2 | 70 | demo `#cases` | **Cut from five to two.** The other three live at `/work` |
-| 9 | Score tool teaser | 1 | 30 | demo `#score` | **Teaser only.** Tool moves to `/score` |
-| 10 | Founder strip | 2 | 60 | demo `#founder` | Condense; full version at `/about` |
-| 11 | Final CTA plus form | 1 | 50 | demo `#start` | Keep |
+| #   | Section                                          | Tier | Budget | Source             | Change                                                                         |
+| --- | ------------------------------------------------ | ---- | ------ | ------------------ | ------------------------------------------------------------------------------ |
+| 1   | Hero: H1, lede, two CTAs, before/after animation | 1    | 45     | demo hero          | **Keep as is.** The H1 and the animation are the strongest assets on the page. |
+| 2   | Trust strip: location, email, reply time         | 1    | 25     | demo               | Keep                                                                           |
+| 3   | Buyer's-own-words pull quote                     | 1    | 20     | demo               | Keep. Best line on the site.                                                   |
+| 4   | Five problem cards, linking to `/problems/*`     | 2    | 120    | demo `#problems`   | Keep the five, cut each body to one sentence, **make each a link**             |
+| 5   | Before / After transformation                    | 2    | 80     | demo `#outcome`    | Keep, tighten                                                                  |
+| 6   | Five solution cards, linking to `/solutions/*`   | 2    | 100    | demo `#solutions`  | Keep names and one line each; details move to their own pages                  |
+| 7   | Assessment teaser                                | 1    | 60     | demo `#assessment` | **Reduce to a teaser.** The full section becomes `/assessment`                 |
+| 8   | Two case study cards plus "see all"              | 2    | 70     | demo `#cases`      | **Cut from five to two.** The other three live at `/work`                      |
+| 9   | Score tool teaser                                | 1    | 30     | demo `#score`      | **Teaser only.** Tool moves to `/score`                                        |
+| 10  | Founder strip                                    | 2    | 60     | demo `#founder`    | Condense; full version at `/about`                                             |
+| 11  | Final CTA plus form                              | 1    | 50     | demo `#start`      | Keep                                                                           |
 
 **Removed from the homepage entirely:** the method steps (to `/method`), the risk
 section (to `/about#risk`), the seven-question FAQ (to `/assessment`), three case
@@ -107,7 +107,7 @@ a purchase, and here length signals thoroughness.
 Sections, in `$100M Offers` order — problem, then outcome, then mechanism, then
 proof, then risk reversal, then ask:
 
-1. H1 plus promise — *"See what to fix first, before you spend on building."* [T1]
+1. H1 plus promise — _"See what to fix first, before you spend on building."_ [T1]
 2. Who it is for, and who it is not for [T2] — the disqualifier raises conversion
 3. The four facts: duration, your time, price, what you receive [T1] — the demo's
    `takes` block, kept
@@ -135,7 +135,7 @@ proof, then risk reversal, then ask:
 6. How it starts: "most of these begin with an Assessment" plus CTA
 
 Per-category emphasis: **Build** — the discovery-first argument. **Modernize** —
-*"keep the logic, remove the limits"*, the strongest differentiator in the market
+_"keep the logic, remove the limits"_, the strongest differentiator in the market
 and the one that separates Beekal from rebuild-everything shops. **Automate** —
 concrete process examples, fastest payback, best small first engagement.
 **AI** — practical framing, explicit about where AI is the wrong answer; that
@@ -190,15 +190,15 @@ email required to see them.
 
 ### 3.7 Remaining pages
 
-| Page | Job | Budget |
-|---|---|---|
-| `/solutions` | Overview and router to the five | 350 |
-| `/method` | Publish the methodology; proof by process | 800 |
-| `/about` | Founder, how Beekal works, how risk is managed (absorbs the demo's `#risk`) | 900 |
-| `/resources` and `/resources/[slug]` | Lead magnet library and gate | 200 + per item |
-| `/insights` and `/insights/[slug]` | Article index and articles | per article |
-| `/contact` | Form plus direct contact | 150 |
-| `/privacy`, `/terms` | Legal. The demo's privacy copy is good and honest — expand it, keep its tone | — |
+| Page                                 | Job                                                                          | Budget         |
+| ------------------------------------ | ---------------------------------------------------------------------------- | -------------- |
+| `/solutions`                         | Overview and router to the five                                              | 350            |
+| `/method`                            | Publish the methodology; proof by process                                    | 800            |
+| `/about`                             | Founder, how Beekal works, how risk is managed (absorbs the demo's `#risk`)  | 900            |
+| `/resources` and `/resources/[slug]` | Lead magnet library and gate                                                 | 200 + per item |
+| `/insights` and `/insights/[slug]`   | Article index and articles                                                   | per article    |
+| `/contact`                           | Form plus direct contact                                                     | 150            |
+| `/privacy`, `/terms`                 | Legal. The demo's privacy copy is good and honest — expand it, keep its tone | —              |
 
 ---
 
@@ -206,32 +206,32 @@ email required to see them.
 
 Every section of `beekal-website-demo.html`, accounted for:
 
-| Demo section | Disposition |
-|---|---|
-| `<head>` meta, JSON-LD | **Port and extend.** Becomes per-page `generateMetadata` plus a schema helper |
-| Design tokens, dark theme | **Port verbatim** to Tailwind config. Contrast is already verified — do not re-derive |
-| SVG sprite (bee, lockup, icons) | **Port** to a sprite component |
-| Header, nav, theme toggle, mobile menu | **Port**, extend nav for multi-page |
-| Hero: H1, lede, CTAs | **Keep verbatim.** Already correct |
-| Hero before/after animation | **Port.** Highest-value interaction on the site |
-| Hero quote, trust strip | **Keep verbatim** |
-| `#problems` five cards | **Keep on homepage, shortened.** Full versions become `/problems/*` |
-| `#outcome` before/after | **Keep, tighten** |
-| `#solutions` five cards | **Keep as teasers.** Full versions become `/solutions/*` |
-| `#cases` five case studies | **Two on homepage, all five to `/work`.** Keep the eight-part format and the illustrative badges |
-| `#assessment` full section | **Becomes `/assessment`.** Homepage gets a teaser |
-| `#assessment` sample roadmap figure | **Keep** on `/assessment`. Proof of format |
-| `#assessment` FAQ (7 questions) | **Move to `/assessment`.** They are booking objections, not homepage content |
-| `#method` five steps | **Becomes `/method`.** Homepage gets a one-line mention |
-| `#method` "how an engagement runs" | **To `/method`** |
-| `#risk` section | **To `/about#risk`.** Valuable, wrong place — it answers a question asked later |
-| `#score` nine-slider tool plus radar | **Becomes `/score`.** Homepage gets a teaser |
-| `#founder` | **Condense on homepage, full at `/about`.** Needs the real photo |
-| `#start` form | **Keep on homepage; also `/contact`.** Wire to the real API |
-| Footer, privacy accordion | **Port.** Privacy expands into `/privacy` |
-| Sticky mobile dock | **Port.** Works, keep |
-| All form validation and a11y JS | **Port as React**, preserving behaviour: inline errors, focus management, live regions, no-JS fallbacks |
-| `TODO Shakil` comments | **Become admin fields plus the checklist** in `00-master-plan.md` section 7 |
+| Demo section                           | Disposition                                                                                             |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `<head>` meta, JSON-LD                 | **Port and extend.** Becomes per-page `generateMetadata` plus a schema helper                           |
+| Design tokens, dark theme              | **Port verbatim** to Tailwind config. Contrast is already verified — do not re-derive                   |
+| SVG sprite (bee, lockup, icons)        | **Port** to a sprite component                                                                          |
+| Header, nav, theme toggle, mobile menu | **Port**, extend nav for multi-page                                                                     |
+| Hero: H1, lede, CTAs                   | **Keep verbatim.** Already correct                                                                      |
+| Hero before/after animation            | **Port.** Highest-value interaction on the site                                                         |
+| Hero quote, trust strip                | **Keep verbatim**                                                                                       |
+| `#problems` five cards                 | **Keep on homepage, shortened.** Full versions become `/problems/*`                                     |
+| `#outcome` before/after                | **Keep, tighten**                                                                                       |
+| `#solutions` five cards                | **Keep as teasers.** Full versions become `/solutions/*`                                                |
+| `#cases` five case studies             | **Two on homepage, all five to `/work`.** Keep the eight-part format and the illustrative badges        |
+| `#assessment` full section             | **Becomes `/assessment`.** Homepage gets a teaser                                                       |
+| `#assessment` sample roadmap figure    | **Keep** on `/assessment`. Proof of format                                                              |
+| `#assessment` FAQ (7 questions)        | **Move to `/assessment`.** They are booking objections, not homepage content                            |
+| `#method` five steps                   | **Becomes `/method`.** Homepage gets a one-line mention                                                 |
+| `#method` "how an engagement runs"     | **To `/method`**                                                                                        |
+| `#risk` section                        | **To `/about#risk`.** Valuable, wrong place — it answers a question asked later                         |
+| `#score` nine-slider tool plus radar   | **Becomes `/score`.** Homepage gets a teaser                                                            |
+| `#founder`                             | **Condense on homepage, full at `/about`.** Needs the real photo                                        |
+| `#start` form                          | **Keep on homepage; also `/contact`.** Wire to the real API                                             |
+| Footer, privacy accordion              | **Port.** Privacy expands into `/privacy`                                                               |
+| Sticky mobile dock                     | **Port.** Works, keep                                                                                   |
+| All form validation and a11y JS        | **Port as React**, preserving behaviour: inline errors, focus management, live regions, no-JS fallbacks |
+| `TODO Shakil` comments                 | **Become admin fields plus the checklist** in `00-master-plan.md` section 7                             |
 
 Nothing is discarded. The heaviest sections become their own pages, which is what
 the word "handle" in the brief needs to mean.
@@ -243,18 +243,18 @@ the word "handle" in the brief needs to mean.
 Because content lives in Postgres and an Editor must publish without a deploy,
 these page sections become editable records rather than JSX:
 
-| Entity | Drives |
-|---|---|
-| `pages` plus `page_sections` | Homepage section order, headings, copy, per-page SEO |
-| `problems` | Homepage cards **and** `/problems/*` — one record, two renderings |
-| `solutions` | Homepage cards **and** `/solutions/*` |
-| `case_studies` | `/work`, homepage cards, the per-solution case pull |
-| `faqs` | `/assessment` FAQ, plus the `FAQPage` JSON-LD, generated from the same rows |
-| `resources` | `/resources` and the gate |
-| `articles` | `/insights` |
-| `score_dimensions`, `score_levels` | The `/score` tool's questions and result copy |
-| `offer_facts` | The four Assessment facts, including price |
-| `settings` | Contact details, social links, the toggles behind every founder TODO |
+| Entity                             | Drives                                                                      |
+| ---------------------------------- | --------------------------------------------------------------------------- |
+| `pages` plus `page_sections`       | Homepage section order, headings, copy, per-page SEO                        |
+| `problems`                         | Homepage cards **and** `/problems/*` — one record, two renderings           |
+| `solutions`                        | Homepage cards **and** `/solutions/*`                                       |
+| `case_studies`                     | `/work`, homepage cards, the per-solution case pull                         |
+| `faqs`                             | `/assessment` FAQ, plus the `FAQPage` JSON-LD, generated from the same rows |
+| `resources`                        | `/resources` and the gate                                                   |
+| `articles`                         | `/insights`                                                                 |
+| `score_dimensions`, `score_levels` | The `/score` tool's questions and result copy                               |
+| `offer_facts`                      | The four Assessment facts, including price                                  |
+| `settings`                         | Contact details, social links, the toggles behind every founder TODO        |
 
 Two rules that follow:
 

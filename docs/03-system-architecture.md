@@ -13,12 +13,12 @@ domain core that has no framework or database imports.
 
 **Why this and not the alternatives:**
 
-| Considered | Verdict |
-|---|---|
-| Microservices | Wrong at this size. A one-to-three person team would spend its budget on network boundaries, distributed transactions and deployment topology instead of on the product. Master prompt section 28: do not build a huge internal platform before demand exists. |
-| Layered monolith (controllers / services / repositories, app-wide) | Cheapest to start, and it always rots the same way: the `services` folder becomes one mutually-dependent mass, and by the time the client portal arrives nothing can be extracted. |
-| Serverless functions | Violates the no-lock-in rule and fragments the domain logic across handlers. |
-| **Modular monolith, hexagonal inside** | **Chosen.** One thing to deploy, one database, one transaction boundary — with real seams. Any module can later become a service by replacing its in-process adapter with an HTTP one, and nothing in its domain core changes. |
+| Considered                                                         | Verdict                                                                                                                                                                                                                                                        |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Microservices                                                      | Wrong at this size. A one-to-three person team would spend its budget on network boundaries, distributed transactions and deployment topology instead of on the product. Master prompt section 28: do not build a huge internal platform before demand exists. |
+| Layered monolith (controllers / services / repositories, app-wide) | Cheapest to start, and it always rots the same way: the `services` folder becomes one mutually-dependent mass, and by the time the client portal arrives nothing can be extracted.                                                                             |
+| Serverless functions                                               | Violates the no-lock-in rule and fragments the domain logic across handlers.                                                                                                                                                                                   |
+| **Modular monolith, hexagonal inside**                             | **Chosen.** One thing to deploy, one database, one transaction boundary — with real seams. Any module can later become a service by replacing its in-process adapter with an HTTP one, and nothing in its domain core changes.                                 |
 
 The seams are what we are buying. Master prompt section 25 says Beekal will grow
 into its own CRM, assessment, proposal and delivery system; section 9 says
@@ -74,25 +74,25 @@ makes extraction possible. CI enforces it.
 Selected because a specific problem in this system needs them. Applying a pattern
 with no problem to solve is how codebases get hard to read.
 
-| Pattern | Applied to | The problem it solves |
-|---|---|---|
-| **Repository** | Every aggregate | Domain code asks for a `Lead`, not a Prisma row. Makes the domain testable without a database. |
-| **Unit of Work** | Multi-entity writes | A lead submission writes the lead, an event and an audit row. All three commit or none do. Wrapped in one Prisma transaction. |
-| **Ports and Adapters** | Email, storage, LLM, payments, search | **The no-lock-in rule made mechanical.** Swapping SMTP for SES is one new adapter and one env var. |
-| **Strategy** | Lead scoring, score-level calculation, content publishing rules | These rules change with the business. As strategies they are swappable and, for scoring, configurable from the database. |
-| **Specification** | Admin list filtering | Composable query predicates. Keeps eleven filter permutations out of one 200-line query method. |
-| **Policy / Guard** | Every authorization check | `@RequirePermission('case_study:publish')` plus a row-scoped policy. Authorization in one evaluable place, never scattered `if (user.role === 'admin')`. |
-| **Decorator** | Caching, logging, retries | A `CachedContentRepository` wraps the real one. Caching added without touching query logic. |
-| **Domain events** | Cross-module reactions | `LeadSubmitted` triggers an email and an analytics event without `leads` importing `messaging`. |
-| **Transactional outbox** | Event delivery | Events are written in the same transaction as the state change, then relayed by a worker. Without it, a crash between "lead saved" and "email queued" silently loses a lead. |
-| **Factory** | Aggregate creation | Invariants enforced at construction. A `Lead` cannot exist without a valid source. |
-| **Result type** | Every use case return | `Result<T, DomainError>` for expected failures; exceptions only for the genuinely exceptional. Expected failures become visible in the type signature. |
-| **Template Method** | Content publishing workflow | Draft, review, publish, archive is the same skeleton for every content type with per-type validation hooks. |
-| **Adapter** | The legacy-import path | Reserved for Beekal Modernize work, where the product itself is adapters over old systems. |
-| **Null Object** | Optional content sections | A missing section renders as nothing rather than throwing. Editors cannot break a page by deleting a record. |
+| Pattern                  | Applied to                                                      | The problem it solves                                                                                                                                                        |
+| ------------------------ | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Repository**           | Every aggregate                                                 | Domain code asks for a `Lead`, not a Prisma row. Makes the domain testable without a database.                                                                               |
+| **Unit of Work**         | Multi-entity writes                                             | A lead submission writes the lead, an event and an audit row. All three commit or none do. Wrapped in one Prisma transaction.                                                |
+| **Ports and Adapters**   | Email, storage, LLM, payments, search                           | **The no-lock-in rule made mechanical.** Swapping SMTP for SES is one new adapter and one env var.                                                                           |
+| **Strategy**             | Lead scoring, score-level calculation, content publishing rules | These rules change with the business. As strategies they are swappable and, for scoring, configurable from the database.                                                     |
+| **Specification**        | Admin list filtering                                            | Composable query predicates. Keeps eleven filter permutations out of one 200-line query method.                                                                              |
+| **Policy / Guard**       | Every authorization check                                       | `@RequirePermission('case_study:publish')` plus a row-scoped policy. Authorization in one evaluable place, never scattered `if (user.role === 'admin')`.                     |
+| **Decorator**            | Caching, logging, retries                                       | A `CachedContentRepository` wraps the real one. Caching added without touching query logic.                                                                                  |
+| **Domain events**        | Cross-module reactions                                          | `LeadSubmitted` triggers an email and an analytics event without `leads` importing `messaging`.                                                                              |
+| **Transactional outbox** | Event delivery                                                  | Events are written in the same transaction as the state change, then relayed by a worker. Without it, a crash between "lead saved" and "email queued" silently loses a lead. |
+| **Factory**              | Aggregate creation                                              | Invariants enforced at construction. A `Lead` cannot exist without a valid source.                                                                                           |
+| **Result type**          | Every use case return                                           | `Result<T, DomainError>` for expected failures; exceptions only for the genuinely exceptional. Expected failures become visible in the type signature.                       |
+| **Template Method**      | Content publishing workflow                                     | Draft, review, publish, archive is the same skeleton for every content type with per-type validation hooks.                                                                  |
+| **Adapter**              | The legacy-import path                                          | Reserved for Beekal Modernize work, where the product itself is adapters over old systems.                                                                                   |
+| **Null Object**          | Optional content sections                                       | A missing section renders as nothing rather than throwing. Editors cannot break a page by deleting a record.                                                                 |
 
 **Deliberately not used:** CQRS with separate write and read databases (one
-Postgres is plenty; we use read *models*, not read *stores*), Event Sourcing (the
+Postgres is plenty; we use read _models_, not read _stores_), Event Sourcing (the
 audit log gives us the history we need without the replay complexity), Saga
 orchestration (nothing is distributed yet), an Abstract Factory over the
 repositories (indirection with no payoff at this size).
@@ -151,13 +151,13 @@ TanStack Query for admin client state only, `next-intl`, `next-themes`.
 
 Chosen per route, because SEO and admin have opposite needs:
 
-| Route | Strategy | Why |
-|---|---|---|
-| `/`, `/solutions/*`, `/problems/*`, `/method`, `/about` | Static, on-demand revalidated by tag | Ship HTML from cache. Publishing in the admin purges the exact tag — fresh content without a rebuild. |
-| `/work`, `/work/[slug]`, `/insights/*`, `/resources/*` | Static plus `generateStaticParams`, tag-revalidated | Same, with new entries falling back to on-demand render |
-| `/score` | Static shell, client-side interactivity | The tool is client state; the shell must still be crawlable |
-| `/contact` | Static shell, client form | — |
-| `/admin/*` | Dynamic, `no-store`, `noindex` | Always current, never cached, never indexed |
+| Route                                                   | Strategy                                            | Why                                                                                                   |
+| ------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `/`, `/solutions/*`, `/problems/*`, `/method`, `/about` | Static, on-demand revalidated by tag                | Ship HTML from cache. Publishing in the admin purges the exact tag — fresh content without a rebuild. |
+| `/work`, `/work/[slug]`, `/insights/*`, `/resources/*`  | Static plus `generateStaticParams`, tag-revalidated | Same, with new entries falling back to on-demand render                                               |
+| `/score`                                                | Static shell, client-side interactivity             | The tool is client state; the shell must still be crawlable                                           |
+| `/contact`                                              | Static shell, client form                           | —                                                                                                     |
+| `/admin/*`                                              | Dynamic, `no-store`, `noindex`                      | Always current, never cached, never indexed                                                           |
 
 **Portability note:** on-demand revalidation uses a **Redis-backed custom cache
 handler**, not the filesystem. Filesystem ISR breaks the moment there are two
@@ -210,15 +210,15 @@ The demo has roughly 450 lines of hand-written vanilla JS with genuinely careful
 accessibility work. It is ported to React with behaviour preserved, not
 re-imagined:
 
-| Demo behaviour | React equivalent | Must preserve |
-|---|---|---|
-| Theme toggle, pre-paint, persisted | `next-themes` plus the existing inline script | No flash on load |
-| Hero before/after animation | `useReducedMotion` plus an IntersectionObserver hook | Plays once, honours `prefers-reduced-motion`, has the 6s fallback |
-| Case study tabs | Radix Tabs | Arrow-key roving tabindex, correct ARIA |
-| Score sliders, radar, live results | Feature slice with local state | `aria-valuetext`, the live region, the "not answered" state |
-| Form validation | React Hook Form plus the shared Zod schema | Inline errors, focus to first error, `role="alert"` |
-| Accordions | Radix Accordion or native `<details>` | Works with JavaScript disabled |
-| Sticky mobile dock | Scroll hook | `aria-hidden` when off |
+| Demo behaviour                     | React equivalent                                     | Must preserve                                                     |
+| ---------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------- |
+| Theme toggle, pre-paint, persisted | `next-themes` plus the existing inline script        | No flash on load                                                  |
+| Hero before/after animation        | `useReducedMotion` plus an IntersectionObserver hook | Plays once, honours `prefers-reduced-motion`, has the 6s fallback |
+| Case study tabs                    | Radix Tabs                                           | Arrow-key roving tabindex, correct ARIA                           |
+| Score sliders, radar, live results | Feature slice with local state                       | `aria-valuetext`, the live region, the "not answered" state       |
+| Form validation                    | React Hook Form plus the shared Zod schema           | Inline errors, focus to first error, `role="alert"`               |
+| Accordions                         | Radix Accordion or native `<details>`                | Works with JavaScript disabled                                    |
+| Sticky mobile dock                 | Scroll hook                                          | `aria-hidden` when off                                            |
 
 The no-JS fallbacks in the demo are kept. A marketing site that needs JavaScript
 to show text is a marketing site that sometimes shows nothing.
@@ -306,15 +306,15 @@ Node 22 LTS, pinned with Corepack so every machine and the CI runner agree.
 ```yaml
 # infra/docker/compose.yml (shape, not final)
 services:
-  caddy:     # TLS, reverse proxy, security headers, compression
-  web:       # Next.js standalone
-  api:       # NestJS
-  worker:    # same image as api, different command
-  postgres:  # 16, volume-mounted, healthchecked
-  redis:     # 7, appendonly
-  minio:     # S3-compatible object storage
-  umami:     # self-hosted analytics
-  backup:    # pg_dump on a schedule, retention, restore-tested
+  caddy: # TLS, reverse proxy, security headers, compression
+  web: # Next.js standalone
+  api: # NestJS
+  worker: # same image as api, different command
+  postgres: # 16, volume-mounted, healthchecked
+  redis: # 7, appendonly
+  minio: # S3-compatible object storage
+  umami: # self-hosted analytics
+  backup: # pg_dump on a schedule, retention, restore-tested
 ```
 
 Every service is a standard open-source image. Nothing here is unavailable on a
@@ -331,9 +331,9 @@ different host, which is the whole point.
 2. **No secrets in the repo.** `.env.example` documents every key with a comment;
    real values live on the server, out of the image.
 3. **Three tiers**, and the distinction matters:
-   - *Secrets* (DB password, session key, SMTP credentials) — environment only
-   - *Environment config* (URLs, ports, feature flags) — environment
-   - *Business settings* (contact email, Assessment price, reply-time promise,
+   - _Secrets_ (DB password, session key, SMTP credentials) — environment only
+   - _Environment config_ (URLs, ports, feature flags) — environment
+   - _Business settings_ (contact email, Assessment price, reply-time promise,
      social links) — **database**, edited in the admin
 
 Tier three is why a founder can change the price without a deploy, and it is the
@@ -400,20 +400,20 @@ is fashionable. The port exists; the adapter stays off until a feature justifies
 
 ## 8. Testing strategy
 
-| Level | Tool | Covers | Target |
-|---|---|---|---|
-| Unit | Vitest | Domain logic, scoring, policy evaluation, formatters | 90% on `domain/` |
-| Integration | Vitest plus Testcontainers | Repositories, use cases against real Postgres | Every use case |
-| Contract | Zod schema round-trips | That both apps agree on every payload | All contracts |
-| Component | Vitest plus Testing Library | UI primitives, forms, the score tool | Every interactive component |
-| E2E | Playwright | Lead submission, score completion, admin login, publish flow, RBAC denial | The critical paths |
-| Accessibility | axe-core in Playwright | Every page, light and dark, 320px and 1920px | Zero violations |
-| Visual | Playwright screenshots | Key pages, both themes | No unreviewed diffs |
-| Performance | Lighthouse CI | Homepage, `/assessment`, one article | See doc 05 budgets |
+| Level         | Tool                        | Covers                                                                    | Target                      |
+| ------------- | --------------------------- | ------------------------------------------------------------------------- | --------------------------- |
+| Unit          | Vitest                      | Domain logic, scoring, policy evaluation, formatters                      | 90% on `domain/`            |
+| Integration   | Vitest plus Testcontainers  | Repositories, use cases against real Postgres                             | Every use case              |
+| Contract      | Zod schema round-trips      | That both apps agree on every payload                                     | All contracts               |
+| Component     | Vitest plus Testing Library | UI primitives, forms, the score tool                                      | Every interactive component |
+| E2E           | Playwright                  | Lead submission, score completion, admin login, publish flow, RBAC denial | The critical paths          |
+| Accessibility | axe-core in Playwright      | Every page, light and dark, 320px and 1920px                              | Zero violations             |
+| Visual        | Playwright screenshots      | Key pages, both themes                                                    | No unreviewed diffs         |
+| Performance   | Lighthouse CI               | Homepage, `/assessment`, one article                                      | See doc 05 budgets          |
 
 **The RBAC denial test is not optional.** A permission system that has only ever
 been tested by users who are allowed through is a permission system with unknown
-behaviour. Every role gets a test asserting what it *cannot* do.
+behaviour. Every role gets a test asserting what it _cannot_ do.
 
 `packages/testing` holds factories so a test can say `makeLead({ score: 80 })`
 without knowing the shape of fourteen columns.
@@ -422,15 +422,15 @@ without knowing the shape of fourteen columns.
 
 ## 9. Decisions recorded, with their cost
 
-| Decision | Cost accepted | Why it is worth it |
-|---|---|---|
-| Monorepo | More build tooling | Shared contracts eliminate a whole class of bug |
-| NestJS | Ceremony, learning curve | DI makes ports practical; structure is predictable |
-| Modular monolith | Discipline required to keep boundaries | One deployment now, extractable later |
-| Hexagonal domain | More files per feature | Domain testable with no database; no-lock-in becomes mechanical |
-| Content in Postgres | Editor UI must be built | The admin panel requirement demands it |
-| Self-hosted everything | Ops work is ours | The no-lock-in constraint |
-| Redis cache handler | One more moving part | Multi-container ISR without a platform |
-| Zod contracts everywhere | Schemas written once, deliberately | Runtime validation and static types from one definition |
-| Audit on every mutation | A little write overhead | Multi-user admin without it is unaccountable |
-| Outbox pattern | A relay worker to run | Lost leads are unacceptable; at-least-once needs it |
+| Decision                 | Cost accepted                          | Why it is worth it                                              |
+| ------------------------ | -------------------------------------- | --------------------------------------------------------------- |
+| Monorepo                 | More build tooling                     | Shared contracts eliminate a whole class of bug                 |
+| NestJS                   | Ceremony, learning curve               | DI makes ports practical; structure is predictable              |
+| Modular monolith         | Discipline required to keep boundaries | One deployment now, extractable later                           |
+| Hexagonal domain         | More files per feature                 | Domain testable with no database; no-lock-in becomes mechanical |
+| Content in Postgres      | Editor UI must be built                | The admin panel requirement demands it                          |
+| Self-hosted everything   | Ops work is ours                       | The no-lock-in constraint                                       |
+| Redis cache handler      | One more moving part                   | Multi-container ISR without a platform                          |
+| Zod contracts everywhere | Schemas written once, deliberately     | Runtime validation and static types from one definition         |
+| Audit on every mutation  | A little write overhead                | Multi-user admin without it is unaccountable                    |
+| Outbox pattern           | A relay worker to run                  | Lost leads are unacceptable; at-least-once needs it             |

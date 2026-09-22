@@ -1,7 +1,7 @@
 # Beekal — Data Model, RBAC Engine and Admin Panel
 
-The requirement is *"admin panel should be multi user configurable for different
-roles"*. Read strictly, that means roles are **data**, not code: the founder can
+The requirement is _"admin panel should be multi user configurable for different
+roles"_. Read strictly, that means roles are **data**, not code: the founder can
 create a role, tick the permissions it has, and assign it — without a developer
 and without a deploy. Everything below follows from taking that literally.
 
@@ -12,8 +12,8 @@ and without a deploy. Everything below follows from taking that literally.
 ### Why not the obvious approach
 
 A `users.role` enum column is what most projects ship. It fails the requirement on
-the first real request: *"let the new marketing hire edit articles and see leads,
-but not delete anything or touch users."* That is a new role, which under an enum
+the first real request: _"let the new marketing hire edit articles and see leads,
+but not delete anything or touch users."_ That is a new role, which under an enum
 is a migration, a code change and a deploy.
 
 ### What we build instead: RBAC with a permission catalog, plus scope
@@ -25,7 +25,7 @@ Three layers, each earning its place:
    permissions arrive with new features; they are seeded on boot.
 2. **Roles** — named bundles of permissions, **created and edited in the UI**.
    This is the configurable layer.
-3. **Scope** — a modifier on a grant that answers *which rows*: `all`, `own`, or
+3. **Scope** — a modifier on a grant that answers _which rows_: `all`, `own`, or
    `assigned`. This is what separates "can read leads" from "can read **my**
    leads", and it is the difference between a toy and a usable system.
 
@@ -72,16 +72,16 @@ flat list.
 
 Starting points, all editable, none special-cased in code except the first:
 
-| Role | Shape of access |
-|---|---|
-| **Owner** | Everything. Cannot be deleted, cannot lose `role:update`. Exactly one is guaranteed to exist. |
-| **Admin** | Everything except deleting the Owner or editing the Owner role |
-| **Editor** | Full content and media, publish rights, read-only analytics |
-| **Marketer** | Content plus resources plus articles plus sequences; leads read and export; analytics |
-| **Sales** | Leads (scope `assigned`), pipeline, notes, score submissions; content read-only |
-| **Delivery** | Case studies (create and update, not publish), leads read-only, media |
-| **Analyst** | Read-only everywhere, plus exports. Nothing else. |
-| **Support** | Leads read, notes create. Reserved for Beekal Care's ticket queue. |
+| Role         | Shape of access                                                                               |
+| ------------ | --------------------------------------------------------------------------------------------- |
+| **Owner**    | Everything. Cannot be deleted, cannot lose `role:update`. Exactly one is guaranteed to exist. |
+| **Admin**    | Everything except deleting the Owner or editing the Owner role                                |
+| **Editor**   | Full content and media, publish rights, read-only analytics                                   |
+| **Marketer** | Content plus resources plus articles plus sequences; leads read and export; analytics         |
+| **Sales**    | Leads (scope `assigned`), pipeline, notes, score submissions; content read-only               |
+| **Delivery** | Case studies (create and update, not publish), leads read-only, media                         |
+| **Analyst**  | Read-only everywhere, plus exports. Nothing else.                                             |
+| **Support**  | Leads read, notes create. Reserved for Beekal Care's ticket queue.                            |
 
 The Owner protections are the only hard-coded access rules in the system. They
 exist to make lockout impossible: the last Owner cannot be deleted, deactivated,
@@ -435,12 +435,12 @@ enum LeadStage {
 }
 ```
 
-The two consent booleans are not redundant. The demo's privacy copy promises *"we
-never add you to a mailing list"*, so a lead who ticks the reply consent must not
+The two consent booleans are not redundant. The demo's privacy copy promises _"we
+never add you to a mailing list"_, so a lead who ticks the reply consent must not
 enter a sequence. Separate columns mean the sequence runner checks the right flag,
 and the promise on the page becomes a property of the schema.
 
-`scoreReasons` stores *why* a lead scored what it did. An unexplainable score gets
+`scoreReasons` stores _why_ a lead scored what it did. An unexplainable score gets
 ignored by whoever it was meant to help.
 
 ```prisma
@@ -479,7 +479,7 @@ model ScoreSubmission {
 }
 ```
 
-Dimensions, weights and level copy live in the database because they *will*
+Dimensions, weights and level copy live in the database because they _will_
 change. A scoring model hard-coded in a React component is a scoring model nobody
 improves.
 

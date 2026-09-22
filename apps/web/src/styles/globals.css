@@ -1,0 +1,239 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   BEEKAL — design tokens
+
+   Ported verbatim from the demo (legacy/beekal-website-demo.html). The contrast
+   pairs here are already verified — do not re-derive them by eye.
+
+   Two things worth knowing before editing:
+
+   1. `--field` exists specifically to satisfy WCAG 1.4.11 non-text contrast
+      (4.08:1 on white, 3.68:1 on --bg-alt). It is not a decorative grey.
+   2. In dark mode the brand flips from cobalt to amber. Cobalt on deep navy
+      does not carry enough contrast for an action colour, so the accent takes
+      over the brand role. This is deliberate; keep it.
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* Brand constants — the same in every theme */
+    --cobalt: #1f4fe0;
+    --amber: #ffb81c;
+    --navy: #0a1640;
+
+    /* Surfaces */
+    --bg: #ffffff;
+    --bg-alt: #f0f3fe;
+    --surface: #ffffff;
+
+    /* Text and lines */
+    --ink: #0a1640;
+    --ink-2: #44507e;
+    --line: #dde3f7;
+    --line-2: #b7c4f0;
+    --field: #6b7bb8;
+
+    /* Action */
+    --brand: #1f4fe0;
+    --brand-hover: #1640bc;
+    --on-brand: #ffffff;
+    --brand-soft: #e4eaff;
+
+    --h1: #1f4fe0;
+    --focus: #1f4fe0;
+    --net: #1f4fe0;
+
+    --accent: #ffb81c;
+    --on-accent: #0a1640;
+    --foot: #0a1640;
+
+    --danger: #b4231f;
+
+    --shadow: 0 1px 2px rgba(10, 22, 64, 0.06), 0 18px 40px -18px rgba(10, 22, 64, 0.28);
+    --shadow-sm: 0 1px 2px rgba(10, 22, 64, 0.05), 0 10px 24px -16px rgba(10, 22, 64, 0.3);
+
+    --lg-a: #1f4fe0;
+    --lg-b: var(--bg);
+
+    /* Rhythm — one scale for every section */
+    --gut: clamp(20px, 5vw, 48px);
+    --head: 76px;
+    --sec: clamp(52px, 6.2vw, 88px);
+
+    --r-lg: 26px;
+    --r-md: 18px;
+    --r-sm: 13px;
+
+    color-scheme: light;
+  }
+
+  /* System preference, unless the visitor has explicitly chosen light. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --bg: #0a1235;
+      --bg-alt: #0e1842;
+      --surface: #12205a;
+      --ink: #f3f6ff;
+      --ink-2: #aebae6;
+      --line: #22317c;
+      --line-2: #3a4ca6;
+      --field: #7c8fe0;
+
+      --brand: #ffb81c;
+      --brand-hover: #ffc94d;
+      --on-brand: #0a1640;
+      --brand-soft: #1a2a70;
+
+      --h1: #ffffff;
+      --focus: #ffb81c;
+      --net: #6f90f6;
+      --lg-a: #ffffff;
+
+      --danger: #ff9b96;
+
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 24px -16px rgba(0, 0, 0, 0.6);
+
+      color-scheme: dark;
+    }
+  }
+
+  /* Explicit choice, regardless of system preference. */
+  :root[data-theme='dark'] {
+    --bg: #0a1235;
+    --bg-alt: #0e1842;
+    --surface: #12205a;
+    --ink: #f3f6ff;
+    --ink-2: #aebae6;
+    --line: #22317c;
+    --line-2: #3a4ca6;
+    --field: #7c8fe0;
+
+    --brand: #ffb81c;
+    --brand-hover: #ffc94d;
+    --on-brand: #0a1640;
+    --brand-soft: #1a2a70;
+
+    --h1: #ffffff;
+    --focus: #ffb81c;
+    --net: #6f90f6;
+    --lg-a: #ffffff;
+
+    --danger: #ff9b96;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 24px -16px rgba(0, 0, 0, 0.6);
+
+    color-scheme: dark;
+  }
+}
+
+/* ------------------------------------------------------------
+   Map the tokens into Tailwind.
+
+   `@theme inline` emits utilities that reference the custom property rather
+   than its resolved value, so `bg-surface` follows the theme at runtime
+   instead of being frozen at build time.
+   ------------------------------------------------------------ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-alt: var(--bg-alt);
+  --color-surface: var(--surface);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-field: var(--field);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-soft: var(--brand-soft);
+  --color-on-brand: var(--on-brand);
+
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-heading: var(--h1);
+  --color-danger: var(--danger);
+  --color-foot: var(--foot);
+
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+
+  --shadow-card: var(--shadow);
+  --shadow-card-sm: var(--shadow-sm);
+
+  --font-display: var(--font-sora), 'Segoe UI', system-ui, sans-serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Focus is always visible. Restyled, never removed. */
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Digits align instead of jittering — stat tiles, scores, step numbers. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

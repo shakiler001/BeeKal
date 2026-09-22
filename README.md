@@ -26,13 +26,13 @@ truth and it links to everything else.
 
 ## Stack
 
-| Layer | Choice |
-|---|---|
-| Frontend | Next.js 15 (App Router), React 19, Tailwind v4, TypeScript strict |
-| Backend | NestJS 11, Prisma 6, Postgres 16, Redis 7, BullMQ |
-| Architecture | Modular monolith, hexagonal modules, shared Zod contracts |
-| Infrastructure | Docker Compose, Caddy, MinIO, self-hosted analytics |
-| Repo | Turborepo + pnpm workspaces |
+| Layer          | Choice                                                            |
+| -------------- | ----------------------------------------------------------------- |
+| Frontend       | Next.js 15 (App Router), React 19, Tailwind v4, TypeScript strict |
+| Backend        | NestJS 11, Prisma 6, Postgres 16, Redis 7, BullMQ                 |
+| Architecture   | Modular monolith, hexagonal modules, shared Zod contracts         |
+| Infrastructure | Docker Compose, Caddy, MinIO, self-hosted analytics               |
+| Repo           | Turborepo + pnpm workspaces                                       |
 
 **Constraint: no vendor lock-in.** Every external capability sits behind a port we
 own with a self-hosted default adapter. `docker compose up` on a bare Ubuntu box
@@ -57,15 +57,15 @@ docs/              the plan
 
 ## Documentation
 
-| Doc | Covers |
-|---|---|
-| [00-master-plan.md](docs/00-master-plan.md) | Decisions, constraints, roadmap, definition of done |
-| [01-strategy-offers-and-copy.md](docs/01-strategy-offers-and-copy.md) | Positioning, offer architecture, the copy system |
-| [02-information-architecture.md](docs/02-information-architecture.md) | Sitemap, page specs, content disposition |
-| [03-system-architecture.md](docs/03-system-architecture.md) | Architectural, design and coding patterns |
-| [04-data-model-and-rbac.md](docs/04-data-model-and-rbac.md) | Schema, the RBAC engine, admin panel |
-| [05-seo-performance-quality.md](docs/05-seo-performance-quality.md) | SEO, performance budgets, a11y, security, ops |
-| [brief/master-context.txt](docs/brief/master-context.txt) | The original founder brief |
+| Doc                                                                   | Covers                                              |
+| --------------------------------------------------------------------- | --------------------------------------------------- |
+| [00-master-plan.md](docs/00-master-plan.md)                           | Decisions, constraints, roadmap, definition of done |
+| [01-strategy-offers-and-copy.md](docs/01-strategy-offers-and-copy.md) | Positioning, offer architecture, the copy system    |
+| [02-information-architecture.md](docs/02-information-architecture.md) | Sitemap, page specs, content disposition            |
+| [03-system-architecture.md](docs/03-system-architecture.md)           | Architectural, design and coding patterns           |
+| [04-data-model-and-rbac.md](docs/04-data-model-and-rbac.md)           | Schema, the RBAC engine, admin panel                |
+| [05-seo-performance-quality.md](docs/05-seo-performance-quality.md)   | SEO, performance budgets, a11y, security, ops       |
+| [brief/master-context.txt](docs/brief/master-context.txt)             | The original founder brief                          |
 
 ## Status
 

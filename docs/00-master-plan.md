@@ -12,11 +12,11 @@ with something in a sub-document, this file wins until it is updated.
 
 Not a marketing website. Three things, in this order:
 
-| # | System | Purpose | Who uses it |
-|---|--------|---------|-------------|
-| 1 | **Public site** | Turn a stranger with an operations problem into a qualified Assessment request | Prospects (CEO / MD / COO / Head of Ops / IT Manager) |
-| 2 | **Admin panel** | Run the content, the funnel and the delivery pipeline without a deploy | Beekal staff, role-scoped |
-| 3 | **Business spine** | The tables and workflows that later become the client portal and Beekal's own internal system | Beekal staff, then clients |
+| #   | System             | Purpose                                                                                       | Who uses it                                           |
+| --- | ------------------ | --------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| 1   | **Public site**    | Turn a stranger with an operations problem into a qualified Assessment request                | Prospects (CEO / MD / COO / Head of Ops / IT Manager) |
+| 2   | **Admin panel**    | Run the content, the funnel and the delivery pipeline without a deploy                        | Beekal staff, role-scoped                             |
+| 3   | **Business spine** | The tables and workflows that later become the client portal and Beekal's own internal system | Beekal staff, then clients                            |
 
 The master prompt (section 25) says Beekal must itself be highly systemized —
 CRM, leads, discovery, assessments, proposals, contracts, projects, QA,
@@ -28,15 +28,15 @@ arrives. That is the single most important architectural constraint.
 
 ## 2. Locked decisions
 
-| Decision | Choice | Consequence |
-|---|---|---|
-| Repo shape | Turborepo monorepo: `apps/web` (Next.js) + `apps/api` (NestJS) | Shared contracts package; API survives the growth into a portal |
-| Hosting | Self-hosted VPS, Docker Compose | Full control; we own the data |
-| **Vendor lock-in** | **Forbidden** | See section 3 — a hard constraint, not a preference |
-| Content storage | Postgres, edited in the admin panel | Editors publish without a deploy; makes the RBAC panel worth building |
-| Language | English only at launch, i18n-ready schema | `locale` column plus `next-intl` routing from day one; Bangla later becomes a data-entry job, not a migration |
-| Brand palette | Cobalt `#1F4FE0` / Amber `#FFB81C` / Navy `#0A1640` / White | See section 6 — resolves a conflict in the source material |
-| Site shape | **Multi-page**, not the current single page | See section 5 — the biggest change from the demo |
+| Decision           | Choice                                                         | Consequence                                                                                                   |
+| ------------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Repo shape         | Turborepo monorepo: `apps/web` (Next.js) + `apps/api` (NestJS) | Shared contracts package; API survives the growth into a portal                                               |
+| Hosting            | Self-hosted VPS, Docker Compose                                | Full control; we own the data                                                                                 |
+| **Vendor lock-in** | **Forbidden**                                                  | See section 3 — a hard constraint, not a preference                                                           |
+| Content storage    | Postgres, edited in the admin panel                            | Editors publish without a deploy; makes the RBAC panel worth building                                         |
+| Language           | English only at launch, i18n-ready schema                      | `locale` column plus `next-intl` routing from day one; Bangla later becomes a data-entry job, not a migration |
+| Brand palette      | Cobalt `#1F4FE0` / Amber `#FFB81C` / Navy `#0A1640` / White    | See section 6 — resolves a conflict in the source material                                                    |
+| Site shape         | **Multi-page**, not the current single page                    | See section 5 — the biggest change from the demo                                                              |
 
 ---
 
@@ -47,18 +47,18 @@ capability gets a **port** (an interface we own) and a **default self-hosted
 adapter**. Swapping providers must be an env change plus one adapter file — never
 a refactor.
 
-| Capability | Default adapter (self-hosted) | Swappable to | What we must NOT use |
-|---|---|---|---|
-| Database | Postgres 16 in Compose | Any managed Postgres | Vendor-only extensions, Supabase client SDK |
-| Cache / queue | Redis + BullMQ | Any Redis | Vercel KV, Upstash-only APIs |
-| File storage | MinIO (S3 API) | S3, R2, Spaces, B2 | Vercel Blob, Firebase Storage |
-| Email | SMTP via Nodemailer | Resend, SES, Postmark | Any provider SDK inside domain code |
-| Auth | Our own sessions: Argon2id plus httpOnly cookies | — | Auth0, Clerk, hosted identity |
-| Search | Postgres full-text (`tsvector`) | Meilisearch (also self-hosted) | Algolia |
-| Analytics | Umami or Plausible, self-hosted | Any | Funnels we cannot export |
-| Next.js caching | `output: 'standalone'` plus Redis cache handler | Any Node host | Vercel-only ISR behaviour, edge runtime |
-| Images | `next/image` with the **sharp** loader | Any | Vercel image optimizer as the only path |
-| Observability | pino to Loki/Grafana, OpenTelemetry SDK | Any OTLP backend | Vendor-only agents |
+| Capability      | Default adapter (self-hosted)                    | Swappable to                   | What we must NOT use                        |
+| --------------- | ------------------------------------------------ | ------------------------------ | ------------------------------------------- |
+| Database        | Postgres 16 in Compose                           | Any managed Postgres           | Vendor-only extensions, Supabase client SDK |
+| Cache / queue   | Redis + BullMQ                                   | Any Redis                      | Vercel KV, Upstash-only APIs                |
+| File storage    | MinIO (S3 API)                                   | S3, R2, Spaces, B2             | Vercel Blob, Firebase Storage               |
+| Email           | SMTP via Nodemailer                              | Resend, SES, Postmark          | Any provider SDK inside domain code         |
+| Auth            | Our own sessions: Argon2id plus httpOnly cookies | —                              | Auth0, Clerk, hosted identity               |
+| Search          | Postgres full-text (`tsvector`)                  | Meilisearch (also self-hosted) | Algolia                                     |
+| Analytics       | Umami or Plausible, self-hosted                  | Any                            | Funnels we cannot export                    |
+| Next.js caching | `output: 'standalone'` plus Redis cache handler  | Any Node host                  | Vercel-only ISR behaviour, edge runtime     |
+| Images          | `next/image` with the **sharp** loader           | Any                            | Vercel image optimizer as the only path     |
+| Observability   | pino to Loki/Grafana, OpenTelemetry SDK          | Any OTLP backend               | Vendor-only agents                          |
 
 **Compliance test:** `docker compose up` on a bare Ubuntu box must produce a fully
 working system. If a feature needs a SaaS account to function at all, it is built
@@ -113,14 +113,14 @@ model is larger than a marketing site needs.
 ## 5. The biggest change: one page becomes a site
 
 The demo is a single 1,959-line page. It is well built, but it has two problems
-the user already named — *"the demo contains so many text"* — and one they did
+the user already named — _"the demo contains so many text"_ — and one they did
 not:
 
 1. **Density.** Everything competes for the same scroll. A COO who wants to know
    what the Assessment costs must scroll past five case studies.
 2. **SEO ceiling.** One URL can rank for one intent cluster. Beekal needs to rank
-   for *legacy software modernization*, *business process automation*, *ERP
-   replacement* and *AI for business operations* — four different search intents,
+   for _legacy software modernization_, _business process automation_, _ERP
+   replacement_ and _AI for business operations_ — four different search intents,
    each deserving its own indexable page with its own structured data.
 
 So the homepage becomes a **hub that qualifies and routes**, and the long-form
@@ -139,11 +139,11 @@ It is the design system's first draft and it is good.
 Three inputs contradict each other. Decisions taken, flagged here so they can be
 overruled deliberately rather than by accident.
 
-| Conflict | Resolution | Why |
-|---|---|---|
-| The master prompt names **teal/cyan** in the palette. Both the logo SVGs and the demo use cobalt, amber and navy, with no teal anywhere. | **Ship cobalt/amber/navy.** Teal is dropped. | The shipped assets have already converged and are contrast-verified. A third hue now weakens the mark. Revisit only if a named use case needs it. |
-| The demo's case studies are labelled *"Example scenario"* and describe unnamed clients. | **Keep the label, verbatim, until a real client signs off.** Add an admin flag `is_illustrative` that renders the badge automatically. | Master prompt section 28: never invent client results. Making this a database flag means nobody can accidentally ship a fabricated case study. |
-| The maturity score says *"Nothing is sent, no email required"* — honest, but it captures zero leads. | **Keep the score free and gate-free.** Add an optional *"email me the full report as a PDF"* step **after** the result is shown. | `$100M Leads`: give the value first, then ask. Gating it would contradict a promise already on the page and would cut completion sharply. |
+| Conflict                                                                                                                                 | Resolution                                                                                                                             | Why                                                                                                                                               |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The master prompt names **teal/cyan** in the palette. Both the logo SVGs and the demo use cobalt, amber and navy, with no teal anywhere. | **Ship cobalt/amber/navy.** Teal is dropped.                                                                                           | The shipped assets have already converged and are contrast-verified. A third hue now weakens the mark. Revisit only if a named use case needs it. |
+| The demo's case studies are labelled _"Example scenario"_ and describe unnamed clients.                                                  | **Keep the label, verbatim, until a real client signs off.** Add an admin flag `is_illustrative` that renders the badge automatically. | Master prompt section 28: never invent client results. Making this a database flag means nobody can accidentally ship a fabricated case study.    |
+| The maturity score says _"Nothing is sent, no email required"_ — honest, but it captures zero leads.                                     | **Keep the score free and gate-free.** Add an optional _"email me the full report as a PDF"_ step **after** the result is shown.       | `$100M Leads`: give the value first, then ask. Gating it would contradict a promise already on the page and would cut completion sharply.         |
 
 Contact details in the demo (`shakil@beekal.com`, Dhaka, founder-led reply within
 one working day) are treated as real and carried forward.
@@ -241,10 +241,10 @@ The site is not finished when it looks good. It is finished when these are true:
 
 ## Index
 
-| Doc | Covers |
-|---|---|
+| Doc                                                              | Covers                                                                   |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | [01-strategy-offers-and-copy.md](01-strategy-offers-and-copy.md) | Book-derived strategy, offer architecture, the copy system, word budgets |
-| [02-information-architecture.md](02-information-architecture.md) | Sitemap, page-by-page specs, where every line of demo text goes |
-| [03-system-architecture.md](03-system-architecture.md) | Monorepo, architectural, design and coding patterns, both apps |
-| [04-data-model-and-rbac.md](04-data-model-and-rbac.md) | Postgres schema, the configurable RBAC engine, admin panel spec |
-| [05-seo-performance-quality.md](05-seo-performance-quality.md) | SEO, Core Web Vitals budgets, accessibility, testing, security, ops |
+| [02-information-architecture.md](02-information-architecture.md) | Sitemap, page-by-page specs, where every line of demo text goes          |
+| [03-system-architecture.md](03-system-architecture.md)           | Monorepo, architectural, design and coding patterns, both apps           |
+| [04-data-model-and-rbac.md](04-data-model-and-rbac.md)           | Postgres schema, the configurable RBAC engine, admin panel spec          |
+| [05-seo-performance-quality.md](05-seo-performance-quality.md)   | SEO, Core Web Vitals budgets, accessibility, testing, security, ops      |

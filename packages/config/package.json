@@ -1,0 +1,25 @@
+{
+  "name": "@beekal/config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "tsconfig",
+    "eslint"
+  ],
+  "exports": {
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/node.json": "./tsconfig/node.json",
+    "./tsconfig/next.json": "./tsconfig/next.json",
+    "./eslint/base.js": "./eslint/base.js",
+    "./eslint/api.js": "./eslint/api.js",
+    "./eslint/next.js": "./eslint/next.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-boundaries": "^5.0.1",
+    "typescript-eslint": "^8.18.1"
+  }
+}
