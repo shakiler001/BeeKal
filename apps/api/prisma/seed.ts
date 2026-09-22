@@ -9,6 +9,7 @@ import { PrismaClient, type Scope } from '@prisma/client';
 import { randomBytes } from 'node:crypto';
 import { PERMISSIONS } from '../src/modules/access/permissions.catalog.js';
 import { ROLES, resolveGrants } from '../src/modules/access/roles.catalog.js';
+import { seedContent } from './seed-content.js';
 
 const prisma = new PrismaClient();
 
@@ -205,6 +206,7 @@ async function main(): Promise<void> {
   await seedPermissions();
   await seedRoles();
   await seedSettings();
+  await seedContent(prisma);
   await seedOwner();
   console.info('Done.');
 }

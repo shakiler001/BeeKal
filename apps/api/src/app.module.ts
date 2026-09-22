@@ -1,9 +1,15 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { randomUUID } from 'node:crypto';
 import { SharedModule } from './shared/shared.module.js';
-import { HealthModule } from './modules/platform/health/health.module.js';
+import { AuthGuard } from './modules/access/http/auth.guard.js';
+import { AuditInterceptor } from './shared/audit/audit.interceptor.js';
+import { AccessModule } from './modules/access/access.module.js';
+import { IdentityModule } from './modules/identity/identity.module.js';
+import { ContentModule } from './modules/content/content.module.js';
 import { LeadsModule } from './modules/leads/leads.module.js';
+import { PlatformModule } from './modules/platform/platform.module.js';
 import { env } from './config/env.js';
 
 /**
@@ -41,6 +47,8 @@ function prettyTransportAvailable(): boolean {
             'req.headers.authorization',
             'req.body.password',
             'req.body.passwordHash',
+            'req.body.current',
+            'req.body.confirm',
           ],
           remove: true,
         },
@@ -63,8 +71,18 @@ function prettyTransportAvailable(): boolean {
       },
     }),
     SharedModule,
-    HealthModule,
+    AccessModule,
+    IdentityModule,
+    ContentModule,
     LeadsModule,
+    PlatformModule,
+  ],
+  providers: [
+    // Global by default: a new endpoint is authenticated and permission-checked
+    // unless it explicitly opts out with @Public. Opt-out beats opt-in, because
+    // the failure mode of forgetting is a locked door rather than an open one.
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
   ],
 })
 export class AppModule {}

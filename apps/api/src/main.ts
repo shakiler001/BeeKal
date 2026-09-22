@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module.js';
 import { env } from './config/env.js';
 
@@ -14,6 +15,8 @@ async function bootstrap(): Promise<void> {
   app.useLogger(app.get(Logger));
 
   app.use(helmet({ contentSecurityPolicy: false })); // CSP is set at Caddy
+  // Sessions ride in an httpOnly cookie, so the guard needs them parsed.
+  app.use(cookieParser());
   app.setGlobalPrefix('api', { exclude: ['health', 'health/live'] });
 
   app.enableCors({

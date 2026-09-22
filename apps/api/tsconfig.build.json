@@ -3,7 +3,11 @@
   "compilerOptions": {
     "noEmit": false,
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    // Inside dist on purpose. nest-cli's deleteOutDir wipes dist but would
+    // leave a build cache anywhere else, and tsc would then believe everything
+    // is current and emit nothing at all.
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts", "src/**/*.int.spec.ts", "prisma/**/*.ts"]

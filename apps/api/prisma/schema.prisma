@@ -287,3 +287,172 @@ model OutboxEvent {
   @@index([processedAt, createdAt])
   @@map("outbox_events")
 }
+
+// ============================================================
+// CONTENT
+//
+// Each type is its own table so queries stay typed and indexable, but all
+// share the same publishing shape. Content is data so an Editor can publish
+// without a deploy (docs/04 section 2.3).
+// ============================================================
+
+enum ContentStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model Solution {
+  id     String @id @default(uuid(7))
+  key    String @unique // 'build' | 'modernize' | ...
+  slug   String
+  locale String @default("en")
+
+  name         String
+  cardHeadline String @map("card_headline")
+  cardBody     String @map("card_body")
+  pageHeadline String @map("page_headline")
+  pageIntro    String @map("page_intro")
+
+  signs     Json // string[]
+  whatWeDo  Json @map("what_we_do")
+  before    Json
+  after     Json
+
+  seoTitle       String @map("seo_title")
+  seoDescription String @map("seo_description")
+
+  order       Int           @default(0)
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?     @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@unique([slug, locale])
+  @@index([status, order])
+  @@map("solutions")
+}
+
+model Problem {
+  id     String @id @default(uuid(7))
+  key    String @unique
+  slug   String
+  locale String @default("en")
+
+  cardHeadline String @map("card_headline")
+  cardAnswer   String @map("card_answer")
+  cardBody     String @map("card_body")
+  pageHeadline String @map("page_headline")
+  pageIntro    String @map("page_intro")
+
+  diagnostic    Json
+  causes        String
+  fixLooksLike  Json   @map("fix_looks_like")
+  solutionKey   String @map("solution_key")
+
+  seoTitle       String @map("seo_title")
+  seoDescription String @map("seo_description")
+
+  order       Int           @default(0)
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?     @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@unique([slug, locale])
+  @@index([status, order])
+  @@map("problems")
+}
+
+model CaseStudy {
+  id     String @id @default(uuid(7))
+  slug   String
+  locale String @default("en")
+
+  title       String
+  clientName  String? @map("client_name")
+  context     String
+  solutionKey String  @map("solution_key")
+  tabLabel    String  @map("tab_label")
+
+  // The eight-part format. `lesson` is mandatory: it is the most credible
+  // element on the site precisely because nobody fakes one.
+  problem     String
+  beforeLead  String @map("before_lead")
+  before      String
+  diagnosis   String
+  whatChanged String @map("what_changed")
+  howBuilt    String @map("how_built")
+  results     Json
+  lesson      String
+
+  /// Drives the "Example scenario" badge automatically. A database constraint
+  /// (below) makes it impossible to claim a case is real without a named,
+  /// approved client.
+  isIllustrative Boolean   @default(true) @map("is_illustrative")
+  clientApproved Boolean   @default(false) @map("client_approved")
+  approvedAt     DateTime? @map("approved_at")
+  approvedBy     String?   @map("approved_by")
+
+  featured Boolean @default(false)
+  order    Int     @default(0)
+
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?     @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@unique([slug, locale])
+  @@index([status, featured, order])
+  @@map("case_studies")
+}
+
+model Faq {
+  id     String @id @default(uuid(7))
+  locale String @default("en")
+
+  question String
+  answer   String
+  group    String // 'assessment' — drives placement and the JSON-LD
+
+  order       Int           @default(0)
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?     @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@index([group, order])
+  @@map("faqs")
+}
+
+model Media {
+  id         String @id @default(uuid(7))
+  storageKey String @unique @map("storage_key")
+  filename   String
+  mimeType   String @map("mime_type")
+  bytes      Int
+  width      Int?
+  height     Int?
+
+  /// Nullable in storage, but REQUIRED by the publish validator. An image
+  /// without alt text cannot go live (docs/04 section 2.3).
+  altText  String? @map("alt_text")
+  blurhash String?
+  variants Json?
+
+  uploadedById String   @map("uploaded_by_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  @@index([deletedAt, createdAt])
+  @@map("media")
+}

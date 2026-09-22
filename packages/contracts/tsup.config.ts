@@ -7,7 +7,14 @@ import { defineConfig } from 'tsup';
  * rather than a type.
  */
 export default defineConfig({
-  entry: ['src/index.ts', 'src/shared/index.ts', 'src/health/index.ts', 'src/leads/index.ts'],
+  entry: [
+    'src/index.ts',
+    'src/shared/index.ts',
+    'src/health/index.ts',
+    'src/leads/index.ts',
+    'src/auth/index.ts',
+    'src/admin/index.ts',
+  ],
   format: ['cjs', 'esm'],
   dts: true,
   clean: true,

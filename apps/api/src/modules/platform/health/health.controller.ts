@@ -2,6 +2,7 @@ import { Controller, Get, Res } from '@nestjs/common';
 import type { Response } from 'express';
 import type { HealthResponse } from '@beekal/contracts';
 import { HealthService } from './health.service.js';
+import { Public } from '../../../shared/auth/index.js';
 
 @Controller('health')
 export class HealthController {
@@ -11,6 +12,7 @@ export class HealthController {
    * Readiness. Returns 503 when a dependency is down so the deploy gate and the
    * uptime check both see the failure without parsing the body.
    */
+  @Public()
   @Get()
   async check(@Res({ passthrough: true }) res: Response): Promise<HealthResponse> {
     const result = await this.health.check();
@@ -19,6 +21,7 @@ export class HealthController {
   }
 
   /** Liveness. Cheap, no dependencies: is the process up at all? */
+  @Public()
   @Get('live')
   live(): { status: 'ok' } {
     return { status: 'ok' };

@@ -1,6 +1,7 @@
 import { BadRequestException, Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { LeadCreateSchema, type LeadCreate, type LeadCreateResponse } from '@beekal/contracts';
 import { SubmitLeadUseCase } from '../application/submit-lead.usecase.js';
+import { Public } from '../../../shared/auth/index.js';
 
 @Controller('leads')
 export class LeadsController {
@@ -11,6 +12,8 @@ export class LeadsController {
    * in a controller is business logic that cannot be reused by a worker or a
    * CLI, and cannot be tested without HTTP.
    */
+  // The public form posts here. Everything else in the API requires a session.
+  @Public()
   @Post()
   @HttpCode(201)
   async create(@Body() body: unknown): Promise<LeadCreateResponse> {

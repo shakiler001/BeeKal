@@ -45,6 +45,26 @@
         "types": "./dist/shared/index.d.cts",
         "default": "./dist/shared/index.cjs"
       }
+    },
+    "./auth": {
+      "import": {
+        "types": "./dist/auth/index.d.ts",
+        "default": "./dist/auth/index.js"
+      },
+      "require": {
+        "types": "./dist/auth/index.d.cts",
+        "default": "./dist/auth/index.cjs"
+      }
+    },
+    "./admin": {
+      "import": {
+        "types": "./dist/admin/index.d.ts",
+        "default": "./dist/admin/index.js"
+      },
+      "require": {
+        "types": "./dist/admin/index.d.cts",
+        "default": "./dist/admin/index.cjs"
+      }
     }
   },
   "scripts": {
