@@ -1,0 +1,66 @@
+# --- Dependencies ---
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+
+# --- Build output ---
+dist/
+build/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# --- Environment and secrets ---
+# .env.example IS committed; everything else never is.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+!infra/**/*.example.key
+
+# --- Test and coverage ---
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# --- Prisma ---
+prisma/*.db
+prisma/*.db-journal
+
+# --- Logs ---
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Editor / OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+# --- Local infrastructure state ---
+infra/docker/data/
+infra/docker/.env
+*.local
+
+# --- Reference material, not source ---
+# A screenshot of a personal Google Drive listing. The book list it contains is
+# already captured in docs/01-strategy-offers-and-copy.md, so the file itself
+# adds 848KB and some private account details to every clone.
+All eBooks - Google Drive.pdf

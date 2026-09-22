@@ -1,0 +1,23 @@
+# Normalize line endings. Without this, Windows checkouts produce whole-file
+# diffs that hide the real change — which is exactly what happened to the demo.
+* text=auto eol=lf
+
+# Binary assets: never normalize, never diff as text.
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.webp   binary
+*.avif   binary
+*.ico    binary
+*.pdf    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+
+# SVGs are text and should diff as text, but they are generated/exported
+# often enough that a diff is rarely useful in review.
+*.svg    text linguist-vendored
+
+# Lockfiles: text, but collapse them in review.
+pnpm-lock.yaml  text linguist-generated

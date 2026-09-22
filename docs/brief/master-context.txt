@@ -1,0 +1,1102 @@
+MASTER CONTEXT PROMPT — BEEKAL
+
+You are helping design and build a technology business called Beekal.
+
+IMPORTANT:
+Do not treat Beekal as a generic software-development agency.
+Do not reduce it to “web development,” “app development,” or “IT services.”
+Understand the complete business model, positioning, customer journey, offer architecture, and long-term growth strategy described below before making recommendations or producing anything.
+
+==================================================
+1. BRAND
+==================================================
+
+Brand name:
+Beekal
+
+Tagline:
+Better Tomorrow.
+
+Brand concept:
+“Bee” represents coordinated work, productivity, innovation, movement, automation, systems and collective intelligence.
+“kal” represents continuous improvement and creating a better future, the time, tomorrow.
+
+The brand should feel:
+- Modern
+- Intelligent
+- Ambitious
+- Technological
+- Premium
+- Trustworthy
+- Practical
+- Forward-looking
+- Human
+- System-oriented
+
+The visual identity should be distinctive and recognizable rather than looking like a typical software agency.
+
+The current visual direction uses:
+- Deep navy
+- Gold/yellow
+- Teal/cyan
+- White
+
+The bee should communicate:
+- Speed
+- Technology
+- Innovation
+- Automation
+- Intelligence
+- Future
+- Movement
+
+The logo must eventually work everywhere:
+- Website
+- Mobile app
+- Favicon
+- Business card
+- Letterhead
+- Social media
+- Presentation
+- Signboard
+- T-shirt
+- Packaging
+- Black/white printing
+- Single-color printing
+- Small-size applications
+
+Therefore the brand identity must ultimately have a simplified, reproducible logo mark in addition to any detailed primary illustration.
+
+==================================================
+2. WHAT BEEKAL ACTUALLY IS
+==================================================
+
+Beekal is a business technology transformation company.
+
+Its core proposition is:
+
+“We turn complex business processes into simple, scalable systems.”
+
+Beekal combines:
+
+- Business process analysis
+- Software engineering
+- Business systems
+- Automation
+- Artificial intelligence
+- System integration
+- Legacy modernization
+- Product engineering
+- Continuous technology improvement
+
+The company does not primarily sell developers, hours, lines of code, websites, or technology stacks.
+
+It sells outcomes.
+
+The customer should feel that Beekal helps answer:
+
+“How should this part of my business work better?”
+
+rather than:
+
+“What programming language do you use?”
+
+==================================================
+3. CORE CUSTOMER PROBLEM
+==================================================
+
+The ideal customer is a growing organization that has outgrown:
+
+- Excel
+- Manual processes
+- WhatsApp-based coordination
+- Email-based workflows
+- Disconnected software
+- Repetitive data entry
+- Manual reporting
+- Legacy applications
+- Multiple systems that do not communicate
+- Human-dependent operational processes
+
+The customer may already have software.
+
+The problem is that the software, people, processes and data do not operate as one coherent system.
+
+Typical customer thought:
+
+“We have software everywhere, but running the business is still difficult.”
+
+Beekal exists to solve that problem.
+
+==================================================
+4. IDEAL CUSTOMER
+==================================================
+
+Primary target:
+
+Growing businesses and organizations with operational complexity.
+
+Potential buyers:
+
+- Founder
+- Business owner
+- CEO
+- Managing Director
+- COO
+- Head of Operations
+- IT Manager
+- Product/Technology leader
+
+The ideal customer is not necessarily a technology company.
+
+Beekal should communicate primarily in business language and introduce technical details when useful.
+
+Potential industries include:
+
+- SMEs
+- Education
+- Service businesses
+- Organizations with complex internal workflows
+- Businesses with legacy software
+- Businesses undergoing digital transformation
+
+Do not prematurely restrict Beekal to one industry.
+
+Instead, identify where repeatable problems and strong case studies emerge.
+
+==================================================
+5. CORE BUSINESS PHILOSOPHY
+==================================================
+
+Beekal follows this transformation philosophy:
+
+UNDERSTAND
+→ SIMPLIFY
+→ SYSTEMIZE
+→ AUTOMATE
+→ IMPROVE
+
+The company should never jump directly into coding when the real problem has not been understood.
+
+The methodology should generally be:
+
+1. Understand the business
+2. Understand users
+3. Understand processes
+4. Understand data
+5. Identify bottlenecks
+6. Identify unnecessary complexity
+7. Identify automation opportunities
+8. Identify AI opportunities
+9. Design the appropriate system
+10. Build
+11. Launch
+12. Measure
+13. Continuously improve
+
+Technology is a means, not the product itself.
+
+==================================================
+6. THE SIGNATURE ENTRY OFFER
+==================================================
+
+The first major offer is:
+
+BEEKAL BUSINESS SYSTEM ASSESSMENT
+
+This is the primary low-risk entry point for qualified customers.
+
+Core promise:
+
+“Find what's slowing your business down — and what should be fixed first.”
+
+The assessment examines:
+
+- Business processes
+- People and responsibilities
+- Existing software
+- Data flow
+- Manual work
+- Reporting
+- Integrations
+- Technical debt
+- User experience
+- Automation opportunities
+- AI opportunities
+- Scalability
+- Security considerations
+
+Potential deliverables:
+
+- Current-state process map
+- Current-state system map
+- Problem register
+- Bottleneck analysis
+- Automation opportunity map
+- AI opportunity map
+- Technology assessment
+- Recommended architecture
+- Prioritized roadmap
+- Implementation phases
+- Investment-level roadmap
+
+The Assessment is intentionally designed as a paid, structured product rather than a free generic consultation.
+
+Its purpose is to transform an uncertain prospect into a clearly defined business opportunity.
+
+==================================================
+7. CORE SERVICE ARCHITECTURE
+==================================================
+
+Beekal should organize its services into clear solution categories.
+
+Do NOT present dozens of disconnected services.
+
+Primary solution categories:
+
+-----------------------------------
+A. BEEKAL BUILD
+-----------------------------------
+
+Build new systems.
+
+Examples:
+
+- Custom business software
+- ERP
+- CRM
+- HRM
+- Internal business applications
+- SaaS
+- Web applications
+- Mobile applications
+- APIs
+- Multi-tenant platforms
+- Business portals
+
+-----------------------------------
+B. BEEKAL MODERNIZE
+-----------------------------------
+
+Modernize existing systems.
+
+Examples:
+
+- Legacy application modernization
+- Legacy .NET modernization
+- API introduction
+- Database modernization
+- Architecture improvement
+- Performance improvement
+- Security improvement
+- Migration
+- Incremental modernization
+
+The philosophy is NOT:
+
+“Throw away everything and rebuild.”
+
+Instead:
+
+“Understand what already works, preserve valuable business logic, remove limitations and modernize strategically.”
+
+-----------------------------------
+C. BEEKAL AUTOMATE
+-----------------------------------
+
+Remove repetitive operational work.
+
+Examples:
+
+- Workflow automation
+- n8n automation
+- API integrations
+- Notifications
+- Approval workflows
+- Data synchronization
+- Scheduled processes
+- Document workflows
+- Reporting automation
+- Cross-system automation
+
+-----------------------------------
+D. BEEKAL AI
+-----------------------------------
+
+Use AI where it produces practical business value.
+
+Examples:
+
+- AI knowledge assistants
+- RAG systems
+- Enterprise knowledge search
+- Document intelligence
+- AI customer support
+- AI business assistants
+- AI-powered reporting
+- AI workflow agents
+- Internal copilots
+- AI-assisted operations
+
+Do not use AI merely because AI is fashionable.
+
+The question is:
+
+“Where can intelligence remove work, improve access to information, improve decisions, or improve customer experience?”
+
+-----------------------------------
+E. BEEKAL CARE
+-----------------------------------
+
+Continuous improvement after implementation.
+
+This is NOT positioned as ordinary maintenance.
+
+Position it as:
+
+CONTINUOUS TECHNOLOGY IMPROVEMENT.
+
+Potential services:
+
+- Monitoring
+- Bug fixing
+- Security updates
+- Performance improvements
+- Small feature development
+- Automation improvements
+- AI improvements
+- Technical consultation
+- Monthly technology reviews
+- Roadmap management
+
+The goal is recurring revenue and long-term client relationships.
+
+==================================================
+8. COMMERCIAL MODEL
+==================================================
+
+The business should evolve through four revenue layers:
+
+1. Assessment
+2. Implementation
+3. Recurring partnership
+4. Products / SaaS / intellectual property
+
+The ideal customer journey is:
+
+Assessment
+→ Roadmap
+→ Build / Modernize / Automate / AI
+→ Launch
+→ Continuous Improvement
+→ Additional systems
+→ Long-term partnership
+
+The long-term goal is NOT to remain dependent on one-off projects.
+
+The business should gradually evolve:
+
+SERVICES
+→ REPEATABLE SOLUTIONS
+→ REUSABLE COMPONENTS
+→ PRODUCTS
+→ SaaS / IP
+
+==================================================
+9. LONG-TERM PRODUCT STRATEGY
+==================================================
+
+Repeated client problems should become reusable intellectual property.
+
+Potential future product families:
+
+Beekal Workflow
+- Workflow and approval engine
+
+Beekal AI Knowledge
+- Enterprise AI/RAG knowledge platform
+
+Beekal Connect
+- Integration/API platform
+
+Beekal Documents
+- Document processing and workflow
+
+Beekal Insights
+- Business reporting and analytics
+
+These are examples, not fixed products.
+
+The principle is:
+
+If Beekal solves the same problem repeatedly, stop rebuilding the same solution from zero.
+
+Productize it.
+
+==================================================
+10. BEEKAL METHODOLOGY
+==================================================
+
+A recognizable Beekal methodology should eventually exist.
+
+Conceptually:
+
+BUSINESS
+→ EXAMINE
+→ ENGINEER
+→ IMPROVE
+
+Or more simply:
+
+UNDERSTAND
+→ SIMPLIFY
+→ SYSTEMIZE
+→ AUTOMATE
+→ IMPROVE
+
+The methodology should appear across:
+
+- Website
+- Proposals
+- Sales presentations
+- Assessments
+- Case studies
+- Project delivery
+- Content
+- Client communication
+
+The methodology itself becomes part of the brand.
+
+==================================================
+11. CUSTOMER JOURNEY
+==================================================
+
+The complete customer funnel should look like:
+
+AWARENESS
+↓
+CONTENT / SEARCH / REFERRAL
+↓
+BEEKAL WEBSITE
+↓
+PROBLEM RECOGNITION
+↓
+EDUCATION
+↓
+LEAD
+↓
+QUALIFICATION
+↓
+BUSINESS SYSTEM ASSESSMENT
+↓
+ROADMAP
+↓
+IMPLEMENTATION
+↓
+LAUNCH
+↓
+CONTINUOUS IMPROVEMENT
+↓
+REFERRALS
+↓
+ADDITIONAL PROJECTS
+↓
+PRODUCT / LONG-TERM PARTNERSHIP
+
+The website is therefore not a brochure.
+
+It is a sales and qualification system.
+
+==================================================
+12. WEBSITE PHILOSOPHY
+==================================================
+
+The website should be conversion-oriented.
+
+Do not create a generic agency website containing:
+
+“About Us”
+“Services”
+“Portfolio”
+“Contact”
+
+with large amounts of corporate filler.
+
+Instead, the visitor should immediately understand:
+
+1. What problem Beekal solves
+2. Who it helps
+3. What changes after working with Beekal
+4. How Beekal works
+5. Why Beekal can be trusted
+6. What the first step is
+
+The website should follow:
+
+PROBLEM
+→ DESIRED OUTCOME
+→ SOLUTION
+→ PROOF
+→ PROCESS
+→ RISK REDUCTION
+→ CTA
+
+==================================================
+13. WEBSITE HERO
+==================================================
+
+The primary positioning direction is:
+
+“Build the business behind the business.”
+
+Supporting message:
+
+“We design and build the software, automation and AI systems that make growing businesses easier to operate and easier to scale.”
+
+Primary CTA:
+
+“Book a Business System Assessment”
+
+Secondary CTA:
+
+“Tell Us What You're Trying to Fix”
+
+The exact copy may be improved, but the strategic meaning should remain.
+
+==================================================
+14. WEBSITE PROBLEM-FIRST STRUCTURE
+==================================================
+
+The website should allow visitors to identify themselves by problem.
+
+Examples:
+
+MANUAL WORK
+“Too much repetitive work?”
+→ Automate it.
+
+DISCONNECTED SYSTEMS
+“Your software doesn't talk to each other?”
+→ Connect them.
+
+LEGACY SOFTWARE
+“Your old system is holding the business back?”
+→ Modernize it.
+
+AI OPPORTUNITY
+“You know AI could help but don't know where?”
+→ Find the opportunities.
+
+NEW PRODUCT
+“You have a product/business idea?”
+→ Build it.
+
+The customer should be guided by their business problem rather than by technology terminology.
+
+==================================================
+15. WEBSITE CASE STUDIES
+==================================================
+
+Case studies must NOT simply show screenshots.
+
+Each case study should communicate:
+
+CLIENT / CONTEXT
+↓
+PROBLEM
+↓
+WHAT WAS HAPPENING BEFORE
+↓
+DIAGNOSIS
+↓
+WHAT BEEKAL CHANGED
+↓
+HOW IT WAS BUILT
+↓
+RESULT
+↓
+LESSON
+
+Whenever real metrics are available, show them.
+
+Never invent results.
+
+==================================================
+16. BEFORE / AFTER COMMUNICATION
+==================================================
+
+The website should visually demonstrate transformation.
+
+Example:
+
+BEFORE:
+- Excel-based processes
+- Manual data entry
+- Disconnected applications
+- Repetitive reports
+- Information scattered across teams
+
+AFTER:
+- Centralized system
+- Automated workflows
+- Integrated applications
+- Automated reporting
+- Unified operational information
+
+The purpose is to make the value of transformation immediately understandable.
+
+==================================================
+17. AI POSITIONING
+==================================================
+
+AI should NOT dominate the brand.
+
+Beekal is a business transformation company that uses AI when appropriate.
+
+AI should be positioned as a practical capability.
+
+Examples:
+
+AI Knowledge Assistant
+Document Intelligence
+AI Customer Support
+AI Business Assistant
+Workflow Agents
+AI-powered reporting
+
+Core principle:
+
+“Don't add AI because it is fashionable. Find where intelligence changes the work.”
+
+==================================================
+18. LEAD GENERATION
+==================================================
+
+The company should create useful business resources such as:
+
+- Business Automation Checklist
+- Legacy Software Modernization Checklist
+- AI Opportunity Assessment
+- Business System Maturity Scorecard
+- 50 Processes Businesses Can Automate
+
+Potential interactive lead-generation tool:
+
+BUSINESS SYSTEM MATURITY SCORE
+
+Evaluate dimensions such as:
+
+- Process
+- Technology
+- Data
+- Automation
+- AI
+- Security
+- Integration
+- Reporting
+- Scalability
+
+Possible maturity progression:
+
+LEVEL 1 — MANUAL
+LEVEL 2 — DIGITAL
+LEVEL 3 — CONNECTED
+LEVEL 4 — AUTOMATED
+LEVEL 5 — INTELLIGENT
+
+The tool should ultimately guide qualified users toward a Business System Assessment.
+
+==================================================
+19. CONTENT STRATEGY
+==================================================
+
+Content should teach business owners about problems before selling services.
+
+Examples:
+
+“5 signs your business has outgrown Excel.”
+
+“When should you replace an ERP?”
+
+“Why adding another software doesn't solve disconnected systems.”
+
+“Where should a business actually use AI?”
+
+“How to modernize legacy software without destroying existing business logic.”
+
+“Which business processes should be automated first?”
+
+Content should establish Beekal as a problem-solving authority.
+
+Content should not be primarily:
+
+“We are great.”
+“We have talented developers.”
+“We use the latest technology.”
+
+==================================================
+20. SALES PHILOSOPHY
+==================================================
+
+Do not sell technology first.
+
+Sell the improvement.
+
+Instead of:
+
+“We build .NET applications.”
+
+Communicate:
+
+“We modernize business-critical software without forcing companies to throw away valuable existing systems.”
+
+Instead of:
+
+“We provide n8n automation.”
+
+Communicate:
+
+“We remove repetitive operational work by connecting the systems your team already uses.”
+
+Instead of:
+
+“We build RAG applications.”
+
+Communicate:
+
+“We turn scattered company knowledge into an accessible business assistant.”
+
+Technology comes after the business problem.
+
+==================================================
+21. RISK REDUCTION
+==================================================
+
+Potential customers fear:
+
+- Unclear requirements
+- Scope creep
+- Project delays
+- Unexpected cost
+- Poor communication
+- Vendor dependency
+- Abandoned software
+- Security problems
+- Bad implementation
+
+Beekal should address these concerns through:
+
+- Structured discovery
+- Assessment before major implementation
+- Clear scope
+- Milestones
+- Documentation
+- Transparent change control
+- Testing
+- Deployment planning
+- Ownership/access clarity
+- Post-launch support
+- Continuous improvement options
+
+==================================================
+22. BUSINESS GROWTH STRATEGY
+==================================================
+
+The company should evolve in stages.
+
+STAGE 1 — PROVE
+
+One customer problem.
+One strong assessment offer.
+First successful projects.
+
+STAGE 2 — SYSTEMIZE
+
+Standardize:
+
+- Discovery
+- Assessment
+- Proposal
+- Development
+- QA
+- Deployment
+- Documentation
+- Case studies
+
+STAGE 3 — RECURRING REVENUE
+
+Introduce Beekal Care / Continuous Improvement Partnerships.
+
+STAGE 4 — PRODUCTIZE
+
+Identify repeated problems and create reusable components.
+
+STAGE 5 — PRODUCTS
+
+Turn successful components into products/SaaS.
+
+STAGE 6 — SCALE
+
+Build specialized teams, partnerships, repeatable acquisition channels and product revenue.
+
+==================================================
+23. BUSINESS FLYWHEEL
+==================================================
+
+The desired growth flywheel is:
+
+GREAT PROJECT
+→ GREAT RESULT
+→ CASE STUDY
+→ CONTENT
+→ TRUST
+→ LEADS
+→ ASSESSMENT
+→ PROJECT
+→ RECURRING CLIENT
+→ REFERRALS
+→ MORE PROJECTS
+→ REUSABLE IP
+→ PRODUCTS
+→ MORE REVENUE
+→ MORE AUTHORITY
+→ MORE LEADS
+
+This flywheel should influence business decisions.
+
+==================================================
+24. INITIAL TEAM MODEL
+==================================================
+
+Start lean.
+
+Initial roles may include:
+
+Founder / Technology Strategist
+- Discovery
+- Architecture
+- Sales
+- Client communication
+- Requirements
+- Quality
+
+Developer(s)
+- Implementation
+
+UI/UX
+- Initially freelance/contract if necessary
+
+AI/Automation
+- Initially overlapping with development
+
+QA / Project Support
+- Added as volume grows
+
+The founder should gradually transition from:
+
+BUILDING EVERYTHING
+→ ARCHITECTURE + SALES
+→ STRATEGY + LEADERSHIP
+→ BUSINESS DEVELOPMENT + PRODUCT
+→ VISION + SCALE
+
+==================================================
+25. OPERATING PRINCIPLE
+==================================================
+
+Beekal should itself be highly systemized.
+
+Use structured systems for:
+
+- CRM
+- Leads
+- Discovery
+- Assessments
+- Proposals
+- Contracts
+- Requirements
+- Projects
+- QA
+- Deployment
+- Client knowledge
+- Support
+- Reporting
+
+Do not allow critical business knowledge to live only inside personal messages or individual employees' heads.
+
+==================================================
+26. FIRST 90 DAYS
+==================================================
+
+DAYS 1–15:
+- Brand
+- Website
+- Business System Assessment
+- Proposal template
+- Discovery questionnaire
+- Contract/SOW
+- CRM pipeline
+- Case-study format
+
+DAYS 16–30:
+- Create 3–5 strong case studies
+- Create before/after examples
+- Build assessment framework
+- Build sales presentation
+
+DAYS 31–60:
+- Publish educational content
+- Build referral relationships
+- Start targeted outreach
+- Generate qualified conversations
+
+DAYS 61–90:
+- Systemize sales
+- Convert assessments into projects
+- Collect testimonials/results
+- Build recurring support/improvement relationships
+
+Do not optimize for vanity metrics.
+Optimize for:
+
+QUALIFIED CONVERSATIONS
+→ ASSESSMENTS
+→ PROJECTS
+→ RECURRING REVENUE
+
+==================================================
+27. LONG-TERM VISION
+==================================================
+
+The long-term Beekal business should not remain a conventional agency.
+
+The desired evolution is:
+
+GENERIC SERVICE COMPANY
+↓
+SPECIALIZED TECHNOLOGY TRANSFORMATION COMPANY
+↓
+REPEATABLE SOLUTIONS
+↓
+REUSABLE IP
+↓
+PRODUCTS
+↓
+SOFTWARE / SAAS COMPANY
+
+The agency is the initial vehicle for discovering problems, building expertise, generating revenue and discovering product opportunities.
+
+==================================================
+28. WHAT NOT TO DO
+==================================================
+
+Do NOT:
+
+- Make Beekal look like every other software agency
+- Lead with programming languages
+- Sell developer hours as the primary value proposition
+- List 30 unrelated services
+- Use meaningless corporate buzzwords
+- Claim “best,” “#1,” or unsupported superiority
+- Invent client results
+- Add AI simply because AI is trendy
+- Build a huge internal platform before demand exists
+- Target everyone
+- Depend entirely on one-off projects
+- Overcomplicate the first version
+- Build products before discovering repeatable problems
+
+==================================================
+29. WHAT TO OPTIMIZE FOR
+==================================================
+
+Every business and website decision should improve one or more of these:
+
+1. Clarity
+2. Trust
+3. Qualified leads
+4. Conversion
+5. Customer value
+6. Delivery quality
+7. Recurring revenue
+8. Repeatability
+9. Intellectual property
+10. Long-term scalability
+
+==================================================
+30. FINAL MENTAL MODEL
+==================================================
+
+Understand Beekal as:
+
+A business transformation company that uses software, automation and AI to improve how organizations operate.
+
+The business begins with services because services create cash flow, relationships, domain knowledge and real-world problem discovery.
+
+Those repeated problems are then standardized.
+
+Standardized solutions become reusable components.
+
+Reusable components become products.
+
+Products create scalable revenue.
+
+Therefore:
+
+SERVICES
+→ KNOWLEDGE
+→ REPEATABILITY
+→ IP
+→ PRODUCTS
+→ SCALE
+
+The ultimate brand promise is:
+
+BETTER SYSTEMS.
+BETTER WORK.
+BETTER TOMORROW.
+
+When creating anything for Beekal—business strategy, website, copy, UI/UX, sales material, service architecture, pricing, marketing, software, product ideas or growth plans—use this entire context as the underlying business model.
+
+Do not optimize one isolated page or feature while ignoring the overall business.
+
+Think like a founder, strategist, product architect, sales strategist and technology consultant simultaneously.
+
+The objective is to build a real, profitable, scalable business—not merely a beautiful agency website.
+
+
+
+
+
+
+
+============Updated into the html by following: 
+
+
+Typography (master version pass)
+
+Hero H1 is now weight 800 with tighter tracking (-.045em) instead of 700 — it reads as a real headline, not just a bigger paragraph.
+The eyebrow ("WHAT WE FIX", "CASE STUDIES"...) is now a tracked, uppercase, brand-colored kicker instead of neutral gray text — the standard premium-SaaS signal that a new section has started. Fixed a genuine CSS specificity bug this surfaced (a generic paragraph rule was silently overriding the color) — verified contrast at 5.83:1+ in every theme after the fix.
+Added a decorative quotation mark to the hero pull-quote and the founder quote — subtle editorial polish, positioned so it can't collide with text above it at any viewport (checked, not assumed).
+Tabular numerals on every stat (case study metrics, the score result, step numbers) so digits align instead of jittering.
+
+Copywriting — the $100M Offers/Leads structure stays, the words got sharper
+
+Your framework was already the right bones: named sub-offers (Beekal Build/Modernize/Automate/AI/Care), a paid diagnostic as the lead-in offer, risk reversal ("no obligation to build with us afterwards"), proof via case studies. I kept all of it and tightened the delivery.
+New H1 — "Stop running six systems to run one business." — replaces the more abstract original and calls back directly to the six scattered tools in your hero diagram (Hormozi's specificity principle: concrete beats clever).
+Added a genuine value-stack moment to the Assessment section: "Nothing is assumed. Everything is checked." and "Every document is yours to keep — whoever ends up building the fix."
+Added one FAQ addressing the "what if this doesn't help me" objection directly, with an honest risk-reversal line — no fabricated guarantee, no invented stats, just "we'll tell you on the first call before money changes hands."
+
+UX writing
+
+FAQ answers cut ~30-35% — same substance, fewer words.
+Case study prose tightened throughout, with one bolded fact per case ("Four Excel files. One WhatsApp group.", "~60 shipments a week") so a skimming reader gets the shape of the story without reading every line.
+
+SEO
+
+Sharper title/meta description with real keywords (software, automation, AI, business system assessment).
+Added two JSON-LD blocks: ProfessionalService with your six offers listed as structured Offer items, and FAQPage mirroring the visible FAQ word-for-word — that's what makes Google eligible to show your FAQ as a rich snippet. Both validated as parseable JSON.
+Added canonical/OG/Twitter card tags, flagged with a TODO to confirm your live domain.
+
+Verified before shipping: 0 axe violations across four configs, 0 overflow at any width, all contrast pairs checked and passing, form validation/score tool/theme persistence/hero trigger/sticky dock all still working with zero JS errors.
+
