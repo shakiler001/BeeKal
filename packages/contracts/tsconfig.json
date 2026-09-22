@@ -2,7 +2,9 @@
   "extends": "@beekal/config/tsconfig/base.json",
   "compilerOptions": {
     "noEmit": true,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    // tsup drives the .d.ts build and cannot use an incremental build info file.
+    "incremental": false
   },
   "include": ["src/**/*.ts"]
 }

@@ -8,7 +8,7 @@ name: beekal
 
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:16.10-alpine
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-beekal}
@@ -28,7 +28,7 @@ services:
       start_period: 10s
 
   redis:
-    image: redis:7-alpine
+    image: redis:7.4-alpine
     restart: unless-stopped
     command: redis-server --appendonly yes --save 60 1
     volumes:
@@ -42,7 +42,9 @@ services:
       retries: 10
 
   minio:
-    image: minio/minio:latest
+    # quay.io, not Docker Hub: MinIO stopped serving minio/minio:latest there.
+    # Pinned to a release tag — 'latest' would drift under us on every pull.
+    image: quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
@@ -62,7 +64,7 @@ services:
   # Creates the media bucket on first run, then exits. Without this the API
   # fails its first upload against a fresh volume.
   minio-init:
-    image: minio/mc:latest
+    image: quay.io/minio/mc:RELEASE.2025-04-16T18-13-26Z
     depends_on:
       minio:
         condition: service_healthy

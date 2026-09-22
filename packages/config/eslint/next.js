@@ -23,4 +23,11 @@ export default [
     files: ['src/styles/**', 'src/components/brand/**', 'src/lib/brand.ts'],
     rules: { 'no-restricted-syntax': 'off' },
   },
+  {
+    // The design-system reference is a flat catalog of every primitive.
+    // Splitting it into a dozen wrappers would make it harder to scan, which
+    // is the one thing that page exists to be.
+    files: ['src/app/(dev)/**'],
+    rules: { 'max-lines-per-function': 'off', 'max-lines': 'off' },
+  },
 ];

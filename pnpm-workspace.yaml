@@ -1,3 +1,17 @@
 packages:
   - 'apps/*'
   - 'packages/*'
+
+# pnpm 10 blocks postinstall scripts by default. These need theirs:
+#   prisma / @prisma/client — generate the typed client
+#   argon2                  — native build for password hashing
+#   sharp                   — native build for image processing
+#   esbuild                 — platform binary
+# Everything not listed here still runs no scripts, which is the point.
+onlyBuiltDependencies:
+  - prisma
+  - '@prisma/client'
+  - argon2
+  - sharp
+  - esbuild
+  - unrs-resolver

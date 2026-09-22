@@ -1,26 +1,8 @@
 import type { Metadata, Viewport } from 'next';
-import { Sora, Instrument_Sans } from 'next/font/google';
+import { BrandSprite } from '@/components/brand';
+import { fontVariables } from '@/fonts';
 import { THEME_COLOR } from '@/lib/brand';
 import '@/styles/globals.css';
-
-/**
- * Fonts are self-hosted by next/font at build time — no runtime connection to
- * a third party on the critical path. `display: swap` plus the metric-matched
- * fallback keeps the swap from moving the layout (docs/05 section 2.2).
- */
-const sora = Sora({
-  subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
-  variable: '--font-sora',
-  display: 'swap',
-});
-
-const instrument = Instrument_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-instrument',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: {
@@ -58,7 +40,7 @@ document.documentElement.classList.add('has-js');
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sora.variable} ${instrument.variable}`} suppressHydrationWarning>
+    <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: noFlashTheme }} />
       </head>
@@ -69,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <BrandSprite />
         {children}
       </body>
     </html>

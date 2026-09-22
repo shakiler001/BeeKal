@@ -21,7 +21,7 @@ COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
 COPY --from=deps /app/packages ./packages
 COPY . .
 RUN pnpm --filter @beekal/api db:generate \
- && pnpm --filter @beekal/api build \
+ && pnpm turbo build --filter=@beekal/api \
  && pnpm --filter @beekal/api --prod deploy /out
 
 # ---------- runtime ----------

@@ -2,7 +2,7 @@
   "name": "beekal",
   "version": "0.1.0",
   "private": true,
-  "description": "Beekal — website, admin panel and business spine",
+  "description": "Beekal \u2014 website, admin panel and business spine",
   "packageManager": "pnpm@10.14.0",
   "engines": {
     "node": ">=24.0.0",
@@ -24,10 +24,12 @@
     "db:migrate": "pnpm --filter @beekal/api db:migrate",
     "db:seed": "pnpm --filter @beekal/api db:seed",
     "db:studio": "pnpm --filter @beekal/api db:studio",
-    "docker:up": "docker compose -f infra/docker/compose.yml up -d",
-    "docker:down": "docker compose -f infra/docker/compose.yml down",
-    "docker:logs": "docker compose -f infra/docker/compose.yml logs -f",
-    "docker:reset": "docker compose -f infra/docker/compose.yml down -v"
+    "docker:up": "docker compose --env-file .env -f infra/docker/compose.yml up -d",
+    "docker:down": "docker compose --env-file .env -f infra/docker/compose.yml down",
+    "docker:logs": "docker compose --env-file .env -f infra/docker/compose.yml logs -f",
+    "docker:reset": "docker compose --env-file .env -f infra/docker/compose.yml down -v",
+    "docker:ps": "docker compose --env-file .env -f infra/docker/compose.yml ps",
+    "docker:build": "docker compose --env-file .env -f infra/docker/compose.yml build"
   },
   "devDependencies": {
     "@beekal/config": "workspace:*",
