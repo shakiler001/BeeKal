@@ -16,24 +16,69 @@ import { adminApi, ApiError } from './api';
  * asking, and an error page shown to someone who is not signed in leaks that
  * an admin exists while helping them not at all.
  *
- * A 5xx is different: the API is up and answering, it is just broken. That
- * reaches the error boundary, because an administrator mid-task deserves to
- * know the difference between "sign in again" and "something is wrong".
+ * Anything else — a 5xx, a 429 — means the API is up and answering, it is just
+ * not answering this. An administrator mid-task deserves to know the
+ * difference between "sign in again" and "something is wrong", so those are
+ * reported rather than disguised as a logout.
+ */
+
+export type SessionResult =
+  | { status: 'ok'; session: SessionUser }
+  /** We could not tell who this is. Treat as signed out. */
+  | { status: 'unauthenticated' }
+  /** We reached the API and it declined to answer. Not a logout. */
+  | { status: 'unavailable'; reason: string };
+
+/**
+ * The non-throwing form.
+ *
+ * Exists because of where the throwing form cannot be used. Next's `error.tsx`
+ * never catches the layout of its own segment, and moving the boundary up does
+ * not help either: an error thrown from a layout during the initial render of
+ * a document escapes the boundaries entirely and Next serves its own
+ * "Application error" page. The admin layout is exactly that case — it calls
+ * for the session before anything else exists.
+ *
+ * So the layout asks for a result it can render, rather than throwing one and
+ * hoping something downstream catches it. Verified by exhausting the API's
+ * rate limit and loading /admin: boundaries at three levels all failed to
+ * catch it, and returning a value works.
+ */
+export async function loadSession(): Promise<SessionResult> {
+  try {
+    const session = await adminApi.get<SessionUser>('/auth/me');
+    return { status: 'ok', session };
+  } catch (error) {
+    if (cannotIdentify(error)) return { status: 'unauthenticated' };
+    return {
+      status: 'unavailable',
+      reason: error instanceof ApiError ? `${error.status}` : 'unknown',
+    };
+  }
+}
+
+/**
+ * The throwing form, for pages.
+ *
+ * A page sits below the admin layout, so a throw here does reach
+ * `(admin)/admin/error.tsx` and renders inside the admin chrome with the
+ * navigation still usable.
  */
 export async function requireSession(): Promise<SessionUser> {
-  let session: SessionUser | undefined;
+  const result = await loadSession();
 
-  try {
-    session = await adminApi.get<SessionUser>('/auth/me');
-  } catch (error) {
-    if (!cannotIdentify(error)) throw error;
+  // Deliberately outside any try. redirect() signals by throwing, and a catch
+  // block around it would swallow the navigation.
+  if (result.status === 'unauthenticated') redirect('/admin/login');
+  if (result.status === 'unavailable') {
+    throw new ApiError(
+      Number(result.reason) || 503,
+      'API_UNAVAILABLE',
+      'The API did not answer that request.',
+    );
   }
 
-  // Deliberately outside the try. redirect() signals by throwing, and a catch
-  // block above it would swallow the navigation.
-  if (!session) redirect('/admin/login');
-
-  return session;
+  return result.session;
 }
 
 function cannotIdentify(error: unknown): boolean {
