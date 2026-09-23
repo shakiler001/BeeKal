@@ -89,7 +89,10 @@ export function Tag({ children, className }: { children: ReactNode; className?: 
   return (
     <span
       className={cn(
-        'bg-surface border-field rounded-full border px-[15px] py-[7px] text-[0.95rem]',
+        // inline-flex, not inline: vertical padding on an inline box paints
+        // outside the line box without growing it, so a wrapped list of these
+        // overlapped its own rows by the padding on every line.
+        'bg-surface border-field inline-flex items-center rounded-full border px-[15px] py-[7px] text-[0.95rem]',
         className,
       )}
     >

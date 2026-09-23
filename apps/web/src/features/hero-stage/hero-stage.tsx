@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn';
 import styles from './hero-stage.module.css';
 
 /**
- * The before/after hero animation, ported from the demo.
+ * The today/tomorrow hero animation, ported from the demo.
  *
  * Six scattered tools converge into one connected system. It is the highest-
  * value interaction on the site — it states the whole proposition without a
@@ -51,12 +51,17 @@ const CHIPS: Chip[] = [
   { label: 'WhatsApp groups', bx: 37, by: 42, br: 9 },
 ];
 
+/**
+ * The caption carries the full phrase so the buttons can stay short enough to
+ * tap. "Today" and "Tomorrow" also put the tagline - Beekal: Better Tomorrow -
+ * on the page as a thing the visitor operates rather than a line they read.
+ */
 const CAPTION = {
-  before: 'Six systems. One business. Nothing agrees.',
-  after: 'The same work, in one connected system.',
+  today: 'Your business today: six systems, and nothing agrees.',
+  tomorrow: 'Your business tomorrow: the same work, in one connected system.',
 } as const;
 
-type View = 'before' | 'after';
+type View = 'today' | 'tomorrow';
 
 const HUB = { x: 50, y: 50 };
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -94,7 +99,7 @@ interface Node {
 }
 
 export function HeroStage() {
-  const [view, setView] = useState<View>('before');
+  const [view, setView] = useState<View>('today');
   const [announcement, setAnnouncement] = useState('');
 
   const stageRef = useRef<HTMLDivElement>(null);
@@ -108,7 +113,7 @@ export function HeroStage() {
     CHIPS.map(() => ({ s: 0, from: 0, to: 0, t0: 0, ax: 50, ay: 50 })),
   );
   const playedRef = useRef(false);
-  const viewRef = useRef<View>('before');
+  const viewRef = useRef<View>('today');
 
   /**
    * Exposes the imperative transition to the toggle buttons. The loop is set
@@ -235,7 +240,7 @@ export function HeroStage() {
           c.setAttribute('cy', String(lerp(q.y, HUB.y, e)));
           c.setAttribute('opacity', '1');
         });
-        if (live && viewRef.current === 'after') pulseRaf = requestAnimationFrame(tick);
+        if (live && viewRef.current === 'tomorrow') pulseRaf = requestAnimationFrame(tick);
         else clearPulses();
       };
       pulseRaf = requestAnimationFrame(tick);
@@ -245,7 +250,7 @@ export function HeroStage() {
       cancelAnimationFrame(raf);
       clearPulses();
 
-      const next: View = target ? 'after' : 'before';
+      const next: View = target ? 'tomorrow' : 'today';
       viewRef.current = next;
       setView(next);
       if (announce) setAnnouncement(CAPTION[next]);
@@ -301,8 +306,8 @@ export function HeroStage() {
       nodes.forEach((n) => {
         n.s = 1;
       });
-      viewRef.current = 'after';
-      setView('after');
+      viewRef.current = 'tomorrow';
+      setView('tomorrow');
       render();
     } else {
       nodes.forEach((n) => {
@@ -330,7 +335,7 @@ export function HeroStage() {
       }
 
       // If the observer never fires, play anyway rather than leaving the hero
-      // stuck in the "before" state forever.
+      // stuck in the "today" state forever.
       fallback = window.setTimeout(play, 6000);
     }
 
@@ -346,7 +351,7 @@ export function HeroStage() {
 
   function choose(next: View): void {
     playedRef.current = true;
-    goRef.current(next === 'after' ? 1 : 0, 1000, true);
+    goRef.current(next === 'tomorrow' ? 1 : 0, 1000, true);
   }
 
   return (
@@ -408,9 +413,9 @@ export function HeroStage() {
         <div
           className="border-field bg-surface inline-grid grid-flow-col gap-0.5 rounded-full border-[1.5px] p-1"
           role="group"
-          aria-label="See the business before or after Beekal"
+          aria-label="Your business today, or your business tomorrow with Beekal"
         >
-          {(['before', 'after'] as const).map((v) => (
+          {(['today', 'tomorrow'] as const).map((v) => (
             <button
               key={v}
               type="button"

@@ -8,16 +8,27 @@ import { Button, ThemeToggle } from '@/components/ui';
 import { cn } from '@/lib/cn';
 
 /**
- * Five nav items maximum. A long nav is a company that has not decided
- * (docs/02 section 2). The /problems/* pages are deliberately not here — they
- * are landing pages for cold traffic, reached from the homepage cards.
+ * Six nav items. The rule was five - a long nav is a company that has not
+ * decided (docs/02 section 2) - and the maturity score is the deliberate
+ * exception, on the founder's call.
+ *
+ * It earns the slot: it is the only free, instant, no-email thing on the site,
+ * and it is the cheapest possible first step for someone not ready to ask for
+ * an assessment. It sits last, next to the paid call to action, so the visitor
+ * who flinches at "Request an assessment" has something to do instead of
+ * leaving. `highlight` gives it the amber dot; nothing else in the nav has one,
+ * which is the whole point and also why there must never be a second.
+ *
+ * The /problems/* pages are still deliberately absent - they are landing pages
+ * for cold traffic, reached from the homepage cards.
  */
 const NAV = [
-  { href: '/solutions', label: 'Solutions' },
-  { href: '/work', label: 'Work' },
-  { href: '/assessment', label: 'Assessment' },
-  { href: '/method', label: 'Method' },
-  { href: '/insights', label: 'Insights' },
+  { href: '/solutions', label: 'Solutions', highlight: false },
+  { href: '/work', label: 'Work', highlight: false },
+  { href: '/assessment', label: 'Assessment', highlight: false },
+  { href: '/method', label: 'Method', highlight: false },
+  { href: '/insights', label: 'Insights', highlight: false },
+  { href: '/score', label: 'Maturity score', highlight: true },
 ] as const;
 
 export function SiteHeader() {
@@ -60,10 +71,14 @@ export function SiteHeader() {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'rounded-full px-4 py-2 text-[0.97rem] font-medium transition-colors',
+                  'flex items-center gap-1.5 rounded-full px-4 py-2 text-[0.97rem] font-medium transition-colors',
                   active ? 'text-brand' : 'text-ink-2 hover:text-ink',
+                  item.highlight && !active && 'text-ink',
                 )}
               >
+                {item.highlight && (
+                  <span aria-hidden className="bg-accent size-1.5 flex-none rounded-full" />
+                )}
                 {item.label}
               </Link>
             );

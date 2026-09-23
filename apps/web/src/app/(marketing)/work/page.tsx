@@ -35,11 +35,18 @@ export default function WorkPage() {
 
         <ul className="mt-10 grid gap-5 lg:grid-cols-2">
           {CASE_STUDIES.map((c) => (
-            <li key={c.slug}>
+            // The card is `h-full`, which resolves against the whole grid
+            // item. With a label above it inside the same item, it was as tall
+            // as the item AND pushed down by the label, so it overhung the row
+            // and collided with the next row's label. The column makes the
+            // label take its space and the card fill what is left.
+            <li key={c.slug} className="flex flex-col">
               <p className="text-ink-2 mb-2 text-[0.8rem] font-bold tracking-[0.09em] uppercase">
                 {SOLUTION_BY_KEY[c.solutionKey].name}
               </p>
-              <CaseCard caseStudy={c} />
+              <div className="flex-1">
+                <CaseCard caseStudy={c} />
+              </div>
             </li>
           ))}
         </ul>
