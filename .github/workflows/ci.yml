@@ -84,6 +84,13 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # Documentation that drifts is worse than none: it is confidently wrong.
+      # This checks only what can be checked mechanically — that every file
+      # path the Logic Library cites exists, and every cross-reference
+      # resolves.
+      - name: Logic Library still matches the code
+        run: bash infra/scripts/check-logic-library.sh
+
   e2e:
     name: E2E and accessibility
     runs-on: ubuntu-latest
