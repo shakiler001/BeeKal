@@ -31,6 +31,17 @@ interface ProblemRow extends ContentRow {
   cardAnswer: string;
 }
 
+interface ArticleRow extends ContentRow {
+  title: string;
+  excerpt: string;
+}
+
+interface ResourceRow extends ContentRow {
+  title: string;
+  kind: string;
+  fileUrl: string | null;
+}
+
 interface FaqRow extends ContentRow {
   question: string;
   group: string;
@@ -39,7 +50,7 @@ interface FaqRow extends ContentRow {
 export default async function ContentPage() {
   const session = await requireSession();
 
-  const [solutions, problems, cases, faqs] = await Promise.all([
+  const [solutions, problems, cases, articles, resources, faqs] = await Promise.all([
     can(session, 'solution:read')
       ? adminApi.get<SolutionRow[]>('/content/solutions').catch(() => null)
       : null,
@@ -48,6 +59,12 @@ export default async function ContentPage() {
       : null,
     can(session, 'case_study:read')
       ? adminApi.get<CaseStudyRow[]>('/content/case-studies').catch(() => null)
+      : null,
+    can(session, 'article:read')
+      ? adminApi.get<ArticleRow[]>('/content/articles').catch(() => null)
+      : null,
+    can(session, 'resource:read')
+      ? adminApi.get<ResourceRow[]>('/content/resources').catch(() => null)
       : null,
     can(session, 'faq:read') ? adminApi.get<FaqRow[]>('/content/faqs').catch(() => null) : null,
   ]);
@@ -205,7 +222,93 @@ export default async function ContentPage() {
           </section>
         )}
 
-        {!solutions && !problems && !cases && !faqs && (
+        {articles && (
+          <section>
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <h2 className="font-display text-lg font-bold tracking-tight">
+                Articles
+                <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">{articles.length}</span>
+              </h2>
+              {can(session, 'article:create') && (
+                <Button asChild size="sm" className="ml-auto">
+                  <Link href="/admin/content/articles/new">Write one</Link>
+                </Button>
+              )}
+            </div>
+            <Card padding="sm">
+              {articles.length === 0 ? (
+                <p className="text-ink-2 py-3">
+                  Nothing published yet. This is the free material people read long before they
+                  enquire.
+                </p>
+              ) : (
+                <ul className="divide-line divide-y">
+                  {articles.map((a) => (
+                    <li key={a.id} className="flex flex-wrap items-center gap-3 py-3">
+                      <Link
+                        href={`/admin/content/articles/${a.id}`}
+                        className="min-w-0 flex-1 rounded-sm underline-offset-4 hover:underline"
+                      >
+                        <span className="font-medium">{a.title}</span>
+                        <span className="text-ink-2 block truncate text-[0.88rem]">
+                          {a.excerpt}
+                        </span>
+                      </Link>
+                      <StatusPill status={a.status} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+          </section>
+        )}
+
+        {resources && (
+          <section>
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <h2 className="font-display text-lg font-bold tracking-tight">
+                Resources
+                <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">
+                  {resources.length}
+                </span>
+              </h2>
+              {can(session, 'resource:create') && (
+                <Button asChild size="sm" className="ml-auto">
+                  <Link href="/admin/content/resources/new">Add one</Link>
+                </Button>
+              )}
+            </div>
+            <Card padding="sm">
+              {resources.length === 0 ? (
+                <p className="text-ink-2 py-3">
+                  Nothing yet. A resource is what someone exchanges an email address for.
+                </p>
+              ) : (
+                <ul className="divide-line divide-y">
+                  {resources.map((r) => (
+                    <li key={r.id} className="flex flex-wrap items-center gap-3 py-3">
+                      <Link
+                        href={`/admin/content/resources/${r.id}`}
+                        className="min-w-0 flex-1 rounded-sm underline-offset-4 hover:underline"
+                      >
+                        <span className="font-medium">{r.title}</span>
+                        <span className="text-ink-2 block text-[0.88rem]">{r.kind}</span>
+                      </Link>
+                      {!r.fileUrl && (
+                        <span className="text-ink-2 text-[0.78rem] font-semibold tracking-wide uppercase">
+                          No file
+                        </span>
+                      )}
+                      <StatusPill status={r.status} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+          </section>
+        )}
+
+        {!solutions && !problems && !cases && !articles && !resources && !faqs && (
           <Card>
             <p className="text-ink-2">Your role does not include any content types.</p>
           </Card>

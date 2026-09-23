@@ -118,8 +118,8 @@ the JSON columns never leak into components.
 | 3   | Case study BFF + editor UI                               | Writing a case study without a deploy           | Done  |
 | 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 | Done  |
 | 5   | FAQs, problems                                           | The remaining seeded types                      | Done  |
-| 6   | Articles, resources                                      | Insights and Resources become publishable       | Next  |
-| 7   | People: user CRUD and role assignment                    | Adding a colleague without a deploy             |       |
+| 6   | Articles, resources                                      | Insights and Resources become publishable       | Done  |
+| 7   | People: user CRUD and role assignment                    | Adding a colleague without a deploy             | Next  |
 
 Steps 2 and 4 are the ones that change what a visitor sees. Step 1 is the
 foundation and is deliberately boring.
@@ -185,6 +185,26 @@ set of permissions had existed since Phase 3 with no way to write them.
 Verified: a question edited in the admin appeared on /assessment five seconds
 later, in the visible list and in the FAQPage structured data, which come from
 the same rows and therefore cannot disagree.
+
+### What step 6 delivered
+
+Articles and resources read from the database and are editable. Both tables had
+existed since Phase 3 with no endpoints at all — not even public ones — which is
+why /insights and /resources had never been publishable.
+
+Article bodies are stored as typed blocks rather than HTML: HTML from an editor
+is a sanitising problem forever and renders however the pasted markup felt like
+rendering, while four block types validate and let the renderer decide how each
+looks. Nobody authors JSON, though, so the editor speaks a four-line convention
+and converts both ways, round-tripping so a typo fix does not rewrite the piece.
+
+`publishedAt` is set on the first publish and never moved. It orders the index
+and appears on the page, so republishing after a correction must not push a
+year-old article back to the top.
+
+**Not yet verified in a browser.** The session ended before the walkthrough and
+before the accessibility and end-to-end suites were re-run. Types, lint and unit
+tests are green. See ROADMAP.md.
 
 ### Step 7 is the same gap, one layer over
 

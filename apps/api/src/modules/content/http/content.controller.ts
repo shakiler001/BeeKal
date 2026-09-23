@@ -11,11 +11,13 @@ import {
   Post,
 } from '@nestjs/common';
 import {
+  ArticleUpsertSchema,
   CaseStudyUpsertSchema,
   CONTENT_TAGS,
   FaqUpsertSchema,
   ProblemUpsertSchema,
   PublishActionSchema,
+  ResourceUpsertSchema,
   SolutionUpsertSchema,
   type ContentTag,
 } from '@beekal/contracts';
@@ -411,6 +413,205 @@ export class ContentController {
     );
   }
 
+  // ---------------- Articles ----------------
+
+  /**
+   * Articles are the top of the funnel: the free material someone reads long
+   * before they enquire. They had a table and nothing else, which is why
+   * /insights has never been publishable without a deploy.
+   *
+   * `publishedAt` is set on the first publish and then left alone. It orders the
+   * index and appears on the page, so republishing after a typo fix must not
+   * move a year-old article back to the top.
+   */
+  @Get('articles')
+  @RequirePermission('article:read')
+  async listArticles() {
+    return this.prisma.article.findMany({
+      where: { deletedAt: null },
+      orderBy: [{ publishedAt: 'desc' }, { createdAt: 'desc' }],
+    });
+  }
+
+  @Post('articles')
+  @RequirePermission('article:create')
+  @Audit('article.created', 'Article')
+  async createArticle(@Body() body: unknown) {
+    const parsed = ArticleUpsertSchema.safeParse(body);
+    if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
+
+    const clash = await this.prisma.article.findFirst({
+      where: { slug: parsed.data.slug, deletedAt: null },
+      select: { id: true },
+    });
+    if (clash) throw validationError('An article already uses that address');
+
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.articles,
+      'article created',
+      this.prisma.article.create({ data: parsed.data }),
+    );
+  }
+
+  @Patch('articles/:id')
+  @RequirePermission('article:update')
+  @Audit('article.updated', 'Article')
+  async updateArticle(@Param('id') id: string, @Body() body: unknown) {
+    const parsed = ArticleUpsertSchema.partial().safeParse(body);
+    if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
+
+    await this.assertExists('article', id);
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.articles,
+      'article updated',
+      this.prisma.article.update({ where: { id }, data: defined(parsed.data) }),
+    );
+  }
+
+  @Patch('articles/:id/status')
+  @RequirePermission('article:update')
+  @Audit('article.status_changed', 'Article')
+  async publishArticle(
+    @Param('id') id: string,
+    @Body() body: unknown,
+    @CurrentUser() user: AuthUser,
+  ) {
+    const next = this.parseStatus(body);
+    const current = await this.prisma.article.findUnique({
+      where: { id },
+      select: { status: true, publishedAt: true },
+    });
+    if (!current) throw notFound();
+
+    this.assertTransition(current.status, next, user, 'article:publish');
+
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.articles,
+      `article ${next.toLowerCase()}`,
+      this.prisma.article.update({
+        where: { id },
+        data: {
+          status: next,
+          publishedAt:
+            next === 'PUBLISHED' ? (current.publishedAt ?? new Date()) : current.publishedAt,
+        },
+      }),
+    );
+  }
+
+  @Delete('articles/:id')
+  @RequirePermission('article:delete')
+  @Audit('article.deleted', 'Article')
+  async deleteArticle(@Param('id') id: string) {
+    await this.assertExists('article', id);
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.articles,
+      'article deleted',
+      this.prisma.article.update({
+        where: { id },
+        data: { deletedAt: new Date(), status: 'ARCHIVED' },
+        select: { id: true },
+      }),
+    );
+  }
+
+  // ---------------- Resources ----------------
+
+  @Get('resources')
+  @RequirePermission('resource:read')
+  async listResources() {
+    return this.prisma.resource.findMany({
+      where: { deletedAt: null },
+      orderBy: { order: 'asc' },
+    });
+  }
+
+  @Post('resources')
+  @RequirePermission('resource:create')
+  @Audit('resource.created', 'Resource')
+  async createResource(@Body() body: unknown) {
+    const parsed = ResourceUpsertSchema.safeParse(body);
+    if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
+
+    const clash = await this.prisma.resource.findFirst({
+      where: { slug: parsed.data.slug, deletedAt: null },
+      select: { id: true },
+    });
+    if (clash) throw validationError('A resource already uses that address');
+
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.resources,
+      'resource created',
+      this.prisma.resource.create({
+        data: { ...parsed.data, fileUrl: parsed.data.fileUrl ?? null },
+      }),
+    );
+  }
+
+  @Patch('resources/:id')
+  @RequirePermission('resource:update')
+  @Audit('resource.updated', 'Resource')
+  async updateResource(@Param('id') id: string, @Body() body: unknown) {
+    const parsed = ResourceUpsertSchema.partial().safeParse(body);
+    if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
+
+    await this.assertExists('resource', id);
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.resources,
+      'resource updated',
+      this.prisma.resource.update({
+        where: { id },
+        data: {
+          ...defined(parsed.data),
+          ...(parsed.data.fileUrl !== undefined ? { fileUrl: parsed.data.fileUrl ?? null } : {}),
+        },
+      }),
+    );
+  }
+
+  @Patch('resources/:id/status')
+  @RequirePermission('resource:update')
+  @Audit('resource.status_changed', 'Resource')
+  async publishResource(
+    @Param('id') id: string,
+    @Body() body: unknown,
+    @CurrentUser() user: AuthUser,
+  ) {
+    const next = this.parseStatus(body);
+    const current = await this.prisma.resource.findUnique({
+      where: { id },
+      select: { status: true },
+    });
+    if (!current) throw notFound();
+
+    this.assertTransition(current.status, next, user, 'resource:publish');
+
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.resources,
+      `resource ${next.toLowerCase()}`,
+      this.prisma.resource.update({
+        where: { id },
+        data: { status: next, publishedAt: next === 'PUBLISHED' ? new Date() : null },
+      }),
+    );
+  }
+
+  @Delete('resources/:id')
+  @RequirePermission('resource:delete')
+  @Audit('resource.deleted', 'Resource')
+  async deleteResource(@Param('id') id: string) {
+    await this.assertExists('resource', id);
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.resources,
+      'resource deleted',
+      this.prisma.resource.update({
+        where: { id },
+        data: { deletedAt: new Date(), status: 'ARCHIVED' },
+        select: { id: true },
+      }),
+    );
+  }
+
   // ---------------- FAQs ----------------
 
   @Get('faqs')
@@ -512,7 +713,7 @@ export class ContentController {
   }
 
   private async assertExists(
-    model: 'solution' | 'problem' | 'caseStudy' | 'faq',
+    model: 'solution' | 'problem' | 'caseStudy' | 'faq' | 'article' | 'resource',
     id: string,
   ): Promise<void> {
     const where = { where: { id }, select: { id: true } };

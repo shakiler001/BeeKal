@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Card, Section, SectionHeader, Tag, Wrap } from '@/components/ui';
-import { PUBLISHED_ARTICLES } from '@/content/articles';
+import { getPublishedArticles } from '@/lib/content/articles';
 
 export const metadata: Metadata = {
   title: 'Insights',
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/insights' },
 };
 
-export default function InsightsPage() {
+export default async function InsightsPage() {
+  const articles = await getPublishedArticles();
   return (
     <Section>
       <Wrap>
@@ -22,7 +23,7 @@ export default function InsightsPage() {
         />
 
         <ul className="mt-12 grid gap-5 lg:grid-cols-2">
-          {PUBLISHED_ARTICLES.map((article) => (
+          {articles.map((article) => (
             <li key={article.slug}>
               <Link href={`/insights/${article.slug}`} className="block h-full">
                 <Card interactive padding="lg" className="flex h-full flex-col">

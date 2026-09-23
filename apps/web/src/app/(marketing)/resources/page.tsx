@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Card, Section, SectionHeader, Tag, Wrap } from '@/components/ui';
 import { CheckIcon } from '@/components/brand';
-import { RESOURCES } from '@/content/resources';
+import { getResources } from '@/lib/content/resources';
 
 export const metadata: Metadata = {
   title: 'Resources',
@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 
 const KIND_LABELS = { checklist: 'Checklist', guide: 'Guide', tool: 'Interactive' } as const;
 
-export default function ResourcesPage() {
+export default async function ResourcesPage() {
+  const resources = await getResources();
   return (
     <Section>
       <Wrap>
@@ -25,7 +26,7 @@ export default function ResourcesPage() {
         />
 
         <ul className="mt-12 grid gap-5 lg:grid-cols-2">
-          {RESOURCES.map((resource) => {
+          {resources.map((resource) => {
             const available =
               resource.href ?? (resource.fileUrl ? `/resources/${resource.slug}` : null);
 

@@ -2,11 +2,15 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { Button, Section, Tag, Wrap } from '@/components/ui';
-import { ARTICLES, type Block } from '@/content/articles';
+import type { Block } from '@/content/articles';
+import { getArticle, getArticles } from '@/lib/content/articles';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 
-export function generateStaticParams() {
-  return ARTICLES.map((a) => ({ slug: a.slug }));
+/** An article published after the build renders on its first request. */
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  return (await getArticles()).map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({
@@ -15,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = ARTICLES.find((a) => a.slug === slug);
+  const article = await getArticle(slug);
   if (!article) return {};
   return {
     title: article.seoTitle,
@@ -31,7 +35,7 @@ export async function generateMetadata({
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const article = ARTICLES.find((a) => a.slug === slug);
+  const article = await getArticle(slug);
   if (!article) notFound();
 
   return (

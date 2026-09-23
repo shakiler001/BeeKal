@@ -2,16 +2,18 @@ import type { MetadataRoute } from 'next';
 import { getSolutions } from '@/lib/content/solutions';
 import { getProblems } from '@/lib/content/problems';
 import { getCaseStudies } from '@/lib/content/case-studies';
-import { PUBLISHED_ARTICLES } from '@/content/articles';
-import { RESOURCES } from '@/content/resources';
+import { getPublishedArticles } from '@/lib/content/articles';
+import { getResources } from '@/lib/content/resources';
 
 const BASE = process.env['NEXT_PUBLIC_APP_URL'] ?? 'https://beekal.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [caseStudies, solutions, problems] = await Promise.all([
+  const [caseStudies, solutions, problems, articles, resources] = await Promise.all([
     getCaseStudies(),
     getSolutions(),
     getProblems(),
+    getPublishedArticles(),
+    getResources(),
   ]);
   const now = new Date();
 
@@ -48,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
-    ...PUBLISHED_ARTICLES.map((a) => ({
+    ...articles.map((a) => ({
       url: `${BASE}/insights/${a.slug}`,
       lastModified: new Date(a.publishedAt),
       changeFrequency: 'yearly' as const,
@@ -56,12 +58,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     // Only resources that actually exist. Listing a page that says "coming
     // soon" wastes a crawl and disappoints a click.
-    ...RESOURCES.filter((r) => r.fileUrl !== null).map((r) => ({
-      url: `${BASE}/resources/${r.slug}`,
-      lastModified: now,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    })),
+    ...resources
+      .filter((r) => r.fileUrl !== null)
+      .map((r) => ({
+        url: `${BASE}/resources/${r.slug}`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      })),
     // Illustrative case studies are excluded: they are noindex, and listing a
     // noindex URL in the sitemap sends Google a contradictory signal.
     ...caseStudies

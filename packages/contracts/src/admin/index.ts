@@ -200,6 +200,64 @@ export const CaseStudyPublishableSchema = CaseStudyUpsertSchema.refine(
   },
 );
 
+/**
+ * An article body is a list of blocks rather than a string of HTML.
+ *
+ * HTML from an editor is a sanitising problem forever and renders however the
+ * pasted markup felt like rendering. Four block types cover what these articles
+ * actually contain, they validate, and the renderer decides how each one looks —
+ * so a change to the type scale changes every article rather than none.
+ */
+export const BlockSchema = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('p'), text: text(1, 2000) }),
+  z.object({ type: z.literal('h2'), text: text(1, 200) }),
+  z.object({ type: z.literal('list'), items: z.array(text(1, 500)).min(1) }),
+  z.object({
+    type: z.literal('quote'),
+    text: text(1, 800),
+    attribution: text(1, 160).optional(),
+  }),
+]);
+export type Block = z.infer<typeof BlockSchema>;
+
+export const ArticleUpsertSchema = z.object({
+  slug: z
+    .string()
+    .min(1)
+    .max(120)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Lowercase words separated by hyphens'),
+  title: text(4, 200),
+  excerpt: text(20, 400),
+  body: z.array(BlockSchema).min(1, 'An article needs a body'),
+  tags: z.array(text(2, 40)),
+  readMinutes: z.number().int().min(1).max(60),
+  seoTitle: text(4, 70),
+  seoDescription: text(20, 165),
+});
+export type ArticleUpsert = z.infer<typeof ArticleUpsertSchema>;
+
+/**
+ * `kind` is an enum rather than a free string: it drives a label and the wording
+ * of the download button, so an unrecognised value would render a gap.
+ */
+export const ResourceUpsertSchema = z.object({
+  slug: z
+    .string()
+    .min(1)
+    .max(120)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Lowercase words separated by hyphens'),
+  title: text(4, 200),
+  description: text(20, 500),
+  kind: z.enum(['checklist', 'guide', 'tool']),
+  contents: z.array(text(2, 300)),
+  fileUrl: z.string().max(500).nullable().optional(),
+  isGated: z.boolean().default(true),
+  seoTitle: text(4, 70),
+  seoDescription: text(20, 165),
+  order: z.number().int().min(0).default(0),
+});
+export type ResourceUpsert = z.infer<typeof ResourceUpsertSchema>;
+
 export const FaqUpsertSchema = z.object({
   question: text(4, 200),
   answer: text(10, 1200),

@@ -48,6 +48,24 @@ export class PublicContentController {
   }
 
   @Public()
+  @Get('articles')
+  async articles() {
+    return this.prisma.article.findMany({
+      where: { status: 'PUBLISHED', deletedAt: null },
+      orderBy: { publishedAt: 'desc' },
+    });
+  }
+
+  @Public()
+  @Get('resources')
+  async resources() {
+    return this.prisma.resource.findMany({
+      where: { status: 'PUBLISHED', deletedAt: null },
+      orderBy: { order: 'asc' },
+    });
+  }
+
+  @Public()
   @Get('settings')
   async settings() {
     const rows = await this.prisma.setting.findMany({

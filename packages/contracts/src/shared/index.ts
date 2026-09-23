@@ -83,6 +83,8 @@ export const CONTENT_TAGS = {
   caseStudies: 'content:case-studies',
   problems: 'content:problems',
   faqs: 'content:faqs',
+  articles: 'content:articles',
+  resources: 'content:resources',
   settings: 'content:settings',
 } as const;
 

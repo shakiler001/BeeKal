@@ -19,9 +19,29 @@ Last updated: 2026-09-24
 
 ## Now
 
-> **Next: admin panel layout.** The top bar changes between admin screens, so
-> navigating feels unstable. Reported by the founder on 2026-09-24. See
-> [A1](#a1--the-admin-chrome-moves-between-screens) below.
+Order set by the founder on 2026-09-24: finish the content pipeline first, then
+the admin's appearance.
+
+1. **Step 7** — people: user CRUD and role assignment _(next)_
+2. **[A1](#a1--the-admin-chrome-moves-between-screens)** — the admin chrome
+   shifts between screens
+
+**Step 6 shipped but is not fully verified.** The session ran short. Code,
+types, lint and unit tests are green and it is deployed locally, but the
+browser walkthrough — write an article in the admin, publish it, watch it
+appear on /insights — was not run, and neither were the accessibility and
+end-to-end suites. Do that first when picking this up:
+
+```bash
+pnpm turbo build --filter=@beekal/web
+pnpm --filter @beekal/web test:a11y
+pnpm --filter @beekal/web test:e2e
+```
+
+Then sign in at /admin/content and write one, the way an editor would. Every
+other step in this pipeline was verified that way and each time it found
+something a type check could not — a wrong payload shape, a form that saved but
+did not publish.
 
 ---
 
@@ -37,20 +57,39 @@ audit that prompted it, in [`docs/08-content-pipeline.md`](docs/08-content-pipel
 | 3   | Case study BFF + editor                 | Done  |                                             |
 | 4   | Categories read from the database, CRUD | Done  | Answers "can I add a sixth category" — yes  |
 | 5   | FAQs and problem pages                  | Done  | FAQs edited in place; problems get a form   |
-| 6   | Articles and resources                  | To do | Makes Insights and Resources publishable    |
-| 7   | People: user CRUD and role assignment   | To do | Same gap one layer over — API exists, no UI |
+| 6   | Articles and resources                  | Done¹ | Makes Insights and Resources publishable    |
+| 7   | People: user CRUD and role assignment   | Next  | Same gap one layer over — API exists, no UI |
+
+¹ Built and deployed, not yet walked through in a browser. See **Now** above.
 
 ### 6 — Articles and resources
 
-The only content types with no rows at all. `Article` and `Resource` tables
-exist; there are no admin endpoints, no public endpoints, and `/insights` and
-`/resources` render from TypeScript.
+Done. Both types read from the database, both have full CRUD, and both are
+editable in the admin.
 
 This is the one that matters for audience-building. The founder proposed a sixth
 _Solution_ for education and consultancy; the counter-argument — accepted — was
 that free, top-of-funnel material belongs under Insights and Resources, not in
-the row that answers "what can I buy". That argument only holds if publishing
-there is actually easy.
+the row that answers "what can I buy". That argument only held if publishing
+there was actually easy, which it now is.
+
+Article bodies are written as text, not JSON and not rich text:
+
+```
+## a heading
+- a list item
+> a quote — attribution
+anything else is a paragraph; a blank line ends it
+```
+
+`toBlocks` / `toText` in `apps/web/src/features/admin/blocks.ts` convert both
+ways and round-trip, so opening an article to fix a typo does not rewrite it.
+Four tests cover that, including the case where a hyphen inside a quote must not
+be mistaken for an attribution.
+
+**Both tables are still empty.** The seed never populated them, so `/insights`
+and `/resources` serve the repository baseline until something is written in the
+admin. That is the fallback working as designed, not a fault.
 
 ### 7 — People
 
