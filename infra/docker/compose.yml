@@ -127,6 +127,11 @@ services:
       S3_PUBLIC_URL: ${S3_PUBLIC_URL:-http://localhost:9000/beekal-media}
       MAIL_DRIVER: ${MAIL_DRIVER:-console}
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-60000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-60}
+      # Set to the number of reverse proxies in front of this container. Left
+      # at 0 behind a proxy, every visitor shares one rate-limit counter.
+      TRUST_PROXY_HOPS: ${TRUST_PROXY_HOPS:-0}
     ports:
       - '${API_PORT:-4000}:4000'
     healthcheck:

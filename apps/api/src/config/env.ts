@@ -62,6 +62,25 @@ const EnvSchema = z.object({
 
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(60),
+
+  /**
+   * How many reverse proxies sit in front of this process.
+   *
+   * Rate limiting counts per client IP. Behind a proxy, every request arrives
+   * from the proxy's address unless Express is told to read X-Forwarded-For,
+   * so the whole site shares one counter and the first few visitors a minute
+   * exhaust it for everybody.
+   *
+   * It is a hop count rather than a boolean because X-Forwarded-For is a
+   * client-supplied header. Trusting it blindly lets anyone spoof an address
+   * and walk straight through the limit. Trusting exactly the number of
+   * proxies you operate — 1 for a single Caddy in front — reads the right
+   * entry and ignores anything a client prepended.
+   *
+   * Default 0: trust nothing, which is correct for local development and for
+   * a container exposed directly.
+   */
+  TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(5).default(0),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

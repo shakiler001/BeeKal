@@ -10,6 +10,10 @@ import {
 import { ScoreReportRequestSchema, ScoreSubmitSchema, type ScoreResult } from '@beekal/contracts';
 import { PrismaService } from '../../../shared/prisma.service.js';
 import { Throttle } from '@nestjs/throttler';
+import {
+  PUBLIC_READ_THROTTLE,
+  PUBLIC_WRITE_THROTTLE,
+} from '../../../shared/throttle/throttle.config.js';
 import { Public, RequirePermission } from '../../../shared/auth/index.js';
 import { calculateScore, generateShareCode } from '../domain/scoring.js';
 
@@ -40,7 +44,7 @@ export class ScoreController {
   }
 
   @Public()
-  @Throttle({ public: { limit: 10, ttl: 60_000 } })
+  @Throttle(PUBLIC_READ_THROTTLE)
   @Post()
   async submit(@Body() body: unknown): Promise<ScoreResult> {
     const parsed = ScoreSubmitSchema.safeParse(body);
@@ -113,7 +117,7 @@ export class ScoreController {
    * first, then ask — gating it would contradict a promise on the page.
    */
   @Public()
-  @Throttle({ public: { limit: 5, ttl: 60_000 } })
+  @Throttle(PUBLIC_WRITE_THROTTLE)
   @Post('report')
   async requestReport(@Body() body: unknown): Promise<{ ok: true }> {
     const parsed = ScoreReportRequestSchema.safeParse(body);

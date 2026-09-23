@@ -10,6 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
+import { AUTH_THROTTLE } from '../../../shared/throttle/throttle.config.js';
 import type { Response } from 'express';
 import {
   ChangePasswordSchema,
@@ -40,7 +41,7 @@ export class AuthController {
   @Public()
   // Five attempts a minute. Online password guessing becomes pointless and a
   // person who mistyped is not locked out.
-  @Throttle({ auth: { limit: 5, ttl: 60_000 } })
+  @Throttle(AUTH_THROTTLE)
   @Post('login')
   @HttpCode(200)
   async login(
@@ -118,7 +119,7 @@ export class AuthController {
   }
 
   @Public()
-  @Throttle({ auth: { limit: 5, ttl: 60_000 } })
+  @Throttle(AUTH_THROTTLE)
   @Post('set-password')
   @HttpCode(200)
   async setPassword(@Body() body: unknown): Promise<{ ok: true }> {
