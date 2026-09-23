@@ -456,3 +456,67 @@ model Media {
   @@index([deletedAt, createdAt])
   @@map("media")
 }
+
+// ============================================================
+// MATURITY SCORE
+// ============================================================
+
+/// The nine sliders. In the database because the model WILL change, and a
+/// scoring model hard-coded in a component is one nobody improves.
+model ScoreDimension {
+  id       String  @id @default(uuid(7))
+  key      String  @unique
+  label    String
+  question String
+  helpText String? @map("help_text")
+  /// Level 1..5 wording, so a slider position means something specific.
+  anchors  Json
+  weight   Float   @default(1)
+  order    Int     @default(0)
+  active   Boolean @default(true)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([active, order])
+  @@map("score_dimensions")
+}
+
+model ScoreLevel {
+  level       Int    @id
+  name        String
+  description String
+  guidance    String
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("score_levels")
+}
+
+model ScoreSubmission {
+  id String @id @default(uuid(7))
+
+  /// Short code so a COO can send their result to the CEO. That sharing is
+  /// distribution the demo's version could not do.
+  shareCode String @unique @map("share_code")
+
+  answers    Json
+  totalScore Float    @map("total_score")
+  level      Int
+  weakest    String[]
+
+  /// Only set if they asked for the PDF. The score itself needs no email.
+  email  String?
+  leadId String? @map("lead_id")
+
+  utmSource   String? @map("utm_source")
+  utmMedium   String? @map("utm_medium")
+  utmCampaign String? @map("utm_campaign")
+  referrer    String?
+
+  completedAt DateTime @default(now()) @map("completed_at")
+
+  @@index([level, completedAt])
+  @@index([email])
+  @@map("score_submissions")
+}

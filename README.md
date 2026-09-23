@@ -69,8 +69,31 @@ docs/              the plan
 
 ## Status
 
-**Phase 0 — Foundation.** See the roadmap in
-[`docs/00-master-plan.md`](docs/00-master-plan.md) section 8.
+| Phase                       | State                                                    |
+| --------------------------- | -------------------------------------------------------- |
+| 0 — Foundation              | Done. `docker compose up` runs the full stack.           |
+| 1 — Design system           | Done. Tokens, primitives and brand ported from the demo. |
+| 2 — Public site             | Done. 31 pages; the lead form writes to Postgres.        |
+| 3 — Backend and admin core  | Done. Auth, configurable RBAC, content and lead admin.   |
+| 4 — Funnel instrumentation  | In progress.                                             |
+| 5 — Content, copy and proof | Not started.                                             |
+| 6 — Hardening and launch    | Not started.                                             |
+
+Full roadmap in [`docs/00-master-plan.md`](docs/00-master-plan.md) section 8.
+
+## Running it
+
+```bash
+cp .env.example .env          # then set SESSION_SECRET
+pnpm install
+pnpm docker:up                # postgres, redis, minio, api, web
+```
+
+The stack comes up on http://localhost:3000, the admin at `/admin`, the API on
+:4000. Migrations and the seed run automatically before the API starts.
+
+The seed prints a one-time setup link for the Owner account — there is no
+default password anywhere.
 
 ---
 

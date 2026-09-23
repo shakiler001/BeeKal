@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Card } from '@/components/ui';
 import {
   MIN_ANSWERS,
@@ -12,6 +12,7 @@ import {
 } from '@/content/score';
 import { cn } from '@/lib/cn';
 import { ScoreRadar } from './score-radar';
+import { ScoreReportOptIn } from './score-report-optin';
 
 /**
  * The Business System Maturity Score, ported from the demo.
@@ -31,12 +32,49 @@ import { ScoreRadar } from './score-radar';
  */
 export function ScoreTool() {
   const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [shareCode, setShareCode] = useState<string | null>(null);
+  const savedFor = useRef<string>('');
 
   const answeredCount = Object.keys(answers).length;
   const ready = answeredCount >= MIN_ANSWERS;
 
   const result = useMemo(() => (ready ? calculateLevel(answers) : null), [answers, ready]);
   const levelInfo = result ? SCORE_LEVELS.find((l) => l.level === result.level) : null;
+
+  /**
+   * Persist once the result is complete, so it becomes shareable.
+   *
+   * Scored in the browser first: the answer appears instantly and does not
+   * depend on the network. Saving is a background nicety — if it fails, the
+   * visitor still has their result and simply has no share link, so this never
+   * surfaces an error.
+   */
+  useEffect(() => {
+    if (!ready) return;
+    const fingerprint = JSON.stringify(answers);
+    if (savedFor.current === fingerprint) return;
+    savedFor.current = fingerprint;
+
+    const params = new URLSearchParams(window.location.search);
+    void fetch('/api/score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        answers,
+        utmSource: params.get('utm_source') ?? undefined,
+        utmMedium: params.get('utm_medium') ?? undefined,
+        utmCampaign: params.get('utm_campaign') ?? undefined,
+        referrer: document.referrer || undefined,
+      }),
+    })
+      .then((res) => (res.ok ? (res.json() as Promise<{ shareCode: string }>) : null))
+      .then((body) => {
+        if (body) setShareCode(body.shareCode);
+      })
+      .catch(() => {
+        // Deliberately silent. See above.
+      });
+  }, [answers, ready]);
 
   function set(key: string, value: number) {
     setAnswers((prev) => ({ ...prev, [key]: value }));
@@ -122,7 +160,25 @@ export function ScoreTool() {
         <p className="sr" aria-live="polite">
           {levelInfo ? `Level ${levelInfo.level}, ${levelInfo.name}. ${levelInfo.description}` : ''}
         </p>
+
+        {shareCode && (
+          <p className="border-line text-ink-2 mt-5 border-t pt-4 text-[0.85rem]">
+            Send this result to a colleague:{' '}
+            <a
+              href={`/score/r/${shareCode}`}
+              className="text-ink break-all underline underline-offset-4"
+            >
+              /score/r/{shareCode}
+            </a>
+          </p>
+        )}
       </Card>
+
+      {shareCode && (
+        <div className="lg:col-span-2">
+          <ScoreReportOptIn shareCode={shareCode} />
+        </div>
+      )}
     </div>
   );
 }

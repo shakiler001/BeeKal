@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Analytics } from '@/components/analytics';
 import { BrandSprite } from '@/components/brand';
 import { fontVariables } from '@/fonts';
 import { THEME_COLOR } from '@/lib/brand';
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <BrandSprite />
         {children}
+        <Analytics />
       </body>
     </html>
   );

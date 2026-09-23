@@ -9,6 +9,8 @@ import { AccessModule } from './modules/access/access.module.js';
 import { IdentityModule } from './modules/identity/identity.module.js';
 import { ContentModule } from './modules/content/content.module.js';
 import { LeadsModule } from './modules/leads/leads.module.js';
+import { MessagingModule } from './modules/messaging/messaging.module.js';
+import { AssessmentsModule } from './modules/assessments/assessments.module.js';
 import { PlatformModule } from './modules/platform/platform.module.js';
 import { env } from './config/env.js';
 
@@ -75,6 +77,8 @@ function prettyTransportAvailable(): boolean {
     IdentityModule,
     ContentModule,
     LeadsModule,
+    MessagingModule,
+    AssessmentsModule,
     PlatformModule,
   ],
   providers: [

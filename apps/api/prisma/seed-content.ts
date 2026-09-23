@@ -13,6 +13,7 @@ import { SOLUTIONS } from '../../web/src/content/solutions.js';
 import { PROBLEMS } from '../../web/src/content/problems.js';
 import { CASE_STUDIES } from '../../web/src/content/case-studies.js';
 import { FAQS } from '../../web/src/content/faqs.js';
+import { SCORE_DIMENSIONS, SCORE_LEVELS } from '../../web/src/content/score.js';
 
 export async function seedContent(prisma: PrismaClient): Promise<void> {
   let created = 0;
@@ -120,5 +121,36 @@ export async function seedContent(prisma: PrismaClient): Promise<void> {
     created += 1;
   }
 
+  for (const [index, d] of SCORE_DIMENSIONS.entries()) {
+    await prisma.scoreDimension.upsert({
+      where: { key: d.key },
+      create: {
+        key: d.key,
+        label: d.label,
+        question: d.question,
+        anchors: [...d.anchors],
+        weight: d.weight,
+        order: index,
+      },
+      // Weights and wording are tuned in the admin; a redeploy must not undo
+      // that. Only the ordering is kept in step with the code.
+      update: { order: index },
+    });
+  }
+
+  for (const level of SCORE_LEVELS) {
+    await prisma.scoreLevel.upsert({
+      where: { level: level.level },
+      create: {
+        level: level.level,
+        name: level.name,
+        description: level.description,
+        guidance: level.guidance,
+      },
+      update: {},
+    });
+  }
+
   console.info(`  content: ${created} new rows (existing rows left untouched)`);
+  console.info(`  score: ${SCORE_DIMENSIONS.length} dimensions, ${SCORE_LEVELS.length} levels`);
 }

@@ -14,6 +14,7 @@ export default defineConfig({
     'src/leads/index.ts',
     'src/auth/index.ts',
     'src/admin/index.ts',
+    'src/score/index.ts',
   ],
   format: ['cjs', 'esm'],
   dts: true,

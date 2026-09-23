@@ -3,3 +3,4 @@ export * from './health/index.js';
 export * from './leads/index.js';
 export * from './auth/index.js';
 export * from './admin/index.js';
+export * from './score/index.js';

@@ -65,6 +65,16 @@
         "types": "./dist/admin/index.d.cts",
         "default": "./dist/admin/index.cjs"
       }
+    },
+    "./score": {
+      "import": {
+        "types": "./dist/score/index.d.ts",
+        "default": "./dist/score/index.js"
+      },
+      "require": {
+        "types": "./dist/score/index.d.cts",
+        "default": "./dist/score/index.cjs"
+      }
     }
   },
   "scripts": {
