@@ -29,7 +29,9 @@
     "docker:logs": "docker compose --env-file .env -f infra/docker/compose.yml logs -f",
     "docker:reset": "docker compose --env-file .env -f infra/docker/compose.yml down -v",
     "docker:ps": "docker compose --env-file .env -f infra/docker/compose.yml ps",
-    "docker:build": "docker compose --env-file .env -f infra/docker/compose.yml build"
+    "docker:build": "docker compose --env-file .env -f infra/docker/compose.yml build",
+    "test:e2e": "turbo run test:e2e",
+    "test:a11y": "turbo run test:a11y"
   },
   "devDependencies": {
     "@beekal/config": "workspace:*",

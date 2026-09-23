@@ -35,4 +35,14 @@ export default [
     files: ['src/app/(dev)/**'],
     rules: { 'max-lines-per-function': 'off', 'max-lines': 'off' },
   },
+  {
+    // Playwright specs: long describe blocks are how a suite is organised,
+    // and the test runner owns the promise lifecycle.
+    files: ['e2e/**/*.ts'],
+    rules: {
+      'max-lines-per-function': 'off',
+      'max-lines': 'off',
+      'no-restricted-syntax': 'off',
+    },
+  },
 ];

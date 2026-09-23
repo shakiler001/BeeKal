@@ -1,6 +1,7 @@
 import { BadRequestException, Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { LeadCreateSchema, type LeadCreate, type LeadCreateResponse } from '@beekal/contracts';
 import { SubmitLeadUseCase } from '../application/submit-lead.usecase.js';
+import { Throttle } from '@nestjs/throttler';
 import { Public } from '../../../shared/auth/index.js';
 
 @Controller('leads')
@@ -14,6 +15,7 @@ export class LeadsController {
    */
   // The public form posts here. Everything else in the API requires a session.
   @Public()
+  @Throttle({ public: { limit: 5, ttl: 60_000 } })
   @Post()
   @HttpCode(201)
   async create(@Body() body: unknown): Promise<LeadCreateResponse> {

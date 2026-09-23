@@ -23,8 +23,12 @@ const section = cva('py-[var(--sec)]', {
     tone: {
       default: 'bg-bg',
       alt: 'bg-bg-alt',
-      /** Inverted band, for the transformation and final-CTA sections. */
-      band: 'bg-foot text-white',
+      /**
+       * Inverted band. `on-band` redefines the colour tokens for the whole
+       * subtree, so descendants do not each need a tone prop to stay legible
+       * on navy (see globals.css).
+       */
+      band: 'bg-foot text-white on-band',
     },
   },
   defaultVariants: { tone: 'default' },

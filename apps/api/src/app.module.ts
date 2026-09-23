@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 import { randomUUID } from 'node:crypto';
 import { SharedModule } from './shared/shared.module.js';
@@ -12,6 +13,7 @@ import { LeadsModule } from './modules/leads/leads.module.js';
 import { MessagingModule } from './modules/messaging/messaging.module.js';
 import { AssessmentsModule } from './modules/assessments/assessments.module.js';
 import { PlatformModule } from './modules/platform/platform.module.js';
+import { throttleConfig } from './shared/throttle/throttle.config.js';
 import { env } from './config/env.js';
 
 /**
@@ -72,6 +74,7 @@ function prettyTransportAvailable(): boolean {
           : {}),
       },
     }),
+    ThrottlerModule.forRoot(throttleConfig()),
     SharedModule,
     AccessModule,
     IdentityModule,
@@ -82,6 +85,9 @@ function prettyTransportAvailable(): boolean {
     PlatformModule,
   ],
   providers: [
+    // Rate limiting runs BEFORE authentication, so an unauthenticated flood
+    // is rejected without touching the database.
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
     // Global by default: a new endpoint is authenticated and permission-checked
     // unless it explicitly opts out with @Public. Opt-out beats opt-in, because
     // the failure mode of forgetting is a locked door rather than an open one.

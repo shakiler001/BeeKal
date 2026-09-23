@@ -49,6 +49,14 @@
     },
     "clean": {
       "cache": false
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "test:a11y": {
+      "dependsOn": ["build"],
+      "cache": false
     }
   }
 }

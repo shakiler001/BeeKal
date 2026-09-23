@@ -226,6 +226,30 @@
   }
 }
 
+/**
+ * Inverted band.
+ *
+ * The band sits on navy in BOTH themes, so the light-theme action colour
+ * (cobalt on navy) fails contrast there. Redefining the tokens for the subtree
+ * fixes every descendant at once — the eyebrow, any link, any button — rather
+ * than patching each component with a tone prop it would have to remember to
+ * pass down.
+ *
+ * Amber on navy measures ~9.7:1, comfortably past AA for the small bold text
+ * the eyebrow uses.
+ */
+.on-band {
+  --brand: var(--accent);
+  --brand-hover: #ffc94d;
+  --on-brand: var(--navy);
+  --ink: #ffffff;
+  --ink-2: rgba(255, 255, 255, 0.78);
+  --line: rgba(255, 255, 255, 0.18);
+  --line-2: rgba(255, 255, 255, 0.28);
+  --field: rgba(255, 255, 255, 0.45);
+  --h1: #ffffff;
+}
+
 @utility sr {
   position: absolute;
   width: 1px;

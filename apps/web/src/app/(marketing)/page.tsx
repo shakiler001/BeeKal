@@ -205,9 +205,13 @@ export default function HomePage() {
               </dl>
               <ul className="mt-6 flex flex-wrap gap-2">
                 {ASSESSMENT.examines.slice(0, 6).map((e) => (
-                  <Tag key={e}>{e}</Tag>
+                  <li key={e}>
+                    <Tag>{e}</Tag>
+                  </li>
                 ))}
-                <Tag>+{ASSESSMENT.examines.length - 6} more</Tag>
+                <li>
+                  <Tag>+{ASSESSMENT.examines.length - 6} more</Tag>
+                </li>
               </ul>
             </Card>
           </div>
