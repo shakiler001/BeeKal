@@ -104,10 +104,11 @@ jobs:
       - name: Install Chromium
         run: pnpm --filter @beekal/web exec playwright install chromium --with-deps
 
-      - name: Build
-        run: pnpm build
-        env:
-          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
+      # Only the web app and what it depends on. Building the API here would
+      # need a generated Prisma client and a database that this job has no
+      # reason to run — the e2e suite tests the site, not the API.
+      - name: Build web
+        run: pnpm turbo build --filter=@beekal/web
 
       # Runs against the built site with no API. Pages that need one are not in
       # this suite; the admin ones assert that they redirect, which is exactly
@@ -127,30 +128,47 @@ jobs:
           retention-days: 7
 
   docker:
-    name: Docker images build
+    name: Docker image (${{ matrix.app }})
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
+    # One image per runner. Building both in sequence on a single runner filled
+    # the ~14GB of free disk a GitHub runner has — the API image built, then
+    # web failed — because each carries a full node_modules layer and the
+    # buildx cache is written alongside them.
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [api, web]
+
     steps:
       - uses: actions/checkout@v4
+
+      # A stock runner ships with Android SDKs, .NET and a GHC toolchain that
+      # nothing here uses. Reclaiming them buys roughly 20GB.
+      - name: Free disk space
+        run: |
+          df -h /
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          docker system prune -af --volumes || true
+          df -h /
 
       - uses: docker/setup-buildx-action@v3
 
       # Proves the no-lock-in compliance test still holds: the stack must build
       # from a bare checkout (docs/00 section 3).
-      - name: Build API image
+      - name: Build ${{ matrix.app }} image
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: infra/docker/api.Dockerfile
+          file: infra/docker/${{ matrix.app }}.Dockerfile
           push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build web image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: infra/docker/web.Dockerfile
-          push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.app }}
+          # mode=min here rather than max: this job only has to prove the image
+          # builds, and caching every intermediate layer is what filled the
+          # disk in the first place. release.yml keeps mode=max, where the
+          # cache actually pays for itself.
+          cache-to: type=gha,mode=min,scope=${{ matrix.app }}
