@@ -3,12 +3,15 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { Button, Card, Section, SectionHeader, Wrap } from '@/components/ui';
 import { CheckIcon } from '@/components/brand';
-import { PROBLEMS } from '@/content/problems';
+import { getProblem, getProblems } from '@/lib/content/problems';
 import { getSolutionByKey } from '@/lib/content/solutions';
 import { breadcrumbSchema } from '@/lib/schema';
 
-export function generateStaticParams() {
-  return PROBLEMS.map((p) => ({ slug: p.slug }));
+/** A problem page added after the build still renders on its first request. */
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  return (await getProblems()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -17,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const problem = PROBLEMS.find((p) => p.slug === slug);
+  const problem = await getProblem(slug);
   if (!problem) return {};
   return {
     title: problem.seoTitle,
@@ -35,7 +38,7 @@ export async function generateMetadata({
  */
 export default async function ProblemPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const problem = PROBLEMS.find((p) => p.slug === slug);
+  const problem = await getProblem(slug);
   if (!problem) notFound();
 
   const solution = await getSolutionByKey(problem.solutionKey);

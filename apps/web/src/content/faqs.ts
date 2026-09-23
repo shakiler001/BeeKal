@@ -8,7 +8,8 @@
  */
 
 export interface Faq {
-  group: 'assessment';
+  /** Where it appears. A string, not a union: groups are data now. */
+  group: string;
   question: string;
   answer: string;
 }

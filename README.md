@@ -21,6 +21,9 @@ Three systems, built in this order:
    with no deploy
 3. **Business spine** — the tables that later become the client portal
 
+**Picking this up after a break?** Read [`ROADMAP.md`](ROADMAP.md) — it says what
+is done, what is next and what is deliberately not being done yet.
+
 Read [`docs/00-master-plan.md`](docs/00-master-plan.md) first. It is the source of
 truth and it links to everything else.
 
@@ -67,6 +70,7 @@ docs/              the plan
 | [05-seo-performance-quality.md](docs/05-seo-performance-quality.md)   | SEO, performance budgets, a11y, security, ops       |
 | [06-runbook.md](docs/06-runbook.md)                                   | Deploying, backups, restores, rollback              |
 | [07-local-development.md](docs/07-local-development.md)               | Running it on your machine, and what bites          |
+| [08-content-pipeline.md](docs/08-content-pipeline.md)                 | What is editable without a deploy, and the plan     |
 | [brief/master-context.txt](docs/brief/master-context.txt)             | The original founder brief                          |
 
 ## Status

@@ -26,6 +26,11 @@ interface CaseStudyRow extends ContentRow {
   featured: boolean;
 }
 
+interface ProblemRow extends ContentRow {
+  cardHeadline: string;
+  cardAnswer: string;
+}
+
 interface FaqRow extends ContentRow {
   question: string;
   group: string;
@@ -34,9 +39,12 @@ interface FaqRow extends ContentRow {
 export default async function ContentPage() {
   const session = await requireSession();
 
-  const [solutions, cases, faqs] = await Promise.all([
+  const [solutions, problems, cases, faqs] = await Promise.all([
     can(session, 'solution:read')
       ? adminApi.get<SolutionRow[]>('/content/solutions').catch(() => null)
+      : null,
+    can(session, 'problem:read')
+      ? adminApi.get<ProblemRow[]>('/content/problems').catch(() => null)
       : null,
     can(session, 'case_study:read')
       ? adminApi.get<CaseStudyRow[]>('/content/case-studies').catch(() => null)
@@ -48,7 +56,7 @@ export default async function ContentPage() {
     <>
       <AdminPageHeader
         title="Content"
-        description="Categories and case studies are live on the site: published changes appear within seconds. FAQs are stored here but the public pages still read the repository."
+        description="Everything here is live on the site. Published changes appear within seconds — no deploy."
       />
 
       <div className="mt-8 grid gap-6">
@@ -136,10 +144,15 @@ export default async function ContentPage() {
 
         {faqs && (
           <section>
-            <h2 className="font-display mb-3 text-lg font-bold tracking-tight">
-              FAQs
-              <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">{faqs.length}</span>
-            </h2>
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <h2 className="font-display text-lg font-bold tracking-tight">
+                FAQs
+                <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">{faqs.length}</span>
+              </h2>
+              <Button asChild size="sm" variant="ghost" className="ml-auto">
+                <Link href="/admin/content/faqs">Edit them</Link>
+              </Button>
+            </div>
             <Card padding="sm">
               <ul className="divide-line divide-y">
                 {faqs.map((f) => (
@@ -154,7 +167,45 @@ export default async function ContentPage() {
           </section>
         )}
 
-        {!solutions && !cases && !faqs && (
+        {problems && (
+          <section>
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <h2 className="font-display text-lg font-bold tracking-tight">
+                Problem pages
+                <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">{problems.length}</span>
+              </h2>
+              {can(session, 'problem:create') && (
+                <Button asChild size="sm" className="ml-auto">
+                  <Link href="/admin/content/problems/new">Add one</Link>
+                </Button>
+              )}
+            </div>
+            <Card padding="sm">
+              <ul className="divide-line divide-y">
+                {problems.map((p) => (
+                  <li key={p.id} className="flex flex-wrap items-center gap-3 py-3">
+                    <Link
+                      href={`/admin/content/problems/${p.id}`}
+                      className="min-w-0 flex-1 rounded-sm underline-offset-4 hover:underline"
+                    >
+                      <span className="font-medium">{p.cardHeadline}</span>
+                      <span className="text-ink-2 block truncate text-[0.88rem]">
+                        {p.cardAnswer}
+                      </span>
+                    </Link>
+                    <StatusPill status={p.status} />
+                  </li>
+                ))}
+              </ul>
+            </Card>
+            <p className="text-ink-2 mt-2 text-[0.85rem]">
+              Landing pages for people searching the symptom rather than the service. Deliberately
+              not in the main navigation.
+            </p>
+          </section>
+        )}
+
+        {!solutions && !problems && !cases && !faqs && (
           <Card>
             <p className="text-ink-2">Your role does not include any content types.</p>
           </Card>

@@ -4,7 +4,7 @@ import { Bridge } from '@/components/patterns';
 import { Accordion, Button, Card, Dots, Section, SectionHeader, Tag, Wrap } from '@/components/ui';
 import { CheckIcon } from '@/components/brand';
 import { ASSESSMENT } from '@/content/site';
-import { ASSESSMENT_FAQS } from '@/content/faqs';
+import { getFaqs } from '@/lib/content/faqs';
 import { assessmentServiceSchema, faqSchema } from '@/lib/schema';
 
 export const metadata: Metadata = {
@@ -52,7 +52,10 @@ const WEEKS = [
   },
 ];
 
-export default function AssessmentPage() {
+export default async function AssessmentPage() {
+  // The visible list and the FAQPage structured data come from the same rows,
+  // so the markup and the page cannot disagree.
+  const faqs = await getFaqs('assessment');
   return (
     <>
       <script
@@ -61,7 +64,7 @@ export default function AssessmentPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(ASSESSMENT_FAQS)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqs)) }}
       />
 
       <Section>
@@ -220,7 +223,7 @@ export default function AssessmentPage() {
             Questions people ask before they book
           </h2>
           <div className="mt-8 max-w-[72ch]">
-            {ASSESSMENT_FAQS.map((f, i) => (
+            {faqs.map((f, i) => (
               <Accordion key={f.question} summary={f.question} defaultOpen={i === 0}>
                 <p>{f.answer}</p>
               </Accordion>

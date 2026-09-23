@@ -131,6 +131,35 @@ export const SolutionUpsertSchema = z.object({
 });
 export type SolutionUpsert = z.infer<typeof SolutionUpsertSchema>;
 
+/**
+ * Problem pages: the landing pages cold traffic arrives on.
+ *
+ * `solutionKey` is a plain string rather than an enum of the five that
+ * shipped, because categories are rows now and a problem may point at one
+ * added last week.
+ */
+export const ProblemUpsertSchema = z.object({
+  key: z.string().min(1).max(40),
+  slug: z
+    .string()
+    .min(1)
+    .max(80)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Lowercase words separated by hyphens'),
+  cardHeadline: text(4, 160),
+  cardAnswer: text(2, 80),
+  cardBody: text(4, 400),
+  pageHeadline: text(4, 200),
+  pageIntro: text(4, 1200),
+  diagnostic: z.array(text(4, 300)),
+  causes: text(10, 1200),
+  fixLooksLike: z.array(text(4, 300)),
+  solutionKey: z.string().min(1).max(40),
+  seoTitle: text(4, 70),
+  seoDescription: text(20, 165),
+  order: z.number().int().min(0).default(0),
+});
+export type ProblemUpsert = z.infer<typeof ProblemUpsertSchema>;
+
 export const CaseStudyUpsertSchema = z.object({
   slug: z
     .string()

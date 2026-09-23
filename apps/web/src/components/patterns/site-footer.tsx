@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { LogoWithTagline } from '@/components/brand';
 import { SITE } from '@/content/site';
 import { getSolutions } from '@/lib/content/solutions';
-import { PROBLEMS } from '@/content/problems';
+import { getProblems } from '@/lib/content/problems';
 
 /**
  * The footer carries the full map, including the /problems/* pages that are
@@ -13,7 +13,7 @@ export async function SiteFooter() {
   // The footer lists the categories, so it reads them like every other
   // consumer. It is a server component, so awaiting here costs nothing at
   // render time and keeps one source of truth.
-  const solutions = await getSolutions();
+  const [solutions, problems] = await Promise.all([getSolutions(), getProblems()]);
   // `on-band` flips the colour tokens for this subtree. The footer is an
   // inverted band and had been relying on explicit white text instead, which
   // held only for as long as nothing inside it used a token. The tagline does,
@@ -37,7 +37,7 @@ export async function SiteFooter() {
           </FooterCol>
 
           <FooterCol title="What we fix">
-            {PROBLEMS.map((p) => (
+            {problems.map((p) => (
               <FooterLink key={p.key} href={`/problems/${p.slug}`}>
                 {p.cardAnswer.replace(/\.$/, '')}
               </FooterLink>

@@ -6,7 +6,7 @@ import { Button, Card, Section, SectionHeader, Wrap } from '@/components/ui';
 import { CheckIcon } from '@/components/brand';
 import { getSolution, getSolutions } from '@/lib/content/solutions';
 import { getCaseStudiesFor } from '@/lib/content/case-studies';
-import { PROBLEMS } from '@/content/problems';
+import { getProblemsFor } from '@/lib/content/problems';
 import { CaseCard } from '@/features/case-studies/case-card';
 import { serviceSchema } from '@/lib/schema';
 
@@ -45,7 +45,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
   if (!solution) notFound();
 
   const cases = await getCaseStudiesFor(solution.key);
-  const relatedProblems = PROBLEMS.filter((p) => p.solutionKey === solution.key);
+  const relatedProblems = await getProblemsFor(solution.key);
 
   return (
     <>

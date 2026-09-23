@@ -14,6 +14,7 @@ import {
   CaseStudyUpsertSchema,
   CONTENT_TAGS,
   FaqUpsertSchema,
+  ProblemUpsertSchema,
   PublishActionSchema,
   SolutionUpsertSchema,
   type ContentTag,
@@ -204,6 +205,99 @@ export class ContentController {
     );
   }
 
+  // ---------------- Problems ----------------
+
+  /**
+   * Problem pages had a table, a public endpoint and a full set of permissions,
+   * and no way to write them. Same gap as the others, filled the same way.
+   */
+  @Get('problems')
+  @RequirePermission('problem:read')
+  async listProblems() {
+    return this.prisma.problem.findMany({
+      where: { deletedAt: null },
+      orderBy: { order: 'asc' },
+    });
+  }
+
+  @Post('problems')
+  @RequirePermission('problem:create')
+  @Audit('problem.created', 'Problem')
+  async createProblem(@Body() body: unknown) {
+    const parsed = ProblemUpsertSchema.safeParse(body);
+    if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
+
+    const clash = await this.prisma.problem.findFirst({
+      where: { OR: [{ key: parsed.data.key }, { slug: parsed.data.slug }], deletedAt: null },
+      select: { key: true },
+    });
+    if (clash) throw validationError('A problem page already uses that key or address');
+
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.problems,
+      'problem created',
+      this.prisma.problem.create({ data: parsed.data }),
+    );
+  }
+
+  @Patch('problems/:id')
+  @RequirePermission('problem:update')
+  @Audit('problem.updated', 'Problem')
+  async updateProblem(@Param('id') id: string, @Body() body: unknown) {
+    const parsed = ProblemUpsertSchema.partial().safeParse(body);
+    if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
+
+    await this.assertExists('problem', id);
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.problems,
+      'problem updated',
+      this.prisma.problem.update({ where: { id }, data: defined(parsed.data) }),
+    );
+  }
+
+  @Patch('problems/:id/status')
+  @RequirePermission('problem:update')
+  @Audit('problem.status_changed', 'Problem')
+  async publishProblem(
+    @Param('id') id: string,
+    @Body() body: unknown,
+    @CurrentUser() user: AuthUser,
+  ) {
+    const next = this.parseStatus(body);
+    const current = await this.prisma.problem.findUnique({
+      where: { id },
+      select: { status: true },
+    });
+    if (!current) throw notFound();
+
+    this.assertTransition(current.status, next, user, 'problem:publish');
+
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.problems,
+      `problem ${next.toLowerCase()}`,
+      this.prisma.problem.update({
+        where: { id },
+        data: { status: next, publishedAt: next === 'PUBLISHED' ? new Date() : null },
+      }),
+    );
+  }
+
+  @Delete('problems/:id')
+  @RequirePermission('problem:delete')
+  @Audit('problem.deleted', 'Problem')
+  async deleteProblem(@Param('id') id: string) {
+    await this.assertExists('problem', id);
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.problems,
+      'problem deleted',
+      this.prisma.problem.update({
+        where: { id },
+        data: { deletedAt: new Date(), status: 'ARCHIVED' },
+        select: { id: true },
+      }),
+    );
+  }
+
   // ---------------- Case studies ----------------
 
   @Get('case-studies')
@@ -334,7 +428,11 @@ export class ContentController {
   async createFaq(@Body() body: unknown) {
     const parsed = FaqUpsertSchema.safeParse(body);
     if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
-    return this.prisma.faq.create({ data: { ...parsed.data, status: 'PUBLISHED' } });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.faqs,
+      'faq created',
+      this.prisma.faq.create({ data: { ...parsed.data, status: 'PUBLISHED' } }),
+    );
   }
 
   @Patch('faqs/:id')
@@ -344,7 +442,11 @@ export class ContentController {
     const parsed = FaqUpsertSchema.partial().safeParse(body);
     if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
     await this.assertExists('faq', id);
-    return this.prisma.faq.update({ where: { id }, data: defined(parsed.data) });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.faqs,
+      'faq updated',
+      this.prisma.faq.update({ where: { id }, data: defined(parsed.data) }),
+    );
   }
 
   @Delete('faqs/:id')
@@ -352,11 +454,15 @@ export class ContentController {
   @Audit('faq.deleted', 'Faq')
   async deleteFaq(@Param('id') id: string) {
     await this.assertExists('faq', id);
-    return this.prisma.faq.update({
-      where: { id },
-      data: { deletedAt: new Date() },
-      select: { id: true },
-    });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.faqs,
+      'faq deleted',
+      this.prisma.faq.update({
+        where: { id },
+        data: { deletedAt: new Date() },
+        select: { id: true },
+      }),
+    );
   }
 
   // ---------------- helpers ----------------
@@ -405,13 +511,19 @@ export class ContentController {
     }
   }
 
-  private async assertExists(model: 'solution' | 'caseStudy' | 'faq', id: string): Promise<void> {
+  private async assertExists(
+    model: 'solution' | 'problem' | 'caseStudy' | 'faq',
+    id: string,
+  ): Promise<void> {
+    const where = { where: { id }, select: { id: true } };
     const found =
       model === 'solution'
-        ? await this.prisma.solution.findUnique({ where: { id }, select: { id: true } })
-        : model === 'caseStudy'
-          ? await this.prisma.caseStudy.findUnique({ where: { id }, select: { id: true } })
-          : await this.prisma.faq.findUnique({ where: { id }, select: { id: true } });
+        ? await this.prisma.solution.findUnique(where)
+        : model === 'problem'
+          ? await this.prisma.problem.findUnique(where)
+          : model === 'caseStudy'
+            ? await this.prisma.caseStudy.findUnique(where)
+            : await this.prisma.faq.findUnique(where);
 
     if (!found) throw notFound();
   }

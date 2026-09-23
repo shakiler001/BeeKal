@@ -8,8 +8,12 @@ import type { SolutionKey } from './solutions';
  * /problems/[slug] landing page that cold traffic and ads point at.
  */
 
-export type ProblemKey =
-  'manual-work' | 'disconnected-systems' | 'legacy-software' | 'ai-opportunity' | 'new-product';
+/**
+ * A problem's stable identifier. A plain string for the same reason
+ * `SolutionKey` is: these are database rows, and a closed union would make the
+ * type system disagree with the data the moment one is added.
+ */
+export type ProblemKey = string;
 
 export interface Problem {
   key: ProblemKey;
@@ -178,7 +182,9 @@ export const PROBLEMS: Problem[] = [
   },
 ];
 
-export const PROBLEM_BY_KEY = Object.fromEntries(PROBLEMS.map((p) => [p.key, p])) as Record<
-  ProblemKey,
-  Problem
->;
+const BY_KEY = new Map(PROBLEMS.map((p) => [p.key, p]));
+
+/** Undefined for a key that names no problem page. */
+export function problemByKey(key: string): Problem | undefined {
+  return BY_KEY.get(key);
+}

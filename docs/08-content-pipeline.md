@@ -117,8 +117,9 @@ the JSON columns never leak into components.
 | 2   | Case studies read from the database                      | `/work` reflects what is in the admin           | Done  |
 | 3   | Case study BFF + editor UI                               | Writing a case study without a deploy           | Done  |
 | 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 | Done  |
-| 5   | FAQs, problems                                           | The remaining seeded types                      | Next  |
-| 6   | Articles, resources                                      | Insights and Resources become publishable       |       |
+| 5   | FAQs, problems                                           | The remaining seeded types                      | Done  |
+| 6   | Articles, resources                                      | Insights and Resources become publishable       | Next  |
+| 7   | People: user CRUD and role assignment                    | Adding a colleague without a deploy             |       |
 
 Steps 2 and 4 are the ones that change what a visitor sees. Step 1 is the
 foundation and is deliberately boring.
@@ -168,6 +169,44 @@ Verified end to end: a row edited in the database, with a `content.changed`
 event written in the same transaction, appeared on `/work` within five seconds
 of the relay polling — and the whole web app still builds all 42 pages with the
 API stopped, falling back to the repository baseline and saying so in the log.
+
+### What step 5 delivered
+
+FAQs and problem pages read from the database, and both are editable.
+
+FAQs are edited in place on one screen rather than through a new-page-then-edit
+-page flow: an FAQ is a question and an answer, they are read as a set, and
+sending someone to another screen to change six words is how content stops
+getting updated.
+
+Problem pages got the API they never had — table, public endpoint and a full
+set of permissions had existed since Phase 3 with no way to write them.
+
+Verified: a question edited in the admin appeared on /assessment five seconds
+later, in the visible list and in the FAQPage structured data, which come from
+the same rows and therefore cannot disagree.
+
+### Step 7 is the same gap, one layer over
+
+The People screen lists users and offers no way to add, edit or remove one, or
+to change what role someone has. The cause is identical to the case studies:
+
+| Link            | Users                    |
+| --------------- | ------------------------ |
+| 1. Table        | ✅                       |
+| 2. API          | ✅ full CRUD on `/users` |
+| 3. BFF route    | ❌ none                  |
+| 4. Admin screen | ❌ read-only list        |
+
+`POST`, `PATCH` and `DELETE` on `/users` have existed since Phase 3 with the
+right permissions and audit entries, and the browser has never been able to
+reach any of them. The role editor was built — the thing the original
+requirement was really about — but assigning a role to a person was not.
+
+It is listed last because it is not content, not because it is unimportant: a
+second Owner is also the answer to the lockout risk in
+[FAI-06](../LogicLibrary/07-failure-modes.md), which is currently mitigated by
+a CLI rather than by there being someone else who can help.
 
 ### Explicitly not in this plan
 
