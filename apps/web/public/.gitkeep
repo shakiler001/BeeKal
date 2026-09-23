@@ -1,0 +1,10 @@
+Next.js serves this directory at the site root.
+
+It is empty and tracked deliberately: the web Dockerfile copies it, and git
+does not track empty directories, so without this file a fresh checkout has no
+apps/web/public and the image build fails on COPY. That is exactly what broke
+CI while it worked locally.
+
+Anything that must be served at a literal path — favicon.ico, robots overrides,
+verification files for Search Console — goes here. Fonts do not: next/font
+hashes and serves them from /_next/static.

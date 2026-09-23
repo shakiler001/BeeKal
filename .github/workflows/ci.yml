@@ -156,6 +156,12 @@ jobs:
           docker system prune -af --volumes || true
           df -h /
 
+      # Catches the failure mode where an image builds on every developer
+      # machine and fails on every runner: a path that exists locally but was
+      # never committed. Cheap, and it runs before the slow build.
+      - name: Dockerfile paths exist in a fresh checkout
+        run: bash infra/scripts/check-docker-paths.sh
+
       - uses: docker/setup-buildx-action@v3
 
       # Proves the no-lock-in compliance test still holds: the stack must build
