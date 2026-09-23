@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { Logo } from '@/components/brand';
+import { LogoWithTagline } from '@/components/brand';
 import { Button, ThemeToggle } from '@/components/ui';
 import { cn } from '@/lib/cn';
 
@@ -48,7 +48,7 @@ export function SiteHeader() {
     <header className="bg-bg/90 border-line sticky top-0 z-40 border-b backdrop-blur-md">
       <div className="mx-auto flex h-[var(--head)] w-[min(1200px,100%-2*var(--gut))] items-center gap-4">
         <Link href="/" aria-label="Beekal, home" className="flex-none">
-          <Logo title={null} className="h-8 w-auto sm:h-9" />
+          <LogoWithTagline title={null} />
         </Link>
 
         <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex">

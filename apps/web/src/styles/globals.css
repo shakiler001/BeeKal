@@ -239,6 +239,14 @@
  * the eyebrow uses.
  */
 .on-band {
+  /* The logo inverts on an inverted band: the wordmark and the bee go white
+     with the band colour showing through, as the demo's `.foot` did. Without
+     it the cobalt half of the mark sits on navy at roughly 2:1. Logotypes are
+     exempt from the contrast rules, so nothing would have failed a test — it
+     would only have looked wrong. */
+  --lg-a: #ffffff;
+  --lg-b: var(--foot);
+
   --brand: var(--accent);
   --brand-hover: #ffc94d;
   --on-brand: var(--navy);

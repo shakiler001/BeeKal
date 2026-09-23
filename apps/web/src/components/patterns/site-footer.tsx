@@ -10,12 +10,17 @@ import { PROBLEMS } from '@/content/problems';
  * to be crawlable (docs/02 section 2).
  */
 export function SiteFooter() {
+  // `on-band` flips the colour tokens for this subtree. The footer is an
+  // inverted band and had been relying on explicit white text instead, which
+  // held only for as long as nothing inside it used a token. The tagline does,
+  // and cobalt on navy is the exact contrast pair the band override exists to
+  // prevent.
   return (
-    <footer className="bg-foot text-white">
+    <footer className="bg-foot on-band text-white">
       <div className="mx-auto w-[min(1200px,100%-2*var(--gut))] py-[clamp(48px,6vw,80px)]">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
-            <LogoWithTagline className="h-14 w-auto" />
+            <LogoWithTagline size="lg" />
             <p className="mt-4 max-w-[28ch] text-[0.98rem] text-white/80">{SITE.promise}</p>
           </div>
 

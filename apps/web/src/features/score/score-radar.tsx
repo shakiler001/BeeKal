@@ -20,6 +20,19 @@ const CENTER = SIZE / 2;
 const RADIUS = 110;
 const MAX = 5;
 
+/**
+ * Horizontal room for the dimension labels.
+ *
+ * The labels sit outside the outer ring and are anchored to it, so the longest
+ * ones extend past the chart itself. Measured against the rendered text rather
+ * than estimated: they reached -22.9 on the left and 336.7 on the right of a
+ * 0..320 box, which cut "Reporting" to "rting" and "Automation" to "Automat".
+ *
+ * 28 covers both with room for the fallback font, which sets wider than the
+ * webfont and is what a visitor sees for the first few hundred milliseconds.
+ */
+const LABEL_PAD = 28;
+
 function point(index: number, value: number): [number, number] {
   const count = SCORE_DIMENSIONS.length;
   // Start at 12 o'clock and go clockwise.
@@ -44,8 +57,8 @@ export function ScoreRadar({ answers }: { answers: Record<string, number> }) {
 
   return (
     <svg
-      viewBox={`0 0 ${SIZE} ${SIZE}`}
-      className="mx-auto w-full max-w-[320px]"
+      viewBox={`${-LABEL_PAD} 0 ${SIZE + LABEL_PAD * 2} ${SIZE}`}
+      className="mx-auto w-full max-w-[376px]"
       role="img"
       aria-label={label}
     >

@@ -29,6 +29,7 @@ const SPRITE = `<svg width="0" height="0" style="position:absolute" aria-hidden=
 <symbol id="bk-bee" viewBox="40 127 372 268"><use href="#bk-bee-art"/></symbol>
 <symbol id="bk-mark" viewBox="40 127 406 320"><use href="#bk-ring"/><use href="#bk-bee-art"/></symbol>
 <symbol id="bk-lockup" viewBox="34 112 1198 352"><g transform="translate(-9.20,-28.00) scale(1.1)"><use href="#bk-ring"/><use href="#bk-bee-art"/></g><use href="#bk-word"/></symbol>
+<symbol id="bk-word-only" viewBox="610 157 618 147"><use href="#bk-word"/></symbol>
 <symbol id="bk-lockup-tag" viewBox="34 112 1198 352"><g transform="translate(-9.20,-28.00) scale(1.1)"><use href="#bk-ring"/><use href="#bk-bee-art"/></g><use href="#bk-word"/><use href="#bk-tag"/></symbol>
 <symbol id="i-check" viewBox="0 0 20 20"><path d="M4.5 10.5l3.6 3.6 7.4-8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </defs></svg>`;
@@ -75,19 +76,72 @@ export function Logo({ className, title = 'Beekal' }: LogoProps) {
   );
 }
 
-/** Lockup with the "Better Tomorrow" tagline. Footer and print use this one. */
-export function LogoWithTagline({ className, title = 'Beekal, Better Tomorrow' }: LogoProps) {
+/**
+ * Just the wordmark, no bee. Exists so the tagline can be stacked under it.
+ *
+ * The SYMBOL carries the measured bounding box of the `bk-word` group - x
+ * 611.8, y 159.4, 614.3 wide, 142.1 tall, with a little padding. The outer
+ * element starts at the origin and shares only the width and height, per the
+ * rule at the top of this file. Putting the symbol's offset on the outer
+ * element puts the artwork outside the visible region, which is how this was
+ * written the first time and why nothing rendered.
+ */
+export function Wordmark({ className, title = null }: LogoProps) {
   return (
     <svg
-      viewBox="0 0 1198 352"
-      className={cn('h-12 w-auto', className)}
+      viewBox="0 0 618 147"
+      className={cn('h-5 w-auto', className)}
       role={title ? 'img' : 'presentation'}
       aria-label={title ?? undefined}
       aria-hidden={title ? undefined : true}
       focusable="false"
     >
-      <use href="#bk-lockup-tag" />
+      <use href="#bk-word-only" />
     </svg>
+  );
+}
+
+/**
+ * The lockup with the "Better Tomorrow" tagline, set as real type.
+ *
+ * The supplied artwork draws the tagline as paths 23.5 units tall against a
+ * wordmark of 142.1 - about a sixth of its height. At any size a header can
+ * carry that renders around three pixels tall, which is not a tagline, it is a
+ * smudge. Both were measured rather than estimated.
+ *
+ * So the mark and wordmark come from the sprite and the tagline is text: it
+ * scales independently, stays legible at every size, is selectable, and takes
+ * the brand colour from the surrounding theme - cobalt on white, amber on the
+ * navy band, because `.on-band` redefines `--brand`.
+ */
+export function LogoWithTagline({
+  className,
+  title = 'Beekal, Better Tomorrow',
+  size = 'md',
+}: LogoProps & { size?: 'md' | 'lg' }) {
+  const scale =
+    size === 'lg'
+      ? { mark: 'h-14', word: 'h-6', tag: 'text-[0.62rem] tracking-[0.2em]' }
+      : { mark: 'h-10', word: 'h-[1.15rem]', tag: 'text-[0.5rem] tracking-[0.18em]' };
+
+  return (
+    <span
+      className={cn('inline-flex items-center gap-2.5', className)}
+      role={title ? 'img' : undefined}
+      aria-label={title ?? undefined}
+      aria-hidden={title ? undefined : true}
+    >
+      <BeeMark className={scale.mark} title={null} />
+      <span className="flex flex-col gap-[0.3em]">
+        <Wordmark className={scale.word} title={null} />
+        <span
+          aria-hidden
+          className={cn('text-brand font-bold uppercase', scale.tag, 'leading-none')}
+        >
+          Better Tomorrow
+        </span>
+      </span>
+    </span>
   );
 }
 

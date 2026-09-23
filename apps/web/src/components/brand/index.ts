@@ -1,1 +1,1 @@
-export { BrandSprite, Logo, LogoWithTagline, BeeMark, Bee, CheckIcon } from './logo';
+export { BrandSprite, Logo, LogoWithTagline, Wordmark, BeeMark, Bee, CheckIcon } from './logo';

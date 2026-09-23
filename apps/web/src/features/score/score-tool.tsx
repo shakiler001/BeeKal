@@ -81,105 +81,118 @@ export function ScoreTool() {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:items-start">
-      <div>
-        <div className="border-line flex flex-wrap items-center justify-between gap-3 border-b pb-4">
-          <p className="tabular font-medium" aria-live="polite">
-            {ready
-              ? `${answeredCount} of ${SCORE_DIMENSIONS.length} answered`
-              : `Answer at least ${MIN_ANSWERS} to see your level (${answeredCount} of ${SCORE_DIMENSIONS.length})`}
-          </p>
-          {answeredCount > 0 && (
-            <button
-              type="button"
-              onClick={() => setAnswers({})}
-              className="text-ink-2 hover:text-ink min-h-11 text-[0.9rem] underline underline-offset-4"
-            >
-              Clear answers
-            </button>
-          )}
+    <>
+      <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:items-start">
+        <div>
+          <div className="border-line flex flex-wrap items-center justify-between gap-3 border-b pb-4">
+            <p className="tabular font-medium" aria-live="polite">
+              {ready
+                ? `${answeredCount} of ${SCORE_DIMENSIONS.length} answered`
+                : `Answer at least ${MIN_ANSWERS} to see your level (${answeredCount} of ${SCORE_DIMENSIONS.length})`}
+            </p>
+            {answeredCount > 0 && (
+              <button
+                type="button"
+                onClick={() => setAnswers({})}
+                className="text-ink-2 hover:text-ink min-h-11 text-[0.9rem] underline underline-offset-4"
+              >
+                Clear answers
+              </button>
+            )}
+          </div>
+
+          <ul className="mt-6 grid gap-7">
+            {SCORE_DIMENSIONS.map((d) => (
+              <li key={d.key}>
+                <Dimension dimension={d} value={answers[d.key]} onChange={(v) => set(d.key, v)} />
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <ul className="mt-6 grid gap-7">
-          {SCORE_DIMENSIONS.map((d) => (
-            <li key={d.key}>
-              <Dimension dimension={d} value={answers[d.key]} onChange={(v) => set(d.key, v)} />
-            </li>
-          ))}
-        </ul>
+        <Card padding="lg" className="lg:sticky lg:top-[calc(var(--head)+24px)]">
+          <ScoreRadar answers={answers} />
+
+          {!result || !levelInfo ? (
+            <div className="mt-5">
+              <p className="font-display font-bold">Your result appears here.</p>
+              <p className="text-ink-2 mt-2 text-[0.95rem] leading-relaxed">
+                Answer at least {MIN_ANSWERS} of the {SCORE_DIMENSIONS.length} to see your level,
+                your weakest dimensions and where to look first.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-5">
+              <p className="flex items-baseline gap-3">
+                <b className="text-brand font-display tabular text-[2rem] leading-none font-extrabold tracking-[-0.04em]">
+                  Level {levelInfo.level}
+                </b>
+                <span className="font-display text-lg font-semibold">{levelInfo.name}</span>
+              </p>
+              <p className="text-ink-2 mt-3 text-[0.95rem] leading-relaxed">
+                {levelInfo.description}
+              </p>
+              <p className="mt-3 text-[0.95rem] leading-relaxed">{levelInfo.guidance}</p>
+
+              <div className="border-line-2 mt-5 border-t pt-4">
+                <h3 className="text-ink-2 text-[0.78rem] font-bold tracking-[0.09em] uppercase">
+                  Look here first
+                </h3>
+                <ul className="mt-2 space-y-1">
+                  {result.weakest.map((d) => (
+                    <li key={d.key} className="flex items-baseline justify-between gap-3">
+                      <span className="font-medium">{d.label}</span>
+                      <span className="text-ink-2 tabular text-[0.9rem]">{answers[d.key]} / 5</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          <Button asChild={ready} full className="mt-6" disabled={!ready}>
+            {ready ? (
+              <Link href="/contact?intent=assessment">Talk about fixing this</Link>
+            ) : (
+              <span>Answer {MIN_ANSWERS} to continue</span>
+            )}
+          </Button>
+
+          <p className="sr" aria-live="polite">
+            {levelInfo
+              ? `Level ${levelInfo.level}, ${levelInfo.name}. ${levelInfo.description}`
+              : ''}
+          </p>
+
+          {shareCode && (
+            <p className="border-line text-ink-2 mt-5 border-t pt-4 text-[0.85rem]">
+              Send this result to a colleague:{' '}
+              <a
+                href={`/score/r/${shareCode}`}
+                className="text-ink break-all underline underline-offset-4"
+              >
+                /score/r/{shareCode}
+              </a>
+            </p>
+          )}
+        </Card>
       </div>
 
-      <Card padding="lg" className="lg:sticky lg:top-[calc(var(--head)+24px)]">
-        <ScoreRadar answers={answers} />
+      {/*
+        Outside the grid, not a full-width row inside it.
 
-        {!result || !levelInfo ? (
-          <div className="mt-5">
-            <p className="font-display font-bold">Your result appears here.</p>
-            <p className="text-ink-2 mt-2 text-[0.95rem] leading-relaxed">
-              Answer at least {MIN_ANSWERS} of the {SCORE_DIMENSIONS.length} to see your level, your
-              weakest dimensions and where to look first.
-            </p>
-          </div>
-        ) : (
-          <div className="mt-5">
-            <p className="flex items-baseline gap-3">
-              <b className="text-brand font-display tabular text-[2rem] leading-none font-extrabold tracking-[-0.04em]">
-                Level {levelInfo.level}
-              </b>
-              <span className="font-display text-lg font-semibold">{levelInfo.name}</span>
-            </p>
-            <p className="text-ink-2 mt-3 text-[0.95rem] leading-relaxed">
-              {levelInfo.description}
-            </p>
-            <p className="mt-3 text-[0.95rem] leading-relaxed">{levelInfo.guidance}</p>
-
-            <div className="border-line-2 mt-5 border-t pt-4">
-              <h3 className="text-ink-2 text-[0.78rem] font-bold tracking-[0.09em] uppercase">
-                Look here first
-              </h3>
-              <ul className="mt-2 space-y-1">
-                {result.weakest.map((d) => (
-                  <li key={d.key} className="flex items-baseline justify-between gap-3">
-                    <span className="font-medium">{d.label}</span>
-                    <span className="text-ink-2 tabular text-[0.9rem]">{answers[d.key]} / 5</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-
-        <Button asChild={ready} full className="mt-6" disabled={!ready}>
-          {ready ? (
-            <Link href="/contact?intent=assessment">Talk about fixing this</Link>
-          ) : (
-            <span>Answer {MIN_ANSWERS} to continue</span>
-          )}
-        </Button>
-
-        <p className="sr" aria-live="polite">
-          {levelInfo ? `Level ${levelInfo.level}, ${levelInfo.name}. ${levelInfo.description}` : ''}
-        </p>
-
-        {shareCode && (
-          <p className="border-line text-ink-2 mt-5 border-t pt-4 text-[0.85rem]">
-            Send this result to a colleague:{' '}
-            <a
-              href={`/score/r/${shareCode}`}
-              className="text-ink break-all underline underline-offset-4"
-            >
-              /score/r/{shareCode}
-            </a>
-          </p>
-        )}
-      </Card>
-
+        As a `col-span-2` third item it was painted over by the sticky result
+        panel: the panel's containing block is its own grid area, which is as
+        tall as the questions column, so it stayed pinned over the row beneath
+        and cut the opt-in card off mid-sentence — including the submit button.
+        A sibling below the grid cannot overlap a sticky element inside it.
+      */}
       {shareCode && (
-        <div className="lg:col-span-2">
+        <div className="mt-8">
           <ScoreReportOptIn shareCode={shareCode} />
         </div>
       )}
-    </div>
+    </>
   );
 }
 
