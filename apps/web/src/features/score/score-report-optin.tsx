@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ScoreReportRequestSchema } from '@beekal/contracts';
+import { ScoreReportRequestSchema } from '@beekal/contracts/score';
 import { Button, Card, Consent, Field, Input } from '@/components/ui';
 
 /**

@@ -40,6 +40,8 @@ export function SiteFooter() {
             <FooterLink href="/score">Maturity score</FooterLink>
             <FooterLink href="/work">Case studies</FooterLink>
             <FooterLink href="/method">How we work</FooterLink>
+            <FooterLink href="/insights">Insights</FooterLink>
+            <FooterLink href="/resources">Resources</FooterLink>
             <FooterLink href="/about">About Beekal</FooterLink>
             <FooterLink href="/contact">Contact</FooterLink>
           </FooterCol>

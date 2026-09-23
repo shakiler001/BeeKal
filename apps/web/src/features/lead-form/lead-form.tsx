@@ -7,7 +7,7 @@ import {
   PROBLEM_AREA_LABELS,
   type LeadCreate,
   type ProblemArea,
-} from '@beekal/contracts';
+} from '@beekal/contracts/leads';
 import { Button, Card, Consent, Field, Input, Select, Textarea } from '@/components/ui';
 import { SITE } from '@/content/site';
 import { cn } from '@/lib/cn';

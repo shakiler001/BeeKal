@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import type { Permission, Role, ScopeValue } from '@beekal/contracts';
+import type { Permission, Role, ScopeValue } from '@beekal/contracts/admin';
 import { Button, Card, Field, Input, Select } from '@/components/ui';
 import { cn } from '@/lib/cn';
 

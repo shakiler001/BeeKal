@@ -20,7 +20,12 @@ export default [
   {
     // The token definitions themselves, and the ported brand SVGs, are allowed
     // to contain hex values.
-    files: ['src/styles/**', 'src/components/brand/**', 'src/lib/brand.ts'],
+    files: [
+      'src/styles/**',
+      'src/components/brand/**',
+      'src/lib/brand.ts',
+      'src/app/**/opengraph-image.tsx',
+    ],
     rules: { 'no-restricted-syntax': 'off' },
   },
   {

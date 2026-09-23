@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { LoginSchema } from '@beekal/contracts';
+import { LoginSchema } from '@beekal/contracts/auth';
 import { Button, Card, Field, Input } from '@/components/ui';
 
 export function LoginForm() {

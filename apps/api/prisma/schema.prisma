@@ -520,3 +520,95 @@ model ScoreSubmission {
   @@index([email])
   @@map("score_submissions")
 }
+
+// ============================================================
+// LEAD MAGNETS AND ARTICLES
+// ============================================================
+
+/// Downloadable resources: checklists, guides, tools. Generic on purpose so
+/// marketing can add the sixth without a developer (docs/01 section 5).
+model Resource {
+  id          String @id @default(uuid(7))
+  slug        String
+  locale      String @default("en")
+  title       String
+  description String
+  /// 'checklist' | 'guide' | 'tool'
+  kind        String
+
+  /// What the reader actually gets, listed before they hand over an email.
+  contents    Json
+  fileMediaId String? @map("file_media_id")
+  /// Where the file lives until a real upload replaces it.
+  fileUrl     String? @map("file_url")
+
+  /// A gate trades value for an address. Some resources are better ungated.
+  isGated       Boolean @default(true) @map("is_gated")
+  downloadCount Int     @default(0) @map("download_count")
+
+  seoTitle       String @map("seo_title")
+  seoDescription String @map("seo_description")
+
+  order       Int           @default(0)
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?     @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  downloads ResourceDownload[]
+
+  @@unique([slug, locale])
+  @@index([status, order])
+  @@map("resources")
+}
+
+model ResourceDownload {
+  id         String @id @default(uuid(7))
+  resourceId String @map("resource_id")
+  email      String
+
+  /// Separate from any reply consent, and never assumed from a download.
+  marketingConsent Boolean @default(false) @map("marketing_consent")
+
+  utmSource String? @map("utm_source")
+  referrer  String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  resource Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@index([resourceId, createdAt])
+  @@index([email])
+  @@map("resource_downloads")
+}
+
+model Article {
+  id      String @id @default(uuid(7))
+  slug    String
+  locale  String @default("en")
+  title   String
+  excerpt String
+  /// Structured rich text, so it can render to HTML and to plain text.
+  body    Json
+
+  coverMediaId String? @map("cover_media_id")
+  authorId     String? @map("author_id")
+  tags         String[]
+  readMinutes  Int      @default(4) @map("read_minutes")
+
+  seoTitle       String @map("seo_title")
+  seoDescription String @map("seo_description")
+
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?     @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@unique([slug, locale])
+  @@index([status, publishedAt])
+  @@map("articles")
+}

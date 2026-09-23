@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import type { LeadStage } from '@beekal/contracts';
+import type { LeadStage } from '@beekal/contracts/leads';
 import { Button, Card, Field, Select } from '@/components/ui';
 
 /** The pipeline stages, in the order a deal actually moves. */

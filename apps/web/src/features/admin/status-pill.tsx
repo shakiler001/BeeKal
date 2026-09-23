@@ -1,4 +1,4 @@
-import type { ContentStatus } from '@beekal/contracts';
+import type { ContentStatus } from '@beekal/contracts/shared';
 import { cn } from '@/lib/cn';
 
 const STYLES: Record<ContentStatus, string> = {

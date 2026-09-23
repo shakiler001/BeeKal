@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { AdminLead } from '@beekal/contracts';
+import type { AdminLead } from '@beekal/contracts/admin';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/cn';
 

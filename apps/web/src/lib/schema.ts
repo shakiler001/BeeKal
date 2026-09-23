@@ -1,6 +1,7 @@
 import { ASSESSMENT, SITE } from '@/content/site';
 import type { Solution } from '@/content/solutions';
 import type { CaseStudy } from '@/content/case-studies';
+import type { Article } from '@/content/articles';
 
 /**
  * Structured data, generated from the same records the page renders.
@@ -129,5 +130,20 @@ export function caseStudySchema(c: CaseStudy) {
     url: url(`/work/${c.slug}`),
     author: { '@id': url('/#organization') },
     publisher: { '@id': url('/#organization') },
+  };
+}
+
+export function articleSchema(article: Article) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.excerpt,
+    url: url(`/insights/${article.slug}`),
+    datePublished: article.publishedAt,
+    keywords: article.tags.join(', '),
+    author: { '@id': url('/#organization') },
+    publisher: { '@id': url('/#organization') },
+    inLanguage: 'en',
   };
 }

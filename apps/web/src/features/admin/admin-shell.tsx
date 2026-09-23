@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import type { SessionUser } from '@beekal/contracts';
+import type { SessionUser } from '@beekal/contracts/auth';
 import { BeeMark } from '@/components/brand';
 import { ThemeToggle } from '@/components/ui';
 import { cn } from '@/lib/cn';
