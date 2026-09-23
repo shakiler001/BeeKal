@@ -80,8 +80,10 @@ export default [
     },
   },
   {
-    // Module wiring files bind ports to adapters, so they must see both.
-    files: ['src/modules/*/*.module.ts', 'src/main.ts', 'src/app.module.ts'],
+    // Composition roots. Module wiring files bind ports to adapters, so they
+    // must see both; an operator CLI is the same kind of thing - another entry
+    // point that assembles what it needs rather than living inside a layer.
+    files: ['src/modules/*/*.module.ts', 'src/main.ts', 'src/app.module.ts', 'src/cli/**/*.ts'],
     rules: {
       'boundaries/element-types': 'off',
       'no-restricted-imports': 'off',

@@ -7,6 +7,24 @@
  * otherwise stay out of the way.
  */
 
+/**
+ * Argon2id parameters.
+ *
+ * memoryCost is the setting that actually matters against GPU attack. 19 MiB
+ * and t=2 is the OWASP baseline; raising memory beats raising iterations.
+ *
+ * Lives in the domain because two entry points hash passwords - the API and
+ * the reset CLI - and they must agree. Argon2 encodes its parameters into the
+ * hash, so a drifted CLI would still produce a verifiable password while
+ * quietly weakening it.
+ */
+export const ARGON2_OPTIONS = {
+  type: 2, // argon2id
+  memoryCost: 19_456,
+  timeCost: 2,
+  parallelism: 1,
+} as const;
+
 export const MIN_PASSWORD_LENGTH = 12;
 export const MAX_PASSWORD_LENGTH = 200;
 

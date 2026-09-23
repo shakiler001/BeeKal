@@ -3,7 +3,7 @@ import { hash, verify } from 'argon2';
 import { PrismaService } from '../../../shared/prisma.service.js';
 import { PermissionsService } from '../../access/infrastructure/permissions.service.js';
 import { env } from '../../../config/env.js';
-import { checkPassword } from '../domain/password.js';
+import { ARGON2_OPTIONS, checkPassword } from '../domain/password.js';
 import { expiryFrom, hashToken, issueToken, shouldExtend } from '../../../shared/crypto/index.js';
 
 export interface LoginContext {
@@ -16,19 +16,6 @@ export type LoginResult =
   | { ok: false; reason: 'invalid' | 'inactive' | 'no-password' };
 
 export type SetPasswordResult = { ok: true } | { ok: false; reason: string };
-
-/**
- * Argon2id parameters.
- *
- * memoryCost is the setting that actually matters against GPU attack. 19 MiB
- * and t=2 is the OWASP baseline; raising memory beats raising iterations.
- */
-const ARGON2_OPTIONS = {
-  type: 2, // argon2id
-  memoryCost: 19_456,
-  timeCost: 2,
-  parallelism: 1,
-} as const;
 
 @Injectable()
 export class AuthService {

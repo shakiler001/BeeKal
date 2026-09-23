@@ -16,7 +16,8 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "clean": "rm -rf dist .turbo"
+    "clean": "rm -rf dist .turbo",
+    "user:reset-password": "tsx src/cli/reset-password.ts"
   },
   "dependencies": {
     "@beekal/contracts": "workspace:*",
