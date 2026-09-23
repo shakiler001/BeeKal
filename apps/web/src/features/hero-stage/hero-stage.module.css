@@ -1,0 +1,150 @@
+/**
+ * The hero stage, ported from the demo (legacy/beekal-website-demo.html, the
+ * `.stage` block).
+ *
+ * This is a CSS module rather than Tailwind utilities on purpose. The first
+ * port expressed this diagram as utility classes and quietly lost four things
+ * that carry its meaning: the tinted disc, the cobalt hub, the state dot on
+ * each chip, and the dashed-to-solid connector treatment. Utilities are good
+ * at one-off spacing and bad at a component with two visual states and a
+ * container query. Keeping the demo's own CSS shape makes the two directly
+ * comparable, so drift is visible in a diff.
+ *
+ * `container-type: inline-size` is load-bearing: the chip type scales with the
+ * stage, not the viewport, so the diagram stays legible when it is placed in a
+ * narrower column.
+ */
+
+.stage {
+  position: relative;
+  aspect-ratio: 1;
+  container-type: inline-size;
+}
+
+/* The tinted disc the whole diagram sits on. Without it the ring reads as a
+   stray arc rather than the edge of a system. */
+.stage::before {
+  content: '';
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  background: var(--bg-alt);
+}
+
+.ring,
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ring path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+/* `non-scaling-stroke` keeps the connector weight identical to the ring's at
+   every stage size — the viewBox is 100x100 but the element is not. */
+.lines path {
+  fill: none;
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  transition: stroke 0.35s;
+}
+
+/* Disconnected: grey and dashed. Connected: solid, in the network colour.
+   The dash is the point — a dashed line reads as "not really joined up". */
+.lines path.off {
+  stroke: var(--field);
+  stroke-dasharray: 3 6;
+}
+
+.lines path.on {
+  stroke: var(--net);
+}
+
+.pulse {
+  fill: var(--accent);
+}
+
+/* The hub. `--lg-a`/`--lg-b` invert the bee's own fills so it reads white on
+   cobalt; the double box-shadow is the ring-gap-ring treatment, drawn with
+   shadows so it costs no extra element. */
+.hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 25%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--cobalt);
+  display: grid;
+  place-items: center;
+  --lg-a: #fff;
+  --lg-b: var(--cobalt);
+  box-shadow:
+    0 0 0 5px var(--bg-alt),
+    0 0 0 7px var(--net);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.hub svg {
+  width: 84%;
+  height: auto;
+}
+
+.chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.58em 1em;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  border: 1.5px dashed var(--field);
+  font-size: clamp(11px, 2.4cqw, 14.5px);
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  transition:
+    color 0.3s,
+    border-color 0.3s;
+  box-shadow: 0 6px 16px -8px rgba(10, 22, 64, 0.28);
+}
+
+/* The state dot. Hollow and grey while scattered, filled amber once the chip
+   belongs to the system. */
+.chip i {
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 50%;
+  border: 1.5px solid var(--field);
+  transition:
+    background 0.3s,
+    border-color 0.3s;
+}
+
+.chip.on {
+  color: var(--ink);
+  border: 1.5px solid var(--net);
+}
+
+.chip.on i {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+@container (max-width: 470px) {
+  .chip {
+    padding: 0.5em 0.8em;
+    gap: 0.45em;
+  }
+}

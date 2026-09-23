@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Bee } from '@/components/brand';
 import { cn } from '@/lib/cn';
+import styles from './hero-stage.module.css';
 
 /**
  * The before/after hero animation, ported from the demo.
@@ -20,27 +21,34 @@ import { cn } from '@/lib/cn';
  *  - the whole figure carries one descriptive label; the moving parts are
  *    hidden from assistive technology
  *  - a live region announces the state when the visitor toggles it manually
+ *
+ * The frame loop is imperative and writes to the DOM directly, exactly as the
+ * demo does. Driving six chips, six connector paths, a hub and a pulse train
+ * through React state would re-render the tree sixty times a second to move
+ * things React is not otherwise responsible for. React owns the view state —
+ * the caption, the pressed buttons, the live region — and nothing else.
  */
 
 interface Chip {
   label: string;
-  /** Final position, as a percentage of the stage. */
-  ax: number;
-  ay: number;
-  /** Scattered position. */
+  /** Scattered position, as a percentage of the stage. */
   bx: number;
   by: number;
   /** Scattered rotation, in degrees. */
   br: number;
 }
 
+/**
+ * Order is load-bearing: the resting position of chip `i` is the point at
+ * `-90 + i * 60` degrees, so this array reads clockwise from the top.
+ */
 const CHIPS: Chip[] = [
-  { label: 'Excel sheets', ax: 50, ay: 12, bx: 24, by: 20, br: -8 },
-  { label: 'Email threads', ax: 82.9, ay: 31, bx: 73, by: 15, br: 6 },
-  { label: 'Legacy app', ax: 82.9, ay: 69, bx: 79, by: 47, br: -5 },
-  { label: 'Manual reports', ax: 50, ay: 88, bx: 58, by: 67, br: 7 },
-  { label: 'Paper forms', ax: 17.1, ay: 69, bx: 22, by: 76, br: -6 },
-  { label: 'WhatsApp groups', ax: 17.1, ay: 31, bx: 37, by: 42, br: 9 },
+  { label: 'Excel sheets', bx: 24, by: 20, br: -8 },
+  { label: 'Email threads', bx: 73, by: 15, br: 6 },
+  { label: 'Legacy app', bx: 79, by: 47, br: -5 },
+  { label: 'Manual reports', bx: 58, by: 67, br: 7 },
+  { label: 'Paper forms', bx: 22, by: 76, br: -6 },
+  { label: 'WhatsApp groups', bx: 37, by: 42, br: 9 },
 ];
 
 const CAPTION = {
@@ -50,140 +58,352 @@ const CAPTION = {
 
 type View = 'before' | 'after';
 
+const HUB = { x: 50, y: 50 };
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+/**
+ * CSS-module class names, read once.
+ *
+ * `noUncheckedIndexedAccess` makes every lookup on the module's index
+ * signature `string | undefined`, so they are resolved here rather than at
+ * each of the dozen call sites.
+ */
+const css = {
+  stage: styles['stage'] ?? '',
+  ring: styles['ring'] ?? '',
+  lines: styles['lines'] ?? '',
+  pulse: styles['pulse'] ?? '',
+  hub: styles['hub'] ?? '',
+  chip: styles['chip'] ?? '',
+  on: styles['on'] ?? '',
+  off: styles['off'] ?? '',
+};
+
+/** Per-chip animation state. `s` runs 0 (scattered) to 1 (connected). */
+interface Node {
+  s: number;
+  from: number;
+  to: number;
+  t0: number;
+  /** Resting position, recomputed by layout() whenever the stage resizes. */
+  ax: number;
+  ay: number;
+}
+
 export function HeroStage() {
   const [view, setView] = useState<View>('before');
   const [announcement, setAnnouncement] = useState('');
-  const figureRef = useRef<HTMLDivElement>(null);
+
+  const stageRef = useRef<HTMLDivElement>(null);
+  const ringPathRef = useRef<SVGPathElement>(null);
+  const pulsesRef = useRef<SVGGElement>(null);
+  const hubRef = useRef<HTMLDivElement>(null);
+  const chipRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const pathRefs = useRef<(SVGPathElement | null)[]>([]);
+
+  const nodesRef = useRef<Node[]>(
+    CHIPS.map(() => ({ s: 0, from: 0, to: 0, t0: 0, ax: 50, ay: 50 })),
+  );
   const playedRef = useRef(false);
+  const viewRef = useRef<View>('before');
+
+  /**
+   * Exposes the imperative transition to the toggle buttons. The loop is set
+   * up once on mount, so the handler reaches it through a ref rather than the
+   * effect being rebuilt whenever the view changes.
+   */
+  const goRef = useRef<(target: 0 | 1, dur?: number, announce?: boolean) => void>(() => {});
 
   useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
+    const stage = stageRef.current;
+    const hub = hubRef.current;
+    const ringPath = ringPathRef.current;
+    const pulses = pulsesRef.current;
+    if (!stage || !hub || !ringPath || !pulses) return;
+
+    const nodes = nodesRef.current;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let raf = 0;
+    let pulseRaf = 0;
+
+    /**
+     * Resting geometry. The radius tightens below 470px so the chips, which
+     * are laid out from their centres, do not hang off the edge of a narrow
+     * stage. The ring arc is drawn to the same radius, so the two can never
+     * disagree.
+     */
+    function layout(): void {
+      const r = stage!.clientWidth < 470 ? 34.5 : 38;
+      nodes.forEach((n, i) => {
+        const angle = ((-90 + i * 60) * Math.PI) / 180;
+        n.ax = 50 + r * Math.cos(angle);
+        n.ay = 50 + r * Math.sin(angle);
+      });
+      const pt = (deg: number): [string, string] => {
+        const rad = (deg * Math.PI) / 180;
+        return [(50 + r * Math.cos(rad)).toFixed(2), (50 + r * Math.sin(rad)).toFixed(2)];
+      };
+      const [sx, sy] = pt(10);
+      const [ex, ey] = pt(-50);
+      ringPath!.setAttribute('d', `M${sx} ${sy}A${r} ${r} 0 1 1 ${ex} ${ey}`);
+    }
+
+    const posOf = (n: Node, chip: Chip) => ({
+      x: lerp(chip.bx, n.ax, n.s),
+      y: lerp(chip.by, n.ay, n.s),
+    });
+
+    function render(): void {
+      const current = nodes.map((n, i) => posOf(n, CHIPS[i]!));
+
+      nodes.forEach((n, i) => {
+        const e = ease(n.s);
+        const here = current[i]!;
+        const chipEl = chipRefs.current[i];
+        const pathEl = pathRefs.current[i];
+        const connected = n.s > 0.55;
+
+        if (chipEl) {
+          chipEl.style.left = `${here.x}%`;
+          chipEl.style.top = `${here.y}%`;
+          chipEl.style.transform = `translate(-50%,-50%) rotate(${CHIPS[i]!.br * (1 - e)}deg)`;
+          chipEl.classList.toggle(css.on, connected);
+        }
+
+        if (pathEl) {
+          // Each chip connects to the chip two places round, and that endpoint
+          // slides into the hub as the system comes together. It is what makes
+          // the six lines resolve into a star rather than a ring.
+          const other = current[(i + 2) % current.length]!;
+          const tx = lerp(other.x, HUB.x, e);
+          const ty = lerp(other.y, HUB.y, e);
+          const mx = (here.x + tx) / 2;
+          const my = (here.y + ty) / 2;
+          const dx = tx - here.x;
+          const dy = ty - here.y;
+          // Bow the curve while scattered, alternating sides, and straighten
+          // it to nothing once connected.
+          const k = (1 - e) * 0.32 * (i % 2 ? 1 : -1);
+          pathEl.setAttribute(
+            'd',
+            `M${here.x} ${here.y}Q${mx - dy * k} ${my + dx * k} ${tx} ${ty}`,
+          );
+          pathEl.setAttribute('class', connected ? css.on : css.off);
+        }
+      });
+
+      const mean = nodes.reduce((acc, n) => acc + n.s, 0) / nodes.length;
+      hub!.style.opacity = String(Math.max(0, (mean - 0.35) / 0.65));
+      hub!.style.transform = `translate(-50%,-50%) scale(${0.8 + 0.2 * mean})`;
+    }
+
+    function clearPulses(): void {
+      cancelAnimationFrame(pulseRaf);
+      pulses!.replaceChildren();
+    }
+
+    /** Amber dots running each chip's line into the hub, once, on arrival. */
+    function pulse(): void {
+      if (reduce) return;
+      clearPulses();
+      const t0 = performance.now();
+      const dots = nodes.map(() => {
+        const c = document.createElementNS(SVG_NS, 'circle');
+        c.setAttribute('r', '1.15');
+        c.setAttribute('class', css.pulse);
+        c.setAttribute('opacity', '0');
+        pulses!.appendChild(c);
+        return c;
+      });
+
+      const tick = (t: number): void => {
+        let live = false;
+        dots.forEach((c, i) => {
+          const k = (t - t0 - i * 110) / 850;
+          if (k < 1) live = true;
+          if (k <= 0 || k >= 1) {
+            c.setAttribute('opacity', '0');
+            return;
+          }
+          const q = posOf(nodes[i]!, CHIPS[i]!);
+          const e = ease(k);
+          c.setAttribute('cx', String(lerp(q.x, HUB.x, e)));
+          c.setAttribute('cy', String(lerp(q.y, HUB.y, e)));
+          c.setAttribute('opacity', '1');
+        });
+        if (live && viewRef.current === 'after') pulseRaf = requestAnimationFrame(tick);
+        else clearPulses();
+      };
+      pulseRaf = requestAnimationFrame(tick);
+    }
+
+    function go(target: 0 | 1, dur = 1000, announce = false): void {
+      cancelAnimationFrame(raf);
+      clearPulses();
+
+      const next: View = target ? 'after' : 'before';
+      viewRef.current = next;
+      setView(next);
+      if (announce) setAnnouncement(CAPTION[next]);
+
+      if (reduce) {
+        nodes.forEach((n) => {
+          n.s = target;
+        });
+        render();
+        return;
+      }
+
+      const now = performance.now();
+      nodes.forEach((n, i) => {
+        n.from = n.s;
+        n.to = target;
+        // Stagger, so the six do not move as one block.
+        n.t0 = now + i * 70;
+      });
+
+      const tick = (t: number): void => {
+        let done = true;
+        nodes.forEach((n) => {
+          const k = Math.min(1, Math.max(0, (t - n.t0) / dur));
+          n.s = n.from + (n.to - n.from) * ease(k);
+          if (k < 1) done = false;
+        });
+        render();
+        if (!done) raf = requestAnimationFrame(tick);
+        else if (target) pulse();
+      };
+      raf = requestAnimationFrame(tick);
+    }
+
+    goRef.current = go;
+
+    layout();
+
+    const onResize = (): void => {
+      layout();
+      render();
+    };
+    window.addEventListener('resize', onResize);
+
+    let observer: IntersectionObserver | undefined;
+    let fallback = 0;
+    let start = 0;
+
+    if (reduce) {
       // Skip straight to the resolved state: the message matters, the motion
       // does not.
       playedRef.current = true;
+      nodes.forEach((n) => {
+        n.s = 1;
+      });
+      viewRef.current = 'after';
       setView('after');
-      return;
+      render();
+    } else {
+      nodes.forEach((n) => {
+        n.s = 0;
+      });
+      render();
+
+      const play = (): void => {
+        if (playedRef.current) return;
+        playedRef.current = true;
+        observer?.disconnect();
+        go(1, 1150);
+      };
+
+      if (typeof IntersectionObserver !== 'undefined') {
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((en) => en.isIntersecting) && !playedRef.current) {
+              start = window.setTimeout(play, 260);
+            }
+          },
+          { threshold: 0.6 },
+        );
+        observer.observe(stage);
+      }
+
+      // If the observer never fires, play anyway rather than leaving the hero
+      // stuck in the "before" state forever.
+      fallback = window.setTimeout(play, 6000);
     }
-
-    const play = () => {
-      if (playedRef.current) return;
-      playedRef.current = true;
-      window.setTimeout(() => setView('after'), 900);
-    };
-
-    const el = figureRef.current;
-    let observer: IntersectionObserver | undefined;
-
-    if (el && typeof IntersectionObserver !== 'undefined') {
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((e) => e.isIntersecting)) {
-            observer?.disconnect();
-            play();
-          }
-        },
-        { threshold: 0.35 },
-      );
-      observer.observe(el);
-    }
-
-    // Fallback: if the observer never fires, play anyway rather than leaving
-    // the hero stuck in the "before" state forever.
-    const fallback = window.setTimeout(play, 6000);
 
     return () => {
-      observer?.disconnect();
+      cancelAnimationFrame(raf);
+      cancelAnimationFrame(pulseRaf);
       window.clearTimeout(fallback);
+      window.clearTimeout(start);
+      window.removeEventListener('resize', onResize);
+      observer?.disconnect();
     };
   }, []);
 
-  function choose(next: View) {
+  function choose(next: View): void {
     playedRef.current = true;
-    setView(next);
-    setAnnouncement(CAPTION[next]);
+    goRef.current(next === 'after' ? 1 : 0, 1000, true);
   }
 
-  const after = view === 'after';
-
   return (
-    <figure className="m-0">
+    <figure className="m-0 w-full max-w-[540px] justify-self-end max-lg:mx-auto">
       <div
-        ref={figureRef}
+        ref={stageRef}
         role="img"
         aria-label="Six scattered tools — spreadsheets, chats, email, old software and paper — brought together into one connected system."
-        className="relative mx-auto aspect-square w-full max-w-[520px]"
+        className={css.stage}
       >
         {/* The ring: the brand's arc, drawn behind everything. */}
-        <svg
-          viewBox="0 0 100 100"
-          aria-hidden
-          className={cn(
-            'absolute inset-0 size-full transition-opacity duration-700',
-            after ? 'opacity-100' : 'opacity-0',
-          )}
-          fill="none"
-        >
-          <path
-            d="M87.42 56.6A38 38 0 1 1 74.42 20.89"
-            stroke="var(--accent)"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
+        <svg viewBox="0 0 100 100" aria-hidden className={css.ring}>
+          <path ref={ringPathRef} d="M87.42 56.6A38 38 0 1 1 74.42 20.89" />
         </svg>
 
-        {/* Connection lines, drawn only once the system is one thing. */}
-        <svg viewBox="0 0 100 100" aria-hidden className="absolute inset-0 size-full" fill="none">
-          {CHIPS.map((c) => (
-            <line
+        {/* Connectors, plus the group the pulse dots are appended into. */}
+        <svg viewBox="0 0 100 100" aria-hidden className={css.lines}>
+          {CHIPS.map((c, i) => (
+            <path
               key={c.label}
-              x1="50"
-              y1="50"
-              x2={c.ax}
-              y2={c.ay}
-              stroke="var(--net)"
-              strokeWidth="0.4"
-              className={cn('transition-opacity duration-700', after ? 'opacity-40' : 'opacity-0')}
+              ref={(el) => {
+                pathRefs.current[i] = el;
+              }}
+              className={css.off}
             />
           ))}
+          <g ref={pulsesRef} />
         </svg>
 
-        {/* The hub. */}
-        <div
-          aria-hidden
-          className={cn(
-            'absolute top-1/2 left-1/2 w-[26%] -translate-x-1/2 -translate-y-1/2',
-            'transition-all duration-700',
-            after ? 'scale-100 opacity-100' : 'scale-75 opacity-0',
-          )}
-        >
-          <Bee className="h-auto w-full" />
+        <div ref={hubRef} aria-hidden className={css.hub}>
+          <Bee />
         </div>
 
-        {CHIPS.map((c) => (
+        {CHIPS.map((c, i) => (
           <span
             key={c.label}
             aria-hidden
-            className={cn(
-              'absolute -translate-x-1/2 -translate-y-1/2',
-              'bg-surface border-line-2 rounded-full border',
-              'px-3 py-1.5 text-[clamp(0.68rem,0.5rem+0.6vw,0.85rem)] font-medium whitespace-nowrap',
-              'shadow-card-sm',
-              'transition-all duration-700 ease-out',
-            )}
+            ref={(el) => {
+              chipRefs.current[i] = el;
+            }}
+            className={css.chip}
             style={{
-              left: `${after ? c.ax : c.bx}%`,
-              top: `${after ? c.ay : c.by}%`,
-              transform: `translate(-50%,-50%) rotate(${after ? 0 : c.br}deg)`,
+              left: `${c.bx}%`,
+              top: `${c.by}%`,
+              transform: `translate(-50%,-50%) rotate(${c.br}deg)`,
             }}
           >
+            <i />
             {c.label}
           </span>
         ))}
       </div>
 
-      <figcaption className="mt-5 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-ink-2 text-[0.95rem]">{CAPTION[view]}</p>
+      <figcaption className="mt-[18px] flex flex-wrap items-center justify-between gap-x-5 gap-y-3">
+        <p className="font-display min-h-[2.7em] max-w-[19em] text-[1rem] leading-[1.35] font-semibold tracking-[-0.01em]">
+          {CAPTION[view]}
+        </p>
 
         <div
           className="border-field bg-surface inline-grid grid-flow-col gap-0.5 rounded-full border-[1.5px] p-1"

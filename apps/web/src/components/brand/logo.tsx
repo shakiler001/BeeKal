@@ -10,6 +10,13 @@ import { cn } from '@/lib/cn';
  * on navy - so an external sprite would silently break theming.
  *
  * Rendered once in the root layout. Components reference symbols by id.
+ *
+ * One trap worth naming: a component's outer <svg> viewBox is NOT the symbol's
+ * viewBox. A <use> draws the symbol into a nested viewport at (0,0), so the
+ * outer element must start at the origin - "0 0 W H" - and only the width and
+ * height are shared. Copying the symbol's own "34 112 1198 352" onto the outer
+ * svg shifts the artwork up and left by (34,112) and clips it. The demo had
+ * this right; the first port of it did not.
  */
 const SPRITE = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 <defs>
@@ -40,7 +47,7 @@ type LogoProps = {
 export function BeeMark({ className, title = 'Beekal' }: LogoProps) {
   return (
     <svg
-      viewBox="40 127 406 320"
+      viewBox="0 0 406 320"
       className={cn('h-8 w-auto', className)}
       role={title ? 'img' : 'presentation'}
       aria-label={title ?? undefined}
@@ -56,7 +63,7 @@ export function BeeMark({ className, title = 'Beekal' }: LogoProps) {
 export function Logo({ className, title = 'Beekal' }: LogoProps) {
   return (
     <svg
-      viewBox="34 112 1198 352"
+      viewBox="0 0 1198 352"
       className={cn('h-9 w-auto', className)}
       role={title ? 'img' : 'presentation'}
       aria-label={title ?? undefined}
@@ -72,7 +79,7 @@ export function Logo({ className, title = 'Beekal' }: LogoProps) {
 export function LogoWithTagline({ className, title = 'Beekal, Better Tomorrow' }: LogoProps) {
   return (
     <svg
-      viewBox="34 112 1198 352"
+      viewBox="0 0 1198 352"
       className={cn('h-12 w-auto', className)}
       role={title ? 'img' : 'presentation'}
       aria-label={title ?? undefined}
@@ -87,7 +94,7 @@ export function LogoWithTagline({ className, title = 'Beekal, Better Tomorrow' }
 /** Just the bee, no ring. The hub of the hero animation. */
 export function Bee({ className }: { className?: string }) {
   return (
-    <svg viewBox="40 127 372 268" className={className} aria-hidden focusable="false">
+    <svg viewBox="0 0 372 268" className={className} aria-hidden focusable="false">
       <use href="#bk-bee" />
     </svg>
   );
