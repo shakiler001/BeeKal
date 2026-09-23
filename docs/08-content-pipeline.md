@@ -115,13 +115,27 @@ the JSON columns never leak into components.
 | --- | -------------------------------------------------------- | ----------------------------------------------- | ----- |
 | 1   | Content layer + revalidation                             | The mechanism. Nothing user-visible on its own. | Done  |
 | 2   | Case studies read from the database                      | `/work` reflects what is in the admin           | Done  |
-| 3   | Case study BFF + editor UI                               | Writing a case study without a deploy           | Next  |
-| 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 |       |
+| 3   | Case study BFF + editor UI                               | Writing a case study without a deploy           | Done  |
+| 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 | Next  |
 | 5   | FAQs, problems                                           | The remaining seeded types                      |       |
 | 6   | Articles, resources                                      | Insights and Resources become publishable       |       |
 
 Steps 2 and 4 are the ones that change what a visitor sees. Step 1 is the
 foundation and is deliberately boring.
+
+### What step 3 delivered
+
+Case studies are writable from the admin: three BFF routes, a form that follows
+the eight-part format in the order the page renders it, and publish, unpublish
+and delete.
+
+Verified by driving the browser as a real editor would — signed in on a
+throwaway Editor account, wrote a case study, published it, and it was on
+`/work` with its own detail page five seconds later. The honesty rule was then
+tested from the same screen: unticking "example scenario" without a named,
+approved client shows the reason inline, disables publish, and has the save
+rejected. The database row was unchanged afterwards. The test data and the
+account were removed.
 
 ### What steps 1 and 2 delivered
 

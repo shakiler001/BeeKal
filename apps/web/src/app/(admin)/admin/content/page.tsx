@@ -1,5 +1,6 @@
+import Link from 'next/link';
 import type { ContentStatus } from '@beekal/contracts';
-import { Card } from '@/components/ui';
+import { Button, Card } from '@/components/ui';
 import { adminApi } from '@/lib/admin/api';
 import { can, requireSession } from '@/lib/admin/session';
 import { AdminPageHeader } from '@/features/admin/page-header';
@@ -53,18 +54,28 @@ export default async function ContentPage() {
       <div className="mt-8 grid gap-6">
         {cases && (
           <section>
-            <h2 className="font-display mb-3 text-lg font-bold tracking-tight">
-              Case studies
-              <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">{cases.length}</span>
-            </h2>
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <h2 className="font-display text-lg font-bold tracking-tight">
+                Case studies
+                <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">{cases.length}</span>
+              </h2>
+              {can(session, 'case_study:create') && (
+                <Button asChild size="sm" className="ml-auto">
+                  <Link href="/admin/content/case-studies/new">Write one</Link>
+                </Button>
+              )}
+            </div>
             <Card padding="sm">
               <ul className="divide-line divide-y">
                 {cases.map((c) => (
                   <li key={c.id} className="flex flex-wrap items-center gap-3 py-3">
-                    <span className="min-w-0 flex-1">
+                    <Link
+                      href={`/admin/content/case-studies/${c.id}`}
+                      className="min-w-0 flex-1 rounded-sm underline-offset-4 hover:underline"
+                    >
                       <span className="font-medium">{c.title}</span>
                       <span className="text-ink-2 block text-[0.88rem]">{c.context}</span>
-                    </span>
+                    </Link>
                     {c.isIllustrative && (
                       <span className="bg-accent text-on-accent rounded-full px-2 py-0.5 text-[0.7rem] font-bold tracking-wide uppercase">
                         Example
