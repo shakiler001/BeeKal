@@ -11,7 +11,20 @@
  * (docs/02 section 5).
  */
 
-export type SolutionKey = 'build' | 'modernize' | 'automate' | 'ai' | 'care';
+/**
+ * A solution's stable identifier.
+ *
+ * Deliberately a plain string rather than a union of the five that shipped.
+ * Categories are database rows now and the founder can add one, so a closed
+ * union would make the type system disagree with the data the moment he did —
+ * and the compiler would be wrong, not the data.
+ *
+ * What is lost is the compile-time guarantee that a key exists. What replaces
+ * it is `solutionByKey()`, which returns undefined for a key that does not,
+ * forcing every caller to decide what to render when a category has been
+ * removed out from under a case study that referenced it.
+ */
+export type SolutionKey = string;
 
 export interface Solution {
   key: SolutionKey;
@@ -226,7 +239,16 @@ export const SOLUTIONS: Solution[] = [
   },
 ];
 
-export const SOLUTION_BY_KEY = Object.fromEntries(SOLUTIONS.map((s) => [s.key, s])) as Record<
-  SolutionKey,
-  Solution
->;
+/**
+ * Lookup by key, for the baseline set.
+ *
+ * Returns `Solution | undefined` on purpose. The old constant was typed as a
+ * total `Record<SolutionKey, Solution>`, which claimed every key resolves —
+ * true while there were exactly five compiled-in categories, and a lie the
+ * moment one can be deleted.
+ */
+const BY_KEY = new Map(SOLUTIONS.map((s) => [s.key, s]));
+
+export function solutionByKey(key: string): Solution | undefined {
+  return BY_KEY.get(key);
+}

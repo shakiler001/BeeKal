@@ -48,7 +48,7 @@ export default async function ContentPage() {
     <>
       <AdminPageHeader
         title="Content"
-        description="Case studies are live on the site: published rows appear within seconds. Solutions and FAQs are stored here but the public pages still read the repository."
+        description="Categories and case studies are live on the site: published changes appear within seconds. FAQs are stored here but the public pages still read the repository."
       />
 
       <div className="mt-8 grid gap-6">
@@ -100,20 +100,32 @@ export default async function ContentPage() {
 
         {solutions && (
           <section>
-            <h2 className="font-display mb-3 text-lg font-bold tracking-tight">
-              Solutions
-              <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">{solutions.length}</span>
-            </h2>
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <h2 className="font-display text-lg font-bold tracking-tight">
+                Categories
+                <span className="text-ink-2 ml-2 text-[0.9rem] font-medium">
+                  {solutions.length}
+                </span>
+              </h2>
+              {can(session, 'solution:create') && (
+                <Button asChild size="sm" className="ml-auto">
+                  <Link href="/admin/content/solutions/new">Add a category</Link>
+                </Button>
+              )}
+            </div>
             <Card padding="sm">
               <ul className="divide-line divide-y">
                 {solutions.map((s) => (
                   <li key={s.id} className="flex flex-wrap items-center gap-3 py-3">
-                    <span className="min-w-0 flex-1">
+                    <Link
+                      href={`/admin/content/solutions/${s.id}`}
+                      className="min-w-0 flex-1 rounded-sm underline-offset-4 hover:underline"
+                    >
                       <span className="font-medium">{s.name}</span>
                       <span className="text-ink-2 block truncate text-[0.88rem]">
                         {s.cardHeadline}
                       </span>
-                    </span>
+                    </Link>
                     <StatusPill status={s.status} />
                   </li>
                 ))}

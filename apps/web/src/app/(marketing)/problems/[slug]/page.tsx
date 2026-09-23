@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { Button, Card, Section, SectionHeader, Wrap } from '@/components/ui';
 import { CheckIcon } from '@/components/brand';
 import { PROBLEMS } from '@/content/problems';
-import { SOLUTION_BY_KEY } from '@/content/solutions';
+import { getSolutionByKey } from '@/lib/content/solutions';
 import { breadcrumbSchema } from '@/lib/schema';
 
 export function generateStaticParams() {
@@ -38,7 +38,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
   const problem = PROBLEMS.find((p) => p.slug === slug);
   if (!problem) notFound();
 
-  const solution = SOLUTION_BY_KEY[problem.solutionKey];
+  const solution = await getSolutionByKey(problem.solutionKey);
 
   return (
     <>
@@ -118,16 +118,20 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                 Tell us what your week looks like. We will say whether an assessment is the right
                 next step — or whether something smaller would fix it.
               </p>
-              <p className="text-ink-2 mt-5 text-[0.95rem]">
-                This is usually{' '}
-                <Link
-                  href={`/solutions/${solution.slug}`}
-                  className="text-ink underline underline-offset-4"
-                >
-                  {solution.name}
-                </Link>{' '}
-                work.
-              </p>
+              {/* Omitted when the category has been removed: the sentence only
+                  works if there is something to point at. */}
+              {solution && (
+                <p className="text-ink-2 mt-5 text-[0.95rem]">
+                  This is usually{' '}
+                  <Link
+                    href={`/solutions/${solution.slug}`}
+                    className="text-ink underline underline-offset-4"
+                  >
+                    {solution.name}
+                  </Link>{' '}
+                  work.
+                </p>
+              )}
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
               <Button asChild>

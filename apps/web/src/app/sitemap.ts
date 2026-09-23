@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { SOLUTIONS } from '@/content/solutions';
+import { getSolutions } from '@/lib/content/solutions';
 import { PROBLEMS } from '@/content/problems';
 import { getCaseStudies } from '@/lib/content/case-studies';
 import { PUBLISHED_ARTICLES } from '@/content/articles';
@@ -8,7 +8,7 @@ import { RESOURCES } from '@/content/resources';
 const BASE = process.env['NEXT_PUBLIC_APP_URL'] ?? 'https://beekal.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const caseStudies = await getCaseStudies();
+  const [caseStudies, solutions] = await Promise.all([getCaseStudies(), getSolutions()]);
   const now = new Date();
 
   const staticPages = [
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: p.changeFrequency,
       priority: p.priority,
     })),
-    ...SOLUTIONS.map((s) => ({
+    ...solutions.map((s) => ({
       url: `${BASE}/solutions/${s.slug}`,
       lastModified: now,
       changeFrequency: 'monthly' as const,

@@ -4,14 +4,20 @@ import type { Metadata } from 'next';
 import { Bridge } from '@/components/patterns';
 import { Button, Card, Section, SectionHeader, Wrap } from '@/components/ui';
 import { CheckIcon } from '@/components/brand';
-import { SOLUTIONS } from '@/content/solutions';
+import { getSolution, getSolutions } from '@/lib/content/solutions';
 import { getCaseStudiesFor } from '@/lib/content/case-studies';
 import { PROBLEMS } from '@/content/problems';
 import { CaseCard } from '@/features/case-studies/case-card';
 import { serviceSchema } from '@/lib/schema';
 
-export function generateStaticParams() {
-  return SOLUTIONS.map((s) => ({ slug: s.slug }));
+/**
+ * Categories are rows now, so one added after the build still renders on its
+ * first request rather than 404ing.
+ */
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  return (await getSolutions()).map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -20,7 +26,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const solution = SOLUTIONS.find((s) => s.slug === slug);
+  const solution = await getSolution(slug);
   if (!solution) return {};
   return {
     title: solution.seoTitle,
@@ -35,7 +41,7 @@ export async function generateMetadata({
  */
 export default async function SolutionPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const solution = SOLUTIONS.find((s) => s.slug === slug);
+  const solution = await getSolution(slug);
   if (!solution) notFound();
 
   const cases = await getCaseStudiesFor(solution.key);

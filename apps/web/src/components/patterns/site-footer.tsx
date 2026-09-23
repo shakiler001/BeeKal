@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { LogoWithTagline } from '@/components/brand';
 import { SITE } from '@/content/site';
-import { SOLUTIONS } from '@/content/solutions';
+import { getSolutions } from '@/lib/content/solutions';
 import { PROBLEMS } from '@/content/problems';
 
 /**
@@ -9,7 +9,11 @@ import { PROBLEMS } from '@/content/problems';
  * deliberately absent from the header. Cold-traffic landing pages still need
  * to be crawlable (docs/02 section 2).
  */
-export function SiteFooter() {
+export async function SiteFooter() {
+  // The footer lists the categories, so it reads them like every other
+  // consumer. It is a server component, so awaiting here costs nothing at
+  // render time and keeps one source of truth.
+  const solutions = await getSolutions();
   // `on-band` flips the colour tokens for this subtree. The footer is an
   // inverted band and had been relying on explicit white text instead, which
   // held only for as long as nothing inside it used a token. The tagline does,
@@ -25,7 +29,7 @@ export function SiteFooter() {
           </div>
 
           <FooterCol title="Solutions">
-            {SOLUTIONS.map((s) => (
+            {solutions.map((s) => (
               <FooterLink key={s.key} href={`/solutions/${s.slug}`}>
                 {s.name}
               </FooterLink>

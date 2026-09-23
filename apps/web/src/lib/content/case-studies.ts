@@ -41,14 +41,6 @@ interface CaseStudyRow {
   featured: unknown;
 }
 
-const KNOWN_SOLUTIONS = new Set<string>([
-  'build',
-  'modernize',
-  'automate',
-  'ai',
-  'care',
-] satisfies SolutionKey[]);
-
 const str = (v: unknown): string => (typeof v === 'string' ? v : '');
 
 function toResults(value: unknown): CaseResult[] {
@@ -62,18 +54,21 @@ function toResults(value: unknown): CaseResult[] {
 }
 
 function toCaseStudy(row: CaseStudyRow): CaseStudy | null {
-  const solutionKey = str(row.solutionKey);
-  if (!KNOWN_SOLUTIONS.has(solutionKey)) return null;
-
   const slug = str(row.slug);
   if (!slug) return null;
+
+  // No longer checked against a fixed list of categories. Categories are rows
+  // and the founder can add one, so a case study naming a category this build
+  // has never heard of is normal rather than corrupt. Pages resolve the key
+  // when they render and omit the label when it resolves to nothing.
+  const solutionKey = str(row.solutionKey);
 
   return {
     slug,
     title: str(row.title),
     clientName: typeof row.clientName === 'string' ? row.clientName : null,
     context: str(row.context),
-    solutionKey: solutionKey as SolutionKey,
+    solutionKey,
     tabLabel: str(row.tabLabel),
     problem: str(row.problem),
     before: str(row.before),

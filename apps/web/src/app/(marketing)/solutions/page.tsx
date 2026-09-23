@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Card, Section, SectionHeader, Wrap } from '@/components/ui';
-import { SOLUTIONS } from '@/content/solutions';
+import { getSolutions } from '@/lib/content/solutions';
 
 export const metadata: Metadata = {
   title: 'Solutions',
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/solutions' },
 };
 
-export default function SolutionsPage() {
+export default async function SolutionsPage() {
+  const solutions = await getSolutions();
   return (
     <Section>
       <Wrap>
@@ -22,7 +23,7 @@ export default function SolutionsPage() {
         />
 
         <ul className="mt-10 grid gap-5 lg:grid-cols-2">
-          {SOLUTIONS.map((s) => (
+          {solutions.map((s) => (
             <li key={s.key}>
               <Link href={`/solutions/${s.slug}`} className="block h-full">
                 <Card interactive padding="lg" className="h-full">

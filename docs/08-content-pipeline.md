@@ -116,12 +116,33 @@ the JSON columns never leak into components.
 | 1   | Content layer + revalidation                             | The mechanism. Nothing user-visible on its own. | Done  |
 | 2   | Case studies read from the database                      | `/work` reflects what is in the admin           | Done  |
 | 3   | Case study BFF + editor UI                               | Writing a case study without a deploy           | Done  |
-| 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 | Next  |
-| 5   | FAQs, problems                                           | The remaining seeded types                      |       |
+| 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 | Done  |
+| 5   | FAQs, problems                                           | The remaining seeded types                      | Next  |
 | 6   | Articles, resources                                      | Insights and Resources become publishable       |       |
 
 Steps 2 and 4 are the ones that change what a visitor sees. Step 1 is the
 foundation and is deliberately boring.
+
+### What step 4 delivered
+
+Categories are rows. `SolutionKey` stopped being a union of the five that
+shipped and became a string, because a closed union would have made the
+compiler disagree with the data the moment a sixth was added — and the compiler
+would have been wrong. In exchange, `getSolutionByKey()` returns
+`Solution | undefined`, which forced every page to decide what to render when a
+case study outlives the category it was filed under. They omit the label rather
+than guess.
+
+The API gained create and delete. Both permissions had existed since Phase 3;
+only the endpoints were missing, which made five categories a fixed set in
+practice while looking configurable in the permission matrix.
+
+Verified by creating a sixth category through the admin as an editor. It
+appeared on /solutions, on its own page, on the homepage, in the footer and in
+the sitemap, five seconds after publishing. Deleting a category that case
+studies reference is refused, and the message says how many and what to do
+instead. `key` is immutable after creation and the field is disabled rather
+than merely ignored. The test category and account were removed.
 
 ### What step 3 delivered
 

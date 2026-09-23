@@ -77,6 +77,83 @@ export class ContentController {
     });
   }
 
+  /**
+   * Creating a category.
+   *
+   * The permission existed from the start and the endpoint did not, which made
+   * the five shipped categories a fixed set in practice while looking
+   * configurable in the permission matrix.
+   *
+   * `key` is what case studies and problems reference, so it is immutable once
+   * set — there is no update path for it — and unique. A new category starts as
+   * a draft: it appears in the admin's category picker immediately, and on the
+   * site only once published.
+   */
+  @Post('solutions')
+  @RequirePermission('solution:create')
+  @Audit('solution.created', 'Solution')
+  async createSolution(@Body() body: unknown) {
+    const parsed = SolutionUpsertSchema.safeParse(body);
+    if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
+
+    const clash = await this.prisma.solution.findFirst({
+      where: { OR: [{ key: parsed.data.key }, { slug: parsed.data.slug }], deletedAt: null },
+      select: { key: true, slug: true },
+    });
+    if (clash) {
+      throw validationError(
+        clash.key === parsed.data.key
+          ? `A category already uses the key "${parsed.data.key}"`
+          : `A category already uses the address "/solutions/${parsed.data.slug}"`,
+      );
+    }
+
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.solutions,
+      'solution created',
+      this.prisma.solution.create({ data: parsed.data }),
+    );
+  }
+
+  /**
+   * Removing a category.
+   *
+   * Soft delete, and refused while case studies still point at it. A hard
+   * delete would leave those rows naming a category that no longer exists —
+   * the pages tolerate that, but silently orphaning someone's work is not a
+   * thing a button should do without saying so.
+   */
+  @Delete('solutions/:id')
+  @RequirePermission('solution:delete')
+  @Audit('solution.deleted', 'Solution')
+  async deleteSolution(@Param('id') id: string) {
+    const solution = await this.prisma.solution.findUnique({
+      where: { id },
+      select: { key: true, deletedAt: true },
+    });
+    if (!solution || solution.deletedAt) throw notFound();
+
+    const inUse = await this.prisma.caseStudy.count({
+      where: { solutionKey: solution.key, deletedAt: null },
+    });
+    if (inUse > 0) {
+      throw validationError(
+        `${inUse} case ${inUse === 1 ? 'study is' : 'studies are'} filed under this category. ` +
+          'Move them first, or unpublish the category instead of deleting it.',
+      );
+    }
+
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.solutions,
+      'solution deleted',
+      this.prisma.solution.update({
+        where: { id },
+        data: { deletedAt: new Date(), status: 'ARCHIVED' },
+        select: { id: true },
+      }),
+    );
+  }
+
   @Patch('solutions/:id')
   @RequirePermission('solution:update')
   @Audit('solution.updated', 'Solution')

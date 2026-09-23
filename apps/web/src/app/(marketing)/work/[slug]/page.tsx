@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { Button, Card, Metric, Section, Wrap } from '@/components/ui';
 import { getCaseStudies, getCaseStudy } from '@/lib/content/case-studies';
-import { SOLUTION_BY_KEY } from '@/content/solutions';
+import { getSolutionByKey } from '@/lib/content/solutions';
 import { IllustrativeBadge } from '@/features/case-studies/illustrative-badge';
 import { breadcrumbSchema, caseStudySchema } from '@/lib/schema';
 
@@ -48,7 +48,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const c = await getCaseStudy(slug);
   if (!c) notFound();
 
-  const solution = SOLUTION_BY_KEY[c.solutionKey];
+  const solution = await getSolutionByKey(c.solutionKey);
   const schema = caseStudySchema(c);
 
   return (
@@ -78,13 +78,22 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             <Link href="/work" className="hover:text-ink underline underline-offset-4">
               Case studies
             </Link>
-            <span aria-hidden> · </span>
-            <Link
-              href={`/solutions/${solution.slug}`}
-              className="hover:text-ink underline underline-offset-4"
-            >
-              {solution.name}
-            </Link>
+            {/*
+              The category link is dropped when the category is gone. A case
+              study outlives the solution it was filed under, and a link to a
+              page that 404s is worse than no link.
+            */}
+            {solution && (
+              <>
+                <span aria-hidden> · </span>
+                <Link
+                  href={`/solutions/${solution.slug}`}
+                  className="hover:text-ink underline underline-offset-4"
+                >
+                  {solution.name}
+                </Link>
+              </>
+            )}
           </p>
 
           {c.isIllustrative && (
@@ -135,9 +144,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
               <Button asChild>
                 <Link href="/contact?intent=assessment">Request an assessment</Link>
               </Button>
-              <Button asChild variant="ghost">
-                <Link href={`/solutions/${solution.slug}`}>More on {solution.name}</Link>
-              </Button>
+              {solution && (
+                <Button asChild variant="ghost">
+                  <Link href={`/solutions/${solution.slug}`}>More on {solution.name}</Link>
+                </Button>
+              )}
             </div>
           </div>
         </Wrap>

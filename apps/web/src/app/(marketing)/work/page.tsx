@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Section, SectionHeader, Wrap } from '@/components/ui';
 import { getCaseStudies } from '@/lib/content/case-studies';
-import { SOLUTION_BY_KEY } from '@/content/solutions';
+import { getSolutions } from '@/lib/content/solutions';
 import { CaseCard } from '@/features/case-studies/case-card';
 
 export const metadata: Metadata = {
@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default async function WorkPage() {
-  const caseStudies = await getCaseStudies();
+  const [caseStudies, solutions] = await Promise.all([getCaseStudies(), getSolutions()]);
+  const solutionName = new Map(solutions.map((s) => [s.key, s.name]));
   const allIllustrative = caseStudies.every((c) => c.isIllustrative);
 
   return (
@@ -42,9 +43,16 @@ export default async function WorkPage() {
             // and collided with the next row's label. The column makes the
             // label take its space and the card fill what is left.
             <li key={c.slug} className="flex flex-col">
-              <p className="text-ink-2 mb-2 text-[0.8rem] font-bold tracking-[0.09em] uppercase">
-                {SOLUTION_BY_KEY[c.solutionKey].name}
-              </p>
+              {/*
+                The label is omitted rather than guessed when the category has
+                been unpublished since the case study was written. A heading
+                reading "undefined" is worse than no heading.
+              */}
+              {solutionName.has(c.solutionKey) && (
+                <p className="text-ink-2 mb-2 text-[0.8rem] font-bold tracking-[0.09em] uppercase">
+                  {solutionName.get(c.solutionKey)}
+                </p>
+              )}
               <div className="flex-1">
                 <CaseCard caseStudy={c} />
               </div>

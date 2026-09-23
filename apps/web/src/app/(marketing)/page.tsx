@@ -6,7 +6,7 @@ import { CheckIcon } from '@/components/brand';
 import { HeroStage } from '@/features/hero-stage/hero-stage';
 import { ASSESSMENT, BEFORE_AFTER, SITE } from '@/content/site';
 import { PROBLEMS } from '@/content/problems';
-import { SOLUTIONS } from '@/content/solutions';
+import { getSolutions } from '@/lib/content/solutions';
 import { getFeaturedCaseStudies } from '@/lib/content/case-studies';
 import { CaseCard } from '@/features/case-studies/case-card';
 
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
  * finishes the argument (docs/02 section 3.1).
  */
 export default async function HomePage() {
-  const featuredCases = await getFeaturedCaseStudies();
+  const [featuredCases, solutions] = await Promise.all([getFeaturedCaseStudies(), getSolutions()]);
   return (
     <>
       <Section className="pt-[clamp(32px,4vw,56px)]">
@@ -157,7 +157,7 @@ export default async function HomePage() {
           />
 
           <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {SOLUTIONS.map((s) => (
+            {solutions.map((s) => (
               <li key={s.key}>
                 <Link href={`/solutions/${s.slug}`} className="block h-full">
                   <Card interactive className="h-full">
