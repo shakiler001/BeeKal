@@ -183,12 +183,17 @@ by design, and enforced in the API. If every Owner has genuinely lost their
 password, reset it directly:
 
 ```bash
-docker exec -it beekal-api-1 node -e "require('./dist/...')"  # not implemented yet
+docker compose --env-file .env -f infra/docker/compose.yml   exec api node dist/cli/reset-password.js --email <owner>
 ```
 
-There is no such command yet. Until there is, the recovery path is a direct
-`UPDATE users SET password_hash = NULL WHERE email = '...'` followed by the
-set-password flow. **Write that CLI before it is needed at 2am.**
+It prompts for the new password twice without echoing it, applies the same
+policy the API applies, revokes that account's sessions and writes an audit
+row. Add `--revoke` to clear the password instead, returning the account to
+INVITED.
+
+It refuses to revoke the last Owner's password, since that produces an account
+nobody can sign into and nobody can repair from the UI. If that is genuinely
+what you want, promote a second Owner first.
 
 ### Disk filling up
 
@@ -210,7 +215,6 @@ oversights.
 | Beekal Care ticketing           | No Care client yet                                        | With the first                      |
 | Nurture sequences               | Templates and consent flags exist; the scheduler does not | When there is a list                |
 | Media uploads                   | MinIO is running and the schema is there; no UI yet       | When the first real photo needs one |
-| Password-reset CLI              | See above. Needed before it is needed.                    | Next                                |
 | Bangla content                  | Routing and schema are ready; the copy is not             | When a Bangla-first buyer appears   |
 
 ---

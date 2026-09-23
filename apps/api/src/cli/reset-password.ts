@@ -34,6 +34,37 @@ import { createInterface } from 'node:readline';
 import { Writable } from 'node:stream';
 import { ARGON2_OPTIONS, checkPassword } from '../modules/identity/domain/password.js';
 
+/**
+ * Find a database connection before doing anything else.
+ *
+ * Without this the tool fails with a raw Prisma stack trace about an invalid
+ * `findUnique` invocation, which says nothing about the actual problem. That
+ * is a poor way to greet someone who is locked out of their own admin panel at
+ * an unsociable hour.
+ *
+ * In a container the variable is already set by compose and nothing is read
+ * from disk. Run through pnpm the working directory is `apps/api`, so the
+ * repository root is two levels up.
+ */
+function ensureDatabaseUrl(): void {
+  if (process.env['DATABASE_URL']) return;
+
+  for (const candidate of ['.env', '../../.env']) {
+    try {
+      process.loadEnvFile(candidate);
+      if (process.env['DATABASE_URL']) return;
+    } catch {
+      // No file there. Try the next one.
+    }
+  }
+
+  throw new Error(
+    'DATABASE_URL is not set and no .env was found.\n' +
+      '  Run this from the repository root, or set it explicitly:\n' +
+      '    DATABASE_URL=postgresql://... pnpm --filter @beekal/api user:reset-password -- --email a@b.com',
+  );
+}
+
 const prisma = new PrismaClient();
 
 interface Args {
@@ -125,6 +156,7 @@ async function readSecrets(prompts: string[]): Promise<string[]> {
 }
 
 async function main(): Promise<void> {
+  ensureDatabaseUrl();
   const args = parseArgs(process.argv.slice(2));
 
   const user = await prisma.user.findUnique({

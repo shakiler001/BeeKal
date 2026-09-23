@@ -213,11 +213,21 @@ per minute per IP; public write endpoints allow 5–10.
 attempts at a secret. Five a minute makes online guessing pointless without
 inconveniencing someone who mistyped.
 
-**Enforced at.** `@Throttle({ auth: { limit: 5, ttl: 60_000 } })`, with
-`ThrottlerGuard` registered before `AuthGuard` so a flood is rejected without
-touching the database.
+**Enforced at.** `@Throttle(AUTH_THROTTLE)`, with `ThrottlerGuard` registered
+before `AuthGuard` so a flood is rejected without touching the database. The
+constant is keyed on `default`, which replaces the single root bucket for that
+handler — see [DEC-17](06-decision-log.md#dec-17--one-rate-limit-bucket-at-the-root-overrides-per-route)
+for why exactly one bucket is registered globally.
 
-**Verified.** Attempts 1–5 returned 401, attempts 6–7 returned 429.
+**Per IP, and that depends on configuration.** Behind a reverse proxy the
+client address is the proxy's unless `TRUST_PROXY_HOPS` says how many proxies
+to look through. Left at 0 behind one, this rule silently becomes "five
+attempts a minute for everybody at once".
+
+**Verified.** Attempts 1–5 returned 401, attempts 6–7 returned 429. Re-verified
+after the root registration changed: an endpoint with no override served 20
+consecutive requests, one with a 10/minute override stopped at exactly 10, and
+health served 14 without throttling.
 
 ---
 
@@ -232,12 +242,23 @@ admin exists and helps them not at all. But an administrator mid-task deserves
 to know the difference between _"sign in again"_ and _"something is broken"_,
 so a server that is up and answering badly is surfaced rather than disguised.
 
-**Enforced at.** `requireSession()` in `apps/web/src/lib/admin/session.ts`.
-`redirect()` is called outside the `try`, because it signals by throwing and a
-surrounding `catch` would swallow the navigation.
+**Enforced at.** `apps/web/src/lib/admin/session.ts`, in two shapes.
+`loadSession()` returns a result and is what the admin layout uses;
+`requireSession()` redirects or throws and is what pages use. `redirect()` is
+called outside any `try`, because it signals by throwing and a surrounding
+`catch` would swallow the navigation.
+
+**Why two.** A layout cannot throw usefully — no `error.tsx` catches the layout
+of its own segment, and one that throws during the initial render of a document
+escapes the boundaries above it as well, so the framework's own error page is
+what a visitor gets. The layout therefore renders the failure instead of
+raising it. See
+[DEC-18](06-decision-log.md#dec-18--a-layout-that-loads-data-renders-its-failure).
 
 **Checked by.** 5 tests in `critical-paths.spec.ts`, run with no API available
-— which is also how CI runs them.
+— which is also how CI runs them. The "answering badly" half was verified
+separately against a deliberately rate-limited API: `/admin` returned 200 with
+the error card, where it previously returned 500 and the framework page.
 
 ---
 

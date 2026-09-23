@@ -296,3 +296,63 @@ know the difference between "sign in again" and "something is broken".
 **Found by.** The E2E suite, run the way CI runs it — with no API. The original
 code only redirected on 401/403, so a connection failure rendered a framework
 error page.
+
+---
+
+## DEC-17 — One rate-limit bucket at the root, overrides per route
+
+**Status:** Active · post-Phase 6
+
+**Decision.** `ThrottlerModule.forRoot` registers exactly one bucket. A route
+that needs to be stricter applies a named constant keyed on `default`, which
+replaces that bucket for the handler. Health skips throttling entirely.
+
+**What it replaced.** Three buckets registered at the root — `default`, `auth`
+and `public` — on the assumption that a route opted into one. Every root
+throttler applies to every route, so the tightest became the ceiling for the
+whole API: five requests a minute, on every endpoint, including one written to
+be called six times a minute.
+
+**Cost.** A route's limit is no longer visible in one table. You have to read
+the decorator.
+
+**Bought.** An API that answers. Also `TRUST_PROXY_HOPS`, without which every
+visitor behind the deployment's reverse proxy would have shared a single
+counter — the same bug again, one layer down, and invisible until launch day.
+
+**Why a hop count and not a boolean.** `X-Forwarded-For` is supplied by the
+client. Trusting it because a proxy might exist lets anyone forge an address
+and walk through the limit. Trusting exactly the number of proxies you operate
+reads the right entry and ignores anything prepended.
+
+**Lesson recorded.** A configuration that type-checks, reads correctly, and is
+described accurately by its own comment can still do the opposite of what it
+says. The regression test asserts the bucket _count_, which is the assertion
+nobody writes, because you do not test for a limit you do not know exists.
+
+---
+
+## DEC-18 — A layout that loads data renders its failure
+
+**Status:** Active · post-Phase 6
+
+**Decision.** The admin layout calls a non-throwing `loadSession()` and returns
+the error card as a value. Pages keep the throwing `requireSession()`.
+
+**Why not a boundary.** `error.tsx` never catches the layout of its own
+segment. Moving it up does not help either: a layout that throws during the
+initial render of a document escapes the boundaries above it too. Boundaries
+beside the layout, at the route group and at the app root were each built and
+tested against a deliberately broken API, and all three rendered the
+framework's own "Application error" page.
+
+**Cost.** Two ways to ask for the session, and a rule to remember about which
+belongs where.
+
+**Bought.** An administrator sees a sentence and two buttons instead of a
+framework stack page, and a stranger probing `/admin` is not told that an admin
+exists. Children are not rendered without a session either, so a failure costs
+one request rather than one per page component.
+
+**Boundary placement is still worth having.** `app/error.tsx` now exists for
+page-level failures on the public site, where none existed at all.

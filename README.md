@@ -65,6 +65,8 @@ docs/              the plan
 | [03-system-architecture.md](docs/03-system-architecture.md)           | Architectural, design and coding patterns           |
 | [04-data-model-and-rbac.md](docs/04-data-model-and-rbac.md)           | Schema, the RBAC engine, admin panel                |
 | [05-seo-performance-quality.md](docs/05-seo-performance-quality.md)   | SEO, performance budgets, a11y, security, ops       |
+| [06-runbook.md](docs/06-runbook.md)                                   | Deploying, backups, restores, rollback              |
+| [07-local-development.md](docs/07-local-development.md)               | Running it on your machine, and what bites          |
 | [brief/master-context.txt](docs/brief/master-context.txt)             | The original founder brief                          |
 
 ## Status

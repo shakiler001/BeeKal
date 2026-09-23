@@ -126,17 +126,26 @@ system with unknown behaviour.
 guarantees an Owner account still _exists_. It does not help if the password is
 forgotten.
 
-**Recovery, today.** Manual, with database access:
+**Recovery.** A CLI, which runs both locally and inside the container:
 
-```sql
-UPDATE users SET password_hash = NULL WHERE email = '<owner>';
+```bash
+pnpm --filter @beekal/api user:reset-password -- --email <owner>
+docker compose exec api node dist/cli/reset-password.js --email <owner>
 ```
 
-Then use the set-password flow.
+It reads the password from stdin rather than an argument, applies the same
+policy the API applies, revokes that account's sessions, and writes an audit
+row. `--revoke` clears the password instead, returning the account to INVITED.
 
-**Gap, stated plainly.** There is no password-reset CLI. This is the highest
-priority unbuilt item, because it is needed exactly when nobody is calm. It is
-flagged in the runbook and in [Known gaps](#known-gaps) below.
+**What it refuses to do.** Revoke the last Owner's password, which would leave
+an account nobody can sign into and nobody can repair from the UI. That mirrors
+[INV-02](01-invariants.md#inv-02--the-last-owner-cannot-be-removed-suspended-or-demoted)
+rather than restating it in a second place that could drift.
+
+**Was a gap until it was needed.** This was listed as the highest priority
+unbuilt item on the grounds that it is wanted exactly when nobody is calm. That
+turned out to be an accurate prediction: the first real lockout happened during
+local verification, before any of this reached production.
 
 ---
 
@@ -216,7 +225,6 @@ listed so they are decisions rather than surprises.
 
 | Gap                                            | Consequence                                     | Priority                                     |
 | ---------------------------------------------- | ----------------------------------------------- | -------------------------------------------- |
-| No password-reset CLI                          | Manual SQL during a lockout                     | **High** — needed when nobody is calm        |
 | Public site reads TypeScript, not the database | An admin content edit does not change the site  | **High** — the largest design-to-reality gap |
 | Slug change does not auto-write a redirect     | A renamed page 404s until someone adds one      | Medium                                       |
 | No retry for a lead submitted during an outage | That lead is lost                               | Medium                                       |

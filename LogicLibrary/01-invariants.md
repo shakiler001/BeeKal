@@ -62,8 +62,9 @@ is data.
 to fix it.
 
 **Limitation, stated honestly.** This prevents removal, not forgotten
-passwords. If every Owner forgets their password there is currently no CLI to
-reset it — recovery is a manual `UPDATE users SET password_hash = NULL`. See
+passwords. An Owner account that still exists but whose password nobody knows
+is recovered with the reset CLI, which enforces this same rule rather than
+restating it. See
 [FAI-06](07-failure-modes.md#fai-06--every-owner-has-lost-their-password).
 
 ---
