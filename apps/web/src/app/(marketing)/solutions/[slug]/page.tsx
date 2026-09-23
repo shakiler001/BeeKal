@@ -5,7 +5,7 @@ import { Bridge } from '@/components/patterns';
 import { Button, Card, Section, SectionHeader, Wrap } from '@/components/ui';
 import { CheckIcon } from '@/components/brand';
 import { SOLUTIONS } from '@/content/solutions';
-import { caseStudiesFor } from '@/content/case-studies';
+import { getCaseStudiesFor } from '@/lib/content/case-studies';
 import { PROBLEMS } from '@/content/problems';
 import { CaseCard } from '@/features/case-studies/case-card';
 import { serviceSchema } from '@/lib/schema';
@@ -38,7 +38,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
   const solution = SOLUTIONS.find((s) => s.slug === slug);
   if (!solution) notFound();
 
-  const cases = caseStudiesFor(solution.key);
+  const cases = await getCaseStudiesFor(solution.key);
   const relatedProblems = PROBLEMS.filter((p) => p.solutionKey === solution.key);
 
   return (

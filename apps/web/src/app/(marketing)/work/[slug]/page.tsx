@@ -2,13 +2,22 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { Button, Card, Metric, Section, Wrap } from '@/components/ui';
-import { CASE_STUDIES } from '@/content/case-studies';
+import { getCaseStudies, getCaseStudy } from '@/lib/content/case-studies';
 import { SOLUTION_BY_KEY } from '@/content/solutions';
 import { IllustrativeBadge } from '@/features/case-studies/illustrative-badge';
 import { breadcrumbSchema, caseStudySchema } from '@/lib/schema';
 
-export function generateStaticParams() {
-  return CASE_STUDIES.map((c) => ({ slug: c.slug }));
+/**
+ * Prerender the slugs that exist at build time.
+ *
+ * `dynamicParams` stays on, so a case study published after the build still
+ * renders on its first request rather than 404ing. That also covers the build
+ * running with no API to ask, which is how the image is built in CI.
+ */
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  return (await getCaseStudies()).map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({
@@ -17,7 +26,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const c = CASE_STUDIES.find((x) => x.slug === slug);
+  const c = await getCaseStudy(slug);
   if (!c) return {};
   return {
     title: c.title,
@@ -36,7 +45,7 @@ export async function generateMetadata({
  */
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const c = CASE_STUDIES.find((x) => x.slug === slug);
+  const c = await getCaseStudy(slug);
   if (!c) notFound();
 
   const solution = SOLUTION_BY_KEY[c.solutionKey];

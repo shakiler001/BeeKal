@@ -68,3 +68,28 @@ export const ApiErrorSchema = z.object({
   requestId: z.string().optional(),
 });
 export type ApiError = z.infer<typeof ApiErrorSchema>;
+
+/**
+ * Cache tags for public content.
+ *
+ * Defined here because both ends need the same strings and neither owns them:
+ * the API sends one when a row changes, the web app revalidates it. A tag that
+ * exists on one side only is a cache that never clears, which presents as
+ * "publishing does nothing" and is miserable to diagnose — so, like every other
+ * payload that crosses the boundary, there is one definition.
+ */
+export const CONTENT_TAGS = {
+  solutions: 'content:solutions',
+  caseStudies: 'content:case-studies',
+  problems: 'content:problems',
+  faqs: 'content:faqs',
+  settings: 'content:settings',
+} as const;
+
+export type ContentTag = (typeof CONTENT_TAGS)[keyof typeof CONTENT_TAGS];
+
+const CONTENT_TAG_VALUES = new Set<string>(Object.values(CONTENT_TAGS));
+
+export function isContentTag(value: unknown): value is ContentTag {
+  return typeof value === 'string' && CONTENT_TAG_VALUES.has(value);
+}

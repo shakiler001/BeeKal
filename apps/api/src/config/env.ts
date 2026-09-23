@@ -60,6 +60,17 @@ const EnvSchema = z.object({
   OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().optional(),
   SENTRY_DSN: z.string().optional(),
 
+  /**
+   * Where to tell the web app that content changed, and the secret that proves
+   * it was us. Both optional: with neither set, publishing still works and the
+   * site simply picks the change up on its own five-minute backstop instead of
+   * immediately. That keeps a single-container or local setup working with no
+   * configuration, and the relay says once, at warn level, that it is not
+   * revalidating.
+   */
+  WEB_REVALIDATE_URL: z.string().url().optional(),
+  REVALIDATE_SECRET: z.string().min(16).optional(),
+
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60_000),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(60),
 

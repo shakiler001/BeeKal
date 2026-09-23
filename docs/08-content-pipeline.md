@@ -1,0 +1,144 @@
+# The Content Pipeline
+
+What is editable without a deploy, what is not, and the plan to close the
+difference.
+
+Audited 2026-09-24 against the running system, endpoint by endpoint, rather
+than from memory. Section 1 is a point-in-time record and will age as section 3
+is delivered; the dated rows are the honest baseline to measure against.
+
+---
+
+## 1. The audit
+
+### The chain
+
+Content has to survive five links to be editable without a deploy. A break at
+any one of them makes the rest irrelevant.
+
+1. A database table exists
+2. An admin API endpoint can write it
+3. A BFF route exposes that endpoint to the browser
+4. An admin screen offers a form
+5. The public site reads the database rather than the repository
+
+| Content type  | 1. Table  | 2. API       | 3. BFF | 4. UI     | 5. Public reads it |
+| ------------- | --------- | ------------ | ------ | --------- | ------------------ |
+| Solutions     | ✅ 5 rows | ⚠️ edit only | ❌     | list only | ❌ TypeScript      |
+| Case studies  | ✅ 5 rows | ✅ full CRUD | ❌     | list only | ❌ TypeScript      |
+| FAQs          | ✅ 7 rows | ✅ full CRUD | ❌     | list only | ❌ TypeScript      |
+| Problems      | ✅ 5 rows | ❌           | ❌     | ❌        | ❌ TypeScript      |
+| Articles      | ✅ 0 rows | ❌           | ❌     | ❌        | ❌ TypeScript      |
+| Resources     | ✅ 0 rows | ❌           | ❌     | ❌        | ❌ TypeScript      |
+| Score config  | ✅ 9+5    | ❌           | ❌     | ❌        | ❌ TypeScript      |
+| Site settings | ✅ 9 rows | ⚠️ edit only | ✅     | ✅ editor | ❌ TypeScript      |
+
+**Of 41 public routes, one reads the database**: `/score/r/[code]`, the shared
+result page — and even that takes its dimension labels from TypeScript.
+
+### The link that is easiest to miss
+
+Link 3. The admin UI runs in a browser and can only reach the API through a
+Next route handler, and the only ones that exist are:
+
+```
+/api/admin/login   /api/admin/logout   /api/admin/leads/[id]
+/api/admin/roles/[id]   /api/admin/settings/[key]
+```
+
+There is no content route among them. So case studies have complete CRUD in the
+API, correct permissions and an audit trail, and remain unreachable from the
+browser. An endpoint with no route to it is indistinguishable from an endpoint
+that does not exist.
+
+### What is genuinely dynamic today
+
+Not nothing, and worth stating precisely:
+
+| Capability            | State                                                                                                                     |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Leads                 | Form → database → admin list → detail → stage changes. Complete.                                                          |
+| Score submissions     | Answers → database → a `/score/r/xxxx` link that really resolves.                                                         |
+| Roles and permissions | Full CRUD in the UI. A new role takes effect immediately, with no migration and no deploy. The original requirement, met. |
+| Audit log             | Written on every mutation, viewable. Read-only by design.                                                                 |
+| Settings              | Editable and saved — but no public page reads them, so changing one changes nothing a visitor can see.                    |
+
+### How it came to be this way
+
+Phase 2 built the public site from TypeScript modules to get the pages right.
+Phases 3 and 4 built the schema, the permission engine and the admin shell. The
+step that connects them was planned and never done, so both halves are finished
+and neither is wired to the other.
+
+It was recorded as the largest design-to-reality gap in the Logic Library, which
+was honest. The admin content screen nevertheless describes itself as
+"Everything the public site reads", which is not.
+
+---
+
+## 2. Target architecture
+
+**Static by default, database-backed, revalidated on publish.**
+
+```
+Admin edits → API writes → API calls the web app's revalidate hook
+                                 ↓
+                    revalidateTag('solutions')
+                                 ↓
+        next request regenerates that page from /public/content/*
+                                 ↓
+               every other page keeps serving from cache
+```
+
+Three properties this has to keep, all of which the current site has and none
+of which are worth trading for a CMS:
+
+**An API outage must not take the marketing site down.** Pages are statically
+rendered and served from cache. A failed revalidation serves the last good
+version rather than an error. The site degrades to "slightly stale", which is
+the correct failure for a brochure.
+
+**A build must not require a running API.** CI builds the web and API images
+independently, and the web image builds first. So `generateStaticParams` returns
+an empty list when the API is unreachable and the routes render on demand
+instead — fewer pages prerendered, nothing broken.
+
+**One shape, one place.** Pages already consume typed objects. The mapping from
+database row to that shape lives in one module, so page code barely changes and
+the JSON columns never leak into components.
+
+---
+
+## 3. Plan
+
+| #   | Step                                                     | Unlocks                                         | State |
+| --- | -------------------------------------------------------- | ----------------------------------------------- | ----- |
+| 1   | Content layer + revalidation                             | The mechanism. Nothing user-visible on its own. | Done  |
+| 2   | Case studies read from the database                      | `/work` reflects what is in the admin           | Done  |
+| 3   | Case study BFF + editor UI                               | Writing a case study without a deploy           | Next  |
+| 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 |       |
+| 5   | FAQs, problems                                           | The remaining seeded types                      |       |
+| 6   | Articles, resources                                      | Insights and Resources become publishable       |       |
+
+Steps 2 and 4 are the ones that change what a visitor sees. Step 1 is the
+foundation and is deliberately boring.
+
+### What steps 1 and 2 delivered
+
+Case studies are now read from the database on `/work`, `/work/[slug]`, the
+homepage, the solution pages and the sitemap. Publishing revalidates by tag
+through the outbox, so the change reaches the site in seconds without a deploy.
+
+Verified end to end: a row edited in the database, with a `content.changed`
+event written in the same transaction, appeared on `/work` within five seconds
+of the relay polling — and the whole web app still builds all 42 pages with the
+API stopped, falling back to the repository baseline and saying so in the log.
+
+### Explicitly not in this plan
+
+- **Live preview of drafts.** Draft rows stay invisible to the public site.
+  Worth building later; not required to publish.
+- **Media uploads.** The `Media` table and MinIO exist; no upload UI. A case
+  study needs no image to be useful.
+- **Per-locale content.** The schema carries `locale` and everything is `en`.
+  The column stays; nothing reads it yet.

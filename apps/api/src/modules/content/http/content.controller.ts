@@ -12,10 +12,13 @@ import {
 } from '@nestjs/common';
 import {
   CaseStudyUpsertSchema,
+  CONTENT_TAGS,
   FaqUpsertSchema,
   PublishActionSchema,
   SolutionUpsertSchema,
+  type ContentTag,
 } from '@beekal/contracts';
+import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../../../shared/prisma.service.js';
 import {
   canTransition,
@@ -37,6 +40,32 @@ import { defined } from '../../../shared/prisma-input.js';
 export class ContentController {
   constructor(private readonly prisma: PrismaService) {}
 
+  /**
+   * Commits a content write and the intent to refresh the site together.
+   *
+   * The public site caches until it is told otherwise, so an edit that commits
+   * without its revalidation is an edit nobody sees — indistinguishable, from
+   * the editor's chair, from the save having failed. Writing both in one
+   * transaction makes that impossible: either the row changed and the site will
+   * be told, or neither happened (FLW-04).
+   *
+   * The relay delivers it afterwards and retries, so a web app that is
+   * restarting at that moment is not a lost publish.
+   */
+  private async writeAndRevalidate<T>(
+    tag: ContentTag,
+    reason: string,
+    write: Prisma.PrismaPromise<T>,
+  ): Promise<T> {
+    const [row] = await this.prisma.$transaction([
+      write,
+      this.prisma.outboxEvent.create({
+        data: { type: 'content.changed', payload: { tag, reason } },
+      }),
+    ]);
+    return row;
+  }
+
   // ---------------- Solutions ----------------
 
   @Get('solutions')
@@ -56,7 +85,11 @@ export class ContentController {
     if (!parsed.success) throw validationError(parsed.error.issues[0]?.message);
 
     await this.assertExists('solution', id);
-    return this.prisma.solution.update({ where: { id }, data: defined(parsed.data) });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.solutions,
+      'solution updated',
+      this.prisma.solution.update({ where: { id }, data: defined(parsed.data) }),
+    );
   }
 
   @Patch('solutions/:id/status')
@@ -84,10 +117,14 @@ export class ContentController {
       if (!validation.ok) throw publishBlocked(validation.problems);
     }
 
-    return this.prisma.solution.update({
-      where: { id },
-      data: { status: next, publishedAt: next === 'PUBLISHED' ? new Date() : null },
-    });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.solutions,
+      `solution ${next.toLowerCase()}`,
+      this.prisma.solution.update({
+        where: { id },
+        data: { status: next, publishedAt: next === 'PUBLISHED' ? new Date() : null },
+      }),
+    );
   }
 
   // ---------------- Case studies ----------------
@@ -110,13 +147,17 @@ export class ContentController {
 
     this.assertCaseStudyClaim(parsed.data);
 
-    return this.prisma.caseStudy.create({
-      data: {
-        ...parsed.data,
-        clientName: parsed.data.clientName ?? null,
-        approvedAt: parsed.data.clientApproved ? new Date() : null,
-      },
-    });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.caseStudies,
+      'case study created',
+      this.prisma.caseStudy.create({
+        data: {
+          ...parsed.data,
+          clientName: parsed.data.clientName ?? null,
+          approvedAt: parsed.data.clientApproved ? new Date() : null,
+        },
+      }),
+    );
   }
 
   @Patch('case-studies/:id')
@@ -138,16 +179,20 @@ export class ContentController {
 
     const approving = parsed.data.clientApproved === true && !existing.clientApproved;
 
-    return this.prisma.caseStudy.update({
-      where: { id },
-      data: {
-        ...defined(parsed.data),
-        ...(parsed.data.clientName !== undefined
-          ? { clientName: parsed.data.clientName ?? null }
-          : {}),
-        ...(approving ? { approvedAt: new Date() } : {}),
-      },
-    });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.caseStudies,
+      'case study updated',
+      this.prisma.caseStudy.update({
+        where: { id },
+        data: {
+          ...defined(parsed.data),
+          ...(parsed.data.clientName !== undefined
+            ? { clientName: parsed.data.clientName ?? null }
+            : {}),
+          ...(approving ? { approvedAt: new Date() } : {}),
+        },
+      }),
+    );
   }
 
   @Patch('case-studies/:id/status')
@@ -169,10 +214,14 @@ export class ContentController {
 
     if (next === 'PUBLISHED') this.assertCaseStudyClaim(current);
 
-    return this.prisma.caseStudy.update({
-      where: { id },
-      data: { status: next, publishedAt: next === 'PUBLISHED' ? new Date() : null },
-    });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.caseStudies,
+      `case study ${next.toLowerCase()}`,
+      this.prisma.caseStudy.update({
+        where: { id },
+        data: { status: next, publishedAt: next === 'PUBLISHED' ? new Date() : null },
+      }),
+    );
   }
 
   @Delete('case-studies/:id')
@@ -180,11 +229,15 @@ export class ContentController {
   @Audit('case_study.deleted', 'CaseStudy')
   async deleteCaseStudy(@Param('id') id: string) {
     await this.assertExists('caseStudy', id);
-    return this.prisma.caseStudy.update({
-      where: { id },
-      data: { deletedAt: new Date(), status: 'ARCHIVED' },
-      select: { id: true },
-    });
+    return this.writeAndRevalidate(
+      CONTENT_TAGS.caseStudies,
+      'case study deleted',
+      this.prisma.caseStudy.update({
+        where: { id },
+        data: { deletedAt: new Date(), status: 'ARCHIVED' },
+        select: { id: true },
+      }),
+    );
   }
 
   // ---------------- FAQs ----------------

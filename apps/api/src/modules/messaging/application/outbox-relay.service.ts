@@ -32,6 +32,12 @@ interface ScoreReportPayload {
   marketingConsent: boolean;
 }
 
+/** Emitted whenever a published content row changes. */
+interface ContentChangedPayload {
+  tag: string;
+  reason: string;
+}
+
 interface LeadSubmittedPayload {
   leadId: string;
   email: string;
@@ -120,6 +126,8 @@ export class OutboxRelayService implements OnModuleInit {
         return this.handleLeadSubmitted(payload as LeadSubmittedPayload);
       case 'score.report_requested':
         return this.handleScoreReport(payload as ScoreReportPayload);
+      case 'content.changed':
+        return this.handleContentChanged(payload as ContentChangedPayload);
       default:
         // An unknown type is a bug, not a transient failure. Mark it done so
         // it stops consuming retries, and say so.
@@ -193,5 +201,58 @@ export class OutboxRelayService implements OnModuleInit {
     });
 
     return result.ok;
+  }
+
+  /**
+   * Tells the web app to drop its cache for one content type.
+   *
+   * Rides the outbox rather than being called inline from the controller, for
+   * the reason every other event does: the row and the intent to publish it
+   * commit together, so a web app that is restarting when an editor hits
+   * publish gets the message when it comes back rather than never.
+   *
+   * Idempotent by nature. Revalidating a tag twice costs one extra page
+   * regeneration, which is why at-least-once is a fine guarantee here.
+   */
+  private async handleContentChanged(payload: ContentChangedPayload): Promise<boolean> {
+    const config = env();
+    const url = config.WEB_REVALIDATE_URL;
+    const secret = config.REVALIDATE_SECRET;
+
+    if (!url || !secret) {
+      // Not an error. Unconfigured means the site refreshes on its own
+      // backstop instead of immediately, which is a valid way to run a single
+      // box. Said once per event so it is visible without being noise.
+      this.logger.warn(
+        `Content changed (${payload.tag}) but revalidation is not configured — ` +
+          'the site will pick it up on its own schedule. ' +
+          'Set WEB_REVALIDATE_URL and REVALIDATE_SECRET to make publishing immediate.',
+      );
+      return true;
+    }
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-revalidate-secret': secret },
+        body: JSON.stringify({ tag: payload.tag }),
+        signal: AbortSignal.timeout(5_000),
+      });
+
+      if (!res.ok) {
+        // A 400 means the tag is wrong, which retrying cannot fix, but the
+        // retry budget is five and the log names the status either way.
+        this.logger.warn(`Revalidate ${payload.tag} returned ${res.status}`);
+        return false;
+      }
+
+      this.logger.log(`Revalidated ${payload.tag} (${payload.reason})`);
+      return true;
+    } catch (error) {
+      this.logger.warn(
+        `Revalidate ${payload.tag} failed: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      return false;
+    }
   }
 }

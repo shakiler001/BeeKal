@@ -1,13 +1,14 @@
 import type { MetadataRoute } from 'next';
 import { SOLUTIONS } from '@/content/solutions';
 import { PROBLEMS } from '@/content/problems';
-import { CASE_STUDIES } from '@/content/case-studies';
+import { getCaseStudies } from '@/lib/content/case-studies';
 import { PUBLISHED_ARTICLES } from '@/content/articles';
 import { RESOURCES } from '@/content/resources';
 
 const BASE = process.env['NEXT_PUBLIC_APP_URL'] ?? 'https://beekal.com';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const caseStudies = await getCaseStudies();
   const now = new Date();
 
   const staticPages = [
@@ -59,11 +60,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     // Illustrative case studies are excluded: they are noindex, and listing a
     // noindex URL in the sitemap sends Google a contradictory signal.
-    ...CASE_STUDIES.filter((c) => !c.isIllustrative).map((c) => ({
-      url: `${BASE}/work/${c.slug}`,
-      lastModified: now,
-      changeFrequency: 'yearly' as const,
-      priority: 0.7,
-    })),
+    ...caseStudies
+      .filter((c) => !c.isIllustrative)
+      .map((c) => ({
+        url: `${BASE}/work/${c.slug}`,
+        lastModified: now,
+        changeFrequency: 'yearly' as const,
+        priority: 0.7,
+      })),
   ];
 }

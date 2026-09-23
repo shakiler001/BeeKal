@@ -7,7 +7,7 @@ import { HeroStage } from '@/features/hero-stage/hero-stage';
 import { ASSESSMENT, BEFORE_AFTER, SITE } from '@/content/site';
 import { PROBLEMS } from '@/content/problems';
 import { SOLUTIONS } from '@/content/solutions';
-import { FEATURED_CASES } from '@/content/case-studies';
+import { getFeaturedCaseStudies } from '@/lib/content/case-studies';
 import { CaseCard } from '@/features/case-studies/case-card';
 
 export const metadata: Metadata = {
@@ -22,7 +22,8 @@ export const metadata: Metadata = {
  * visitor think "that is us" in eight seconds, then send them somewhere that
  * finishes the argument (docs/02 section 3.1).
  */
-export default function HomePage() {
+export default async function HomePage() {
+  const featuredCases = await getFeaturedCaseStudies();
   return (
     <>
       <Section className="pt-[clamp(32px,4vw,56px)]">
@@ -228,7 +229,7 @@ export default function HomePage() {
           />
 
           <ul className="mt-10 grid gap-5 lg:grid-cols-2">
-            {FEATURED_CASES.map((c) => (
+            {featuredCases.map((c) => (
               <li key={c.slug}>
                 <CaseCard caseStudy={c} />
               </li>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Section, SectionHeader, Wrap } from '@/components/ui';
-import { CASE_STUDIES } from '@/content/case-studies';
+import { getCaseStudies } from '@/lib/content/case-studies';
 import { SOLUTION_BY_KEY } from '@/content/solutions';
 import { CaseCard } from '@/features/case-studies/case-card';
 
@@ -11,8 +11,9 @@ export const metadata: Metadata = {
   alternates: { canonical: '/work' },
 };
 
-export default function WorkPage() {
-  const allIllustrative = CASE_STUDIES.every((c) => c.isIllustrative);
+export default async function WorkPage() {
+  const caseStudies = await getCaseStudies();
+  const allIllustrative = caseStudies.every((c) => c.isIllustrative);
 
   return (
     <Section>
@@ -34,7 +35,7 @@ export default function WorkPage() {
         )}
 
         <ul className="mt-10 grid gap-5 lg:grid-cols-2">
-          {CASE_STUDIES.map((c) => (
+          {caseStudies.map((c) => (
             // The card is `h-full`, which resolves against the whole grid
             // item. With a label above it inside the same item, it was as tall
             // as the item AND pushed down by the label, so it overhung the row

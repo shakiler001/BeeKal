@@ -40,7 +40,17 @@ for (const theme of THEMES) {
         // script applies it exactly as a returning visitor would see it.
         await browserPage.evaluate((t) => localStorage.setItem('bk-theme', t), theme);
         await browserPage.reload();
-        await browserPage.waitForLoadState('networkidle');
+
+        // Waits for the thing the test actually depends on, rather than for
+        // the network to fall quiet.
+        //
+        // `networkidle` wants 500ms with nothing in flight, and a page here
+        // issues eleven RSC prefetches against a six-connection limit, so that
+        // window barely exists — the suite failed on a different page each run.
+        // Playwright discourages it for exactly this reason. The theme
+        // attribute is set by the pre-paint script, so asserting on it is both
+        // deterministic and closer to what "the page is ready" means here.
+        await expect(browserPage.locator('html')).toHaveAttribute('data-theme', theme);
 
         const results = await new AxeBuilder({ page: browserPage })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
@@ -66,7 +76,10 @@ test.describe('viewport extremes', () => {
 
     for (const target of ['/', '/assessment', '/score', '/work']) {
       await page.goto(target);
-      await page.waitForLoadState('networkidle');
+      // Same reason as above: the footer is the last thing on every page, so
+      // waiting for it means the layout has settled without depending on the
+      // network going quiet.
+      await expect(page.locator('footer')).toBeVisible();
 
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth > document.documentElement.clientWidth,

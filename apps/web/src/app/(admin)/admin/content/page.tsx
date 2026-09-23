@@ -47,7 +47,7 @@ export default async function ContentPage() {
     <>
       <AdminPageHeader
         title="Content"
-        description="Everything the public site reads. Published rows are live; drafts are not."
+        description="Case studies are live on the site: published rows appear within seconds. Solutions and FAQs are stored here but the public pages still read the repository."
       />
 
       <div className="mt-8 grid gap-6">
