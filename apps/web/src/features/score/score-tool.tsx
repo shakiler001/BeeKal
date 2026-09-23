@@ -225,6 +225,12 @@ function Dimension({
         // reader user nothing about their business.
         aria-valuetext={answered ? `${value} of 5: ${anchor}` : 'Not answered'}
         onChange={(e) => onChange(Number(e.target.value))}
+        // An unanswered slider sits at 3, so someone whose honest answer IS 3
+        // would change nothing and never register an answer. Committing on
+        // release and on keyboard interaction makes "3" selectable like any
+        // other value.
+        onPointerUp={(e) => onChange(Number(e.currentTarget.value))}
+        onKeyUp={(e) => onChange(Number(e.currentTarget.value))}
         className={cn('accent-brand mt-3 h-11 w-full cursor-pointer', !answered && 'opacity-50')}
       />
 

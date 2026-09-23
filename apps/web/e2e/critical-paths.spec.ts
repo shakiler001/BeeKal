@@ -65,8 +65,10 @@ test.describe('maturity score', () => {
     expect(count).toBe(9);
 
     // Answer six. A level drawn from two sliders would be meaningless.
+    // Uses 4 rather than 3 so the value genuinely changes from the default —
+    // the "answer 3" case is covered by the commit-on-release handler.
     for (let i = 0; i < 6; i += 1) {
-      await sliders.nth(i).fill('3');
+      await sliders.nth(i).fill('4');
     }
 
     await expect(page.getByText(/level \d/i).first()).toBeVisible();
