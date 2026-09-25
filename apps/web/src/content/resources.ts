@@ -20,6 +20,8 @@ export interface Resource {
   isGated: boolean;
   /** Set once the PDF exists. Until then the resource stays a draft. */
   fileUrl: string | null;
+  /** True when a gated file exists but its URL is intentionally private. */
+  hasFile?: boolean;
   /** For the tool, which is a page rather than a file. */
   href?: string;
   seoTitle: string;

@@ -250,7 +250,18 @@ export const ResourceUpsertSchema = z.object({
   description: text(20, 500),
   kind: z.enum(['checklist', 'guide', 'tool']),
   contents: z.array(text(2, 300)),
-  fileUrl: z.string().max(500).nullable().optional(),
+  fileUrl: z
+    .string()
+    .max(500)
+    .nullable()
+    .optional()
+    .refine(
+      (value) =>
+        value == null ||
+        /^\/(?![\/\\])[^\u0000-\u001f]*$/.test(value) ||
+        /^https:\/\/[^\s]+$/i.test(value),
+      'Use a site-relative path or HTTPS URL',
+    ),
   isGated: z.boolean().default(true),
   seoTitle: text(4, 70),
   seoDescription: text(20, 165),

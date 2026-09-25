@@ -2,7 +2,6 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Bridge } from '@/components/patterns';
 import { Button, Card, Eyebrow, Section, SectionHeader, Tag, Wrap } from '@/components/ui';
-import { CheckIcon } from '@/components/brand';
 import { HeroStage } from '@/features/hero-stage/hero-stage';
 import { ASSESSMENT, BEFORE_AFTER, SITE } from '@/content/site';
 import { getProblems } from '@/lib/content/problems';
@@ -110,43 +109,39 @@ export default async function HomePage() {
       </Section>
 
       {/* ---------- The transformation, shown not claimed ---------- */}
-      <Section tone="band">
+      <Section tone="band" className="bg-[var(--cobalt)]" id="outcome">
         <Wrap>
           <Eyebrow>The difference</Eyebrow>
           <h2 className="max-w-[24ch] text-[clamp(1.75rem,1.3rem+2vw,2.6rem)] leading-[1.12] font-bold tracking-[-0.035em]">
             What changes when the business runs as one system.
           </h2>
 
-          <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            <div>
-              <h3 className="text-[0.78rem] font-bold tracking-[0.09em] text-white/60 uppercase">
-                Before
-              </h3>
-              <ul className="mt-4 space-y-2.5">
-                {BEFORE_AFTER.before.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-white/75">
-                    <span
-                      aria-hidden
-                      className="mt-2.5 size-1.5 flex-none rounded-full bg-white/40"
-                    />
-                    {b}
-                  </li>
-                ))}
-              </ul>
+          <div className="mt-10 max-w-[1000px]">
+            <div
+              aria-hidden="true"
+              className="hidden grid-cols-[1fr_64px_1fr] pb-3 text-[0.95rem] font-medium text-white/90 sm:grid"
+            >
+              <span>Today</span>
+              <span />
+              <span>With Beekal</span>
             </div>
-            <div>
-              <h3 className="text-accent text-[0.78rem] font-bold tracking-[0.09em] uppercase">
-                After
-              </h3>
-              <ul className="mt-4 space-y-2.5">
-                {BEFORE_AFTER.after.map((a) => (
-                  <li key={a} className="flex items-start gap-3">
-                    <CheckIcon className="text-accent mt-0.5 size-5 flex-none" />
-                    {a}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {BEFORE_AFTER.before.map((before, index) => (
+              <div
+                key={before}
+                className="grid gap-1 border-t border-white/25 py-5 sm:grid-cols-[1fr_64px_1fr] sm:items-center"
+              >
+                <p className="text-[1.06rem] text-white/90">
+                  <span className="font-semibold sm:hidden">Today: </span>
+                  {before}
+                </p>
+                <span aria-hidden="true" className="hidden sm:grid sm:place-items-center">
+                  <i className="bg-accent block size-3 rounded-full shadow-[0_0_0_5px_rgba(255,184,28,0.25)]" />
+                </span>
+                <p className="font-display text-[clamp(1.15rem,1rem+0.85vw,1.6rem)] leading-tight font-semibold tracking-[-0.02em]">
+                  {BEFORE_AFTER.after[index]}
+                </p>
+              </div>
+            ))}
           </div>
         </Wrap>
       </Section>

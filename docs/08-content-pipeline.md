@@ -202,9 +202,15 @@ and converts both ways, round-tripping so a typo fix does not rewrite the piece.
 and appears on the page, so republishing after a correction must not push a
 year-old article back to the top.
 
-**Not yet verified in a browser.** The session ended before the walkthrough and
-before the accessibility and end-to-end suites were re-run. Types, lint and unit
-tests are green. See ROADMAP.md.
+The production build succeeds and all 96 browser checks displayed as passing,
+but the runner did not exit cleanly after the final test. The authenticated
+article/resource editor walkthrough is still pending. See ROADMAP.md.
+
+The seed now preserves the existing article URLs and publishes the ungated score
+tool; downloadable guides without files remain drafts. A published gated
+resource has a detail page, validated email exchange, and a redacted file URL
+in the public listing. Ungated files link directly. Publishing with no file or
+tool link is refused. The authenticated editor walkthrough remains open.
 
 ### Step 7 is the same gap, one layer over
 

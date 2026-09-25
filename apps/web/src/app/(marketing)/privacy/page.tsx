@@ -36,6 +36,13 @@ export default function PrivacyPage() {
             </p>
           </Part>
 
+          <Part title="Downloadable resources">
+            <p>
+              If you request a downloadable resource, we record your email address and which
+              resource you requested so we can provide it. That does not sign you up for articles.
+            </p>
+          </Part>
+
           <Part title="What we do with it">
             <p>
               We reply to you. That is the whole purpose. We never sell it, never share it outside

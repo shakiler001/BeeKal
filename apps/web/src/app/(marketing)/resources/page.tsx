@@ -28,7 +28,10 @@ export default async function ResourcesPage() {
         <ul className="mt-12 grid gap-5 lg:grid-cols-2">
           {resources.map((resource) => {
             const available =
-              resource.href ?? (resource.fileUrl ? `/resources/${resource.slug}` : null);
+              resource.href ??
+              (resource.isGated && resource.hasFile
+                ? `/resources/${resource.slug}`
+                : resource.fileUrl);
 
             return (
               <li key={resource.slug}>

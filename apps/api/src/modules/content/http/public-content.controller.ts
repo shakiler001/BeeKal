@@ -1,6 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
+import { z } from 'zod';
+import { EmailSchema } from '@beekal/contracts';
 import { PrismaService } from '../../../shared/prisma.service.js';
 import { Public } from '../../../shared/auth/index.js';
+import { PUBLIC_WRITE_THROTTLE } from '../../../shared/throttle/throttle.config.js';
+
+const DownloadRequestSchema = z.object({ email: EmailSchema });
 
 /**
  * What the public site reads. Published rows only — a draft must never be
@@ -59,10 +73,40 @@ export class PublicContentController {
   @Public()
   @Get('resources')
   async resources() {
-    return this.prisma.resource.findMany({
-      where: { status: 'PUBLISHED', deletedAt: null },
+    const rows = await this.prisma.resource.findMany({
+      where: { status: 'PUBLISHED', deletedAt: null, fileUrl: { not: null } },
       orderBy: { order: 'asc' },
     });
+    return rows.map((row) => ({
+      ...row,
+      hasFile: true,
+      fileUrl: row.isGated ? null : row.fileUrl,
+    }));
+  }
+
+  @Public()
+  @Throttle(PUBLIC_WRITE_THROTTLE)
+  @Post('resources/:slug/download')
+  async downloadResource(@Param('slug') slug: string, @Body() body: unknown) {
+    const parsed = DownloadRequestSchema.safeParse(body);
+    if (!parsed.success) throw new BadRequestException('Enter a valid email address');
+
+    const resource = await this.prisma.resource.findFirst({
+      where: { slug, status: 'PUBLISHED', deletedAt: null, fileUrl: { not: null } },
+      select: { id: true, fileUrl: true, isGated: true },
+    });
+    if (!resource?.fileUrl || !resource.isGated) throw new NotFoundException();
+
+    await this.prisma.$transaction([
+      this.prisma.resourceDownload.create({
+        data: { resourceId: resource.id, email: parsed.data.email, marketingConsent: false },
+      }),
+      this.prisma.resource.update({
+        where: { id: resource.id },
+        data: { downloadCount: { increment: 1 } },
+      }),
+    ]);
+    return { fileUrl: resource.fileUrl };
   }
 
   @Public()

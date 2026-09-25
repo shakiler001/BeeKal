@@ -26,6 +26,7 @@ interface ResourceRow {
   contents: unknown;
   isGated: unknown;
   fileUrl: unknown;
+  hasFile: unknown;
   seoTitle: unknown;
   seoDescription: unknown;
 }
@@ -50,6 +51,10 @@ function toResource(row: ResourceRow): Resource | null {
     // would hand out something meant to be exchanged for an email address.
     isGated: row.isGated !== false,
     fileUrl: typeof row.fileUrl === 'string' && row.fileUrl !== '' ? row.fileUrl : null,
+    hasFile: row.hasFile === true,
+    // Interactive tools are pages, so their URL is a destination rather than
+    // a downloadable file under /resources/[slug].
+    ...(kind === 'tool' && typeof row.fileUrl === 'string' ? { href: row.fileUrl } : {}),
     seoTitle: str(row.seoTitle),
     seoDescription: str(row.seoDescription),
   };

@@ -580,9 +580,13 @@ export class ContentController {
     const next = this.parseStatus(body);
     const current = await this.prisma.resource.findUnique({
       where: { id },
-      select: { status: true },
+      select: { status: true, fileUrl: true, deletedAt: true },
     });
-    if (!current) throw notFound();
+    if (!current || current.deletedAt) throw notFound();
+
+    if (next === 'PUBLISHED' && !current.fileUrl) {
+      throw validationError('Add a file or tool link before publishing');
+    }
 
     this.assertTransition(current.status, next, user, 'resource:publish');
 

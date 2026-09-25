@@ -13,7 +13,7 @@ start, without reading a transcript.
 roadmap that is wrong in between, and a stale one is worse than none because it
 is believed. If a step changes shape while being built, change the row.
 
-Last updated: 2026-09-24
+Last updated: 2026-09-25
 
 ---
 
@@ -26,11 +26,10 @@ the admin's appearance.
 2. **[A1](#a1--the-admin-chrome-moves-between-screens)** — the admin chrome
    shifts between screens
 
-**Step 6 shipped but is not fully verified.** The session ran short. Code,
-types, lint and unit tests are green and it is deployed locally, but the
-browser walkthrough — write an article in the admin, publish it, watch it
-appear on /insights — was not run, and neither were the accessibility and
-end-to-end suites. Do that first when picking this up:
+**Step 6 remains partially verified.** The production build succeeds and all
+96 browser checks displayed as passing, but the Playwright process hung after
+the final test. The authenticated editor walkthrough has not been performed.
+Resolve those two gates before starting Step 7:
 
 ```bash
 pnpm turbo build --filter=@beekal/web
@@ -87,9 +86,19 @@ ways and round-trip, so opening an article to fix a typo does not rewrite it.
 Four tests cover that, including the case where a hyphen inside a quote must not
 be mistaken for an attribution.
 
-**Both tables are still empty.** The seed never populated them, so `/insights`
-and `/resources` serve the repository baseline until something is written in the
-admin. That is the fallback working as designed, not a fault.
+The seed now inserts the three existing articles and the score tool when rows
+are absent. The three unfinished checklists remain drafts because they have no
+files. The repository baseline is used when the API is unavailable, not when a
+database table is empty. Gated downloads now have a detail page and the public
+API redacts their file URLs; ungated resources link directly. Publishing a
+resource without a file or tool link is refused.
+
+Verification is still open: the browser runner displayed all 96 checks as
+passing but hung while shutting down. The authenticated article/resource editor
+walkthrough has not been performed. Do not begin Step 7 until those gates are
+resolved. The founder also flagged homepage drift from the legacy HTML; the
+Today/With Beekal rows have been restored, but visual hero parity remains to
+be checked. See `TODO.md` for the detailed checklist.
 
 ### 7 — People
 

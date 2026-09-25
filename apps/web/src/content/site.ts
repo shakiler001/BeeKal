@@ -142,18 +142,18 @@ export const METHOD = [
 /** The transformation, stated plainly. */
 export const BEFORE_AFTER = {
   before: [
-    'Excel-based processes',
-    'Manual data entry',
-    'Disconnected applications',
-    'Reports rebuilt by hand',
+    'Processes live in Excel',
+    'The same data typed in again and again',
+    'Applications that do not talk to each other',
+    'Reports built by hand, every time',
     'Information scattered across teams',
   ],
   after: [
-    'One centralized system',
-    'Automated workflows',
+    'One central system',
+    'Workflows that run themselves',
     'Integrated applications',
-    'Reporting that arrives on its own',
-    'Unified operational information',
+    'Reports that arrive on their own',
+    'One view of the whole business',
   ],
 } as const;
 

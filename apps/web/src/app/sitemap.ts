@@ -59,7 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Only resources that actually exist. Listing a page that says "coming
     // soon" wastes a crawl and disappoints a click.
     ...resources
-      .filter((r) => r.fileUrl !== null)
+      .filter((r) => r.isGated && r.hasFile)
       .map((r) => ({
         url: `${BASE}/resources/${r.slug}`,
         lastModified: now,

@@ -13,6 +13,8 @@ import { SOLUTIONS } from '../../web/src/content/solutions.js';
 import { PROBLEMS } from '../../web/src/content/problems.js';
 import { CASE_STUDIES } from '../../web/src/content/case-studies.js';
 import { FAQS } from '../../web/src/content/faqs.js';
+import { ARTICLES } from '../../web/src/content/articles.js';
+import { RESOURCES } from '../../web/src/content/resources.js';
 import { SCORE_DIMENSIONS, SCORE_LEVELS } from '../../web/src/content/score.js';
 
 export async function seedContent(prisma: PrismaClient): Promise<void> {
@@ -116,6 +118,59 @@ export async function seedContent(prisma: PrismaClient): Promise<void> {
         order: index,
         status: 'PUBLISHED',
         publishedAt: new Date(),
+      },
+    });
+    created += 1;
+  }
+
+  // These articles were already public in the repository baseline. Seed them
+  // with their original publication dates so switching to database reads does
+  // not make an existing URL disappear or move an older article to the top.
+  for (const article of ARTICLES) {
+    const existing = await prisma.article.findUnique({
+      where: { slug_locale: { slug: article.slug, locale: 'en' } },
+    });
+    if (existing) continue;
+    await prisma.article.create({
+      data: {
+        slug: article.slug,
+        title: article.title,
+        excerpt: article.excerpt,
+        body: article.body.map((block) => ({ ...block })),
+        tags: [...article.tags],
+        readMinutes: article.readMinutes,
+        seoTitle: article.seoTitle,
+        seoDescription: article.seoDescription,
+        status: 'PUBLISHED',
+        publishedAt: new Date(article.publishedAt),
+      },
+    });
+    created += 1;
+  }
+
+  // The interactive score already exists at /score. The downloadable guides
+  // have no files yet, so they remain drafts rather than advertising a download
+  // the site cannot deliver.
+  for (const [index, resource] of RESOURCES.entries()) {
+    const existing = await prisma.resource.findUnique({
+      where: { slug_locale: { slug: resource.slug, locale: 'en' } },
+    });
+    if (existing) continue;
+    const available = resource.kind === 'tool' && !!resource.href;
+    await prisma.resource.create({
+      data: {
+        slug: resource.slug,
+        title: resource.title,
+        description: resource.description,
+        kind: resource.kind,
+        contents: [...resource.contents],
+        fileUrl: resource.href ?? resource.fileUrl,
+        isGated: resource.isGated,
+        seoTitle: resource.seoTitle,
+        seoDescription: resource.seoDescription,
+        order: index,
+        status: available ? 'PUBLISHED' : 'DRAFT',
+        publishedAt: available ? new Date() : null,
       },
     });
     created += 1;
