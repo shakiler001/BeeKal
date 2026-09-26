@@ -135,33 +135,60 @@ export class AuthService {
     return { ok: true };
   }
 
-  /** Used by the seed's setup link and by an invited user's first sign-in. */
-  async setInitialPassword(email: string, password: string): Promise<SetPasswordResult> {
+  /** Consume an invitation once; an email address can never act as a token. */
+  async setInitialPassword(token: string, password: string): Promise<SetPasswordResult> {
+    const invalid =
+      'This invitation is invalid or has expired. Ask an administrator for a new one.';
+    const now = new Date();
+    const tokenHash = hashToken(token);
     const user = await this.prisma.user.findUnique({
-      where: { email },
-      select: { id: true, passwordHash: true, status: true },
+      where: { inviteTokenHash: tokenHash },
+      select: {
+        id: true,
+        email: true,
+        inviteExpiresAt: true,
+        passwordHash: true,
+        status: true,
+        deletedAt: true,
+      },
     });
-
-    if (!user) return { ok: false, reason: 'No invitation found for that address' };
-    if (user.passwordHash) {
-      return { ok: false, reason: 'This account already has a password. Sign in instead.' };
+    if (
+      !user ||
+      user.deletedAt ||
+      user.status !== 'INVITED' ||
+      user.passwordHash ||
+      !user.inviteExpiresAt ||
+      user.inviteExpiresAt <= now
+    ) {
+      return { ok: false, reason: invalid };
     }
 
-    const check = checkPassword(password, email);
+    const check = checkPassword(password, user.email);
     if (!check.ok) return { ok: false, reason: check.reason };
 
-    await this.prisma.$transaction([
-      this.prisma.user.update({
-        where: { id: user.id },
-        data: { passwordHash: await hash(password, ARGON2_OPTIONS), status: 'ACTIVE' },
-      }),
-      this.prisma.auditLog.create({
+    const passwordHash = await hash(password, ARGON2_OPTIONS);
+    const consumed = await this.prisma.$transaction(async (tx) => {
+      const updated = await tx.user.updateMany({
+        where: {
+          id: user.id,
+          inviteTokenHash: tokenHash,
+          passwordHash: null,
+          status: 'INVITED',
+          deletedAt: null,
+          inviteExpiresAt: { gt: new Date() },
+        },
+        data: { passwordHash, status: 'ACTIVE', inviteTokenHash: null, inviteExpiresAt: null },
+      });
+      if (updated.count !== 1) return false;
+      await tx.auditLog.create({
         data: { userId: user.id, action: 'password.set', entityType: 'User', entityId: user.id },
-      }),
-    ]);
+      });
+      return true;
+    });
+    if (!consumed) return { ok: false, reason: invalid };
 
     this.permissions.bumpVersion();
-    this.logger.log(`Initial password set for ${email}`);
+    this.logger.log(`Initial password set for user ${user.id}`);
     return { ok: true };
   }
 

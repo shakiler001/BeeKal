@@ -131,5 +131,11 @@ export function canEditRole(
       };
     }
   }
+  if (change.deleting && role.isSystem) {
+    return {
+      allowed: false,
+      reason: 'Seeded system roles cannot be deleted. Create a custom role instead.',
+    };
+  }
   return { allowed: true };
 }

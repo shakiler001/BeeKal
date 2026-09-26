@@ -53,7 +53,7 @@ export class AuditInterceptor implements NestInterceptor {
             ? paramId
             : null;
 
-      const sanitized = sanitize(result);
+      const sanitized = sanitizeAuditResult(result);
 
       await this.prisma.auditLog.create({
         data: {
@@ -82,10 +82,18 @@ function headerValue(value: string | string[] | undefined): string | null {
   return value ?? null;
 }
 
-const REDACTED = ['password', 'passwordHash', 'token', 'tokenHash', 'mfaSecret', 'secret'];
+const REDACTED = [
+  'password',
+  'passwordHash',
+  'token',
+  'tokenHash',
+  'setupUrl',
+  'mfaSecret',
+  'secret',
+];
 
 /** Never let a credential reach the audit log. */
-function sanitize(value: unknown): object | null {
+export function sanitizeAuditResult(value: unknown): object | null {
   if (typeof value !== 'object' || value === null) return null;
 
   const out: Record<string, unknown> = {};

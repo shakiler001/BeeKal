@@ -243,12 +243,13 @@ component — review is the only guard.
 
 ---
 
-## INV-11 — An endpoint with no declared permission is refused
+## INV-11 — An endpoint with no declared access policy is refused
 
 **Grade:** Guarded
 
-**Rule.** A route carrying neither `@RequirePermission(...)` nor `@Public()` is
-rejected with 403, not allowed.
+**Rule.** A route carrying none of `@RequirePermission(...)`, `@Authenticated()`,
+or `@Public()` is rejected with 403, not allowed. `@Authenticated()` requires a
+valid session without imposing a resource-specific permission.
 
 **Why.** Opt-out beats opt-in. The failure mode of forgetting should be a
 locked door, not an open one.

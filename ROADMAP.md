@@ -13,7 +13,7 @@ start, without reading a transcript.
 roadmap that is wrong in between, and a stale one is worse than none because it
 is believed. If a step changes shape while being built, change the row.
 
-Last updated: 2026-09-25
+Last updated: 2026-09-26
 
 ---
 
@@ -22,25 +22,22 @@ Last updated: 2026-09-25
 Order set by the founder on 2026-09-24: finish the content pipeline first, then
 the admin's appearance.
 
-1. **Step 7** — people: user CRUD and role assignment _(next)_
-2. **[A1](#a1--the-admin-chrome-moves-between-screens)** — the admin chrome
-   shifts between screens
+1. **[A1](#a1--the-admin-chrome-moves-between-screens)** — the admin chrome
+   shifts between screens _(next)_
 
-**Step 6 remains partially verified.** The production build succeeds and all
-96 browser checks displayed as passing, but the Playwright process hung after
-the final test. The authenticated editor walkthrough has not been performed.
-Resolve those two gates before starting Step 7:
+**Step 6 is verified.** The production build, accessibility checks, and browser
+suite pass. Pointing Playwright at the running Docker web app avoids the
+child-server shutdown hang:
 
 ```bash
-pnpm turbo build --filter=@beekal/web
-pnpm --filter @beekal/web test:a11y
-pnpm --filter @beekal/web test:e2e
+$env:E2E_BASE_URL='http://localhost:3000'
+pnpm --filter @beekal/web exec playwright test --workers=2
 ```
 
-Then sign in at /admin/content and write one, the way an editor would. Every
-other step in this pipeline was verified that way and each time it found
-something a type check could not — a wrong payload shape, a form that saved but
-did not publish.
+The suite exited cleanly: 100 passed, 4 intentionally skipped without disposable
+Editor/administrator credentials. Separate authenticated runs passed draft, publish, edit,
+gated download, unpublish, and cleanup. It found and fixed an API existence check
+that incorrectly looked for an FAQ when editing or deleting an article/resource.
 
 ---
 
@@ -49,17 +46,15 @@ did not publish.
 Making the public site editable without a deploy. Full detail, including the
 audit that prompted it, in [`docs/08-content-pipeline.md`](docs/08-content-pipeline.md).
 
-| #   | Step                                    | State | Notes                                       |
-| --- | --------------------------------------- | ----- | ------------------------------------------- |
-| 1   | Content layer + revalidation            | Done  | Tag-based cache, revalidated via the outbox |
-| 2   | Case studies read from the database     | Done  |                                             |
-| 3   | Case study BFF + editor                 | Done  |                                             |
-| 4   | Categories read from the database, CRUD | Done  | Answers "can I add a sixth category" — yes  |
-| 5   | FAQs and problem pages                  | Done  | FAQs edited in place; problems get a form   |
-| 6   | Articles and resources                  | Done¹ | Makes Insights and Resources publishable    |
-| 7   | People: user CRUD and role assignment   | Next  | Same gap one layer over — API exists, no UI |
-
-¹ Built and deployed, not yet walked through in a browser. See **Now** above.
+| #   | Step                                    | State       | Notes                                                                         |
+| --- | --------------------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| 1   | Content layer + revalidation            | Done        | Tag-based cache, revalidated via the outbox                                   |
+| 2   | Case studies read from the database     | Done        |                                                                               |
+| 3   | Case study BFF + editor                 | Done        |                                                                               |
+| 4   | Categories read from the database, CRUD | Done        | Answers "can I add a sixth category" — yes                                    |
+| 5   | FAQs and problem pages                  | Done        | FAQs edited in place; problems get a form                                     |
+| 6   | Articles and resources                  | Done        | Makes Insights and Resources publishable                                      |
+| 7   | People: user CRUD and role assignment   | Done  | Secure invite/setup, user and role management, browser-verified                |
 
 ### 6 — Articles and resources
 
@@ -93,21 +88,30 @@ database table is empty. Gated downloads now have a detail page and the public
 API redacts their file URLs; ungated resources link directly. Publishing a
 resource without a file or tool link is refused.
 
-Verification is still open: the browser runner displayed all 96 checks as
-passing but hung while shutting down. The authenticated article/resource editor
-walkthrough has not been performed. Do not begin Step 7 until those gates are
-resolved. The founder also flagged homepage drift from the legacy HTML; the
-Today/With Beekal rows have been restored, but visual hero parity remains to
-be checked. See `TODO.md` for the detailed checklist.
+The authenticated editor walkthrough passed against Docker, and its disposable
+records were removed. Side-by-side review of the legacy HTML and current page
+confirmed the hero diagram and connector animation match; the newer multi-page
+layout intentionally differs in typography and spacing. Today/Tomorrow and
+reduced-motion states now have browser tests. Founder visual review is welcome
+but does not block Step 7.
 
 ### 7 — People
 
-`POST`, `PATCH` and `DELETE` on `/users` have existed since Phase 3 with correct
-permissions and audit entries. There is no BFF route and no form, so the People
-screen lists users and can change nothing. Role assignment in particular is
-missing, which is the half of "multi-user configurable for different roles" that
-was never finished — the role _editor_ was built, assigning a role to a person
-was not.
+Invite, update, suspend, and delete now have BFF routes and People controls.
+An invitation is a random 256-bit link stored only as a hash, expiring after
+48 hours and consumed once. SMTP delivers it in production; the local console
+mailer shows a copy link. The existing email-as-token setup path is removed.
+Custom roles can be created through the permission matrix; seeded system roles
+are protected from deletion. A disposable browser walkthrough passed invite,
+setup, replay refusal, login, role creation/assignment, immediate permission
+refresh, suspension, deletion, and sign-out revocation. It also checked the
+People page at tablet width in both themes. The API unit suite passed 109 tests;
+the ordinary browser suite passed 100 with four credential-gated skips. Test
+users/roles and invitation links were removed. This completed Step 7.
+
+The browser walkthrough found two adjacent issues and fixed them: the admin
+header overflowed at tablet width, and sign-out redirected to the container's
+`0.0.0.0` bind address instead of the public app URL.
 
 Also the practical fix for [FAI-06](LogicLibrary/07-failure-modes.md): a second
 Owner is a better answer to lockout than a recovery CLI.

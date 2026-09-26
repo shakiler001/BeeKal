@@ -111,15 +111,15 @@ the JSON columns never leak into components.
 
 ## 3. Plan
 
-| #   | Step                                                     | Unlocks                                         | State |
-| --- | -------------------------------------------------------- | ----------------------------------------------- | ----- |
-| 1   | Content layer + revalidation                             | The mechanism. Nothing user-visible on its own. | Done  |
-| 2   | Case studies read from the database                      | `/work` reflects what is in the admin           | Done  |
-| 3   | Case study BFF + editor UI                               | Writing a case study without a deploy           | Done  |
-| 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 | Done  |
-| 5   | FAQs, problems                                           | The remaining seeded types                      | Done  |
-| 6   | Articles, resources                                      | Insights and Resources become publishable       | Done  |
-| 7   | People: user CRUD and role assignment                    | Adding a colleague without a deploy             | Next  |
+| #   | Step                                                     | Unlocks                                         | State       |
+| --- | -------------------------------------------------------- | ----------------------------------------------- | ----------- |
+| 1   | Content layer + revalidation                             | The mechanism. Nothing user-visible on its own. | Done        |
+| 2   | Case studies read from the database                      | `/work` reflects what is in the admin           | Done        |
+| 3   | Case study BFF + editor UI                               | Writing a case study without a deploy           | Done        |
+| 4   | Solutions read from the database, plus create and delete | New categories without a deploy                 | Done        |
+| 5   | FAQs, problems                                           | The remaining seeded types                      | Done        |
+| 6   | Articles, resources                                      | Insights and Resources become publishable       | Done        |
+| 7   | People: user CRUD and role assignment                    | Adding a colleague without a deploy             | Done  |
 
 Steps 2 and 4 are the ones that change what a visitor sees. Step 1 is the
 foundation and is deliberately boring.
@@ -202,32 +202,43 @@ and converts both ways, round-tripping so a typo fix does not rewrite the piece.
 and appears on the page, so republishing after a correction must not push a
 year-old article back to the top.
 
-The production build succeeds and all 96 browser checks displayed as passing,
-but the runner did not exit cleanly after the final test. The authenticated
-article/resource editor walkthrough is still pending. See ROADMAP.md.
+The production build, accessibility checks, API unit tests, and browser suite
+pass. The browser runner exits cleanly when `E2E_BASE_URL` points to the running
+Docker web app (100 passed, four credential-gated skips in the ordinary run).
+An authenticated disposable-Editor walkthrough also passed every article and
+resource state change, including draft visibility, gated access, `publishedAt`
+stability, and cleanup. It found and fixed an article/resource update/delete
+existence check that incorrectly queried FAQs.
 
 The seed now preserves the existing article URLs and publishes the ungated score
 tool; downloadable guides without files remain drafts. A published gated
 resource has a detail page, validated email exchange, and a redacted file URL
 in the public listing. Ungated files link directly. Publishing with no file or
-tool link is refused. The authenticated editor walkthrough remains open.
+tool link is refused.
 
 ### Step 7 is the same gap, one layer over
 
-The People screen lists users and offers no way to add, edit or remove one, or
-to change what role someone has. The cause is identical to the case studies:
+The People screen originally listed users but offered no mutation. Step 7 now
+connects the existing CRUD API to browser controls,
+and replaces email-as-token setup with a hashed, expiring, single-use invite.
+The original missing links were:
 
-| Link            | Users                    |
-| --------------- | ------------------------ |
-| 1. Table        | ✅                       |
-| 2. API          | ✅ full CRUD on `/users` |
-| 3. BFF route    | ❌ none                  |
-| 4. Admin screen | ❌ read-only list        |
+| Link            | Users                                     |
+| --------------- | ----------------------------------------- |
+| 1. Table        | ✅                                        |
+| 2. API          | ✅ full CRUD on `/users`                  |
+| 3. BFF route    | ✅ users and role creation                |
+| 4. Admin screen | ✅ invite and manage users; role creation |
 
-`POST`, `PATCH` and `DELETE` on `/users` have existed since Phase 3 with the
-right permissions and audit entries, and the browser has never been able to
-reach any of them. The role editor was built — the thing the original
-requirement was really about — but assigning a role to a person was not.
+`POST`, `PATCH` and `DELETE` on `/users` existed since Phase 3 with the right
+permissions and audit entries, but the browser could not reach them. A
+disposable browser walkthrough passes invitation, setup, replay refusal,
+login, custom role creation/assignment, immediate permission refresh,
+suspension/session revocation, deletion, and sign-out. Tablet layout and both
+themes were checked, and all temporary records were removed. Production
+invitations use SMTP; the console-mail copy link is confined to localhost.
+Seeded system roles remain editable but cannot be deleted. Soft-deleted users
+do not count as live role holders.
 
 It is listed last because it is not content, not because it is unimportant: a
 second Owner is also the answer to the lockout risk in

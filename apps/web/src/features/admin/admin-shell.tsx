@@ -63,7 +63,7 @@ export function AdminShell({
             </span>
           </Link>
 
-          <nav aria-label="Admin" className="ml-6 hidden items-center gap-1 md:flex">
+          <nav aria-label="Admin" className="ml-3 hidden items-center gap-1 lg:flex">
             {visible.map((item) => {
               const active =
                 item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
@@ -84,7 +84,7 @@ export function AdminShell({
           </nav>
 
           <div className="ml-auto flex items-center gap-3">
-            <span className="text-ink-2 hidden text-[0.88rem] sm:block">
+            <span className="text-ink-2 hidden max-w-56 truncate text-[0.88rem] xl:block">
               {session.name}
               <span className="text-ink-2/70"> · {session.roles.join(', ')}</span>
             </span>
@@ -103,7 +103,7 @@ export function AdminShell({
               aria-expanded={menuOpen}
               aria-controls="admin-mobile-nav"
               aria-label={menuOpen ? 'Close menu' : 'Menu'}
-              className="border-field text-ink grid size-9 place-items-center rounded-full border md:hidden"
+              className="border-field text-ink grid size-9 place-items-center rounded-full border lg:hidden"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -124,7 +124,7 @@ export function AdminShell({
           </div>
         </div>
 
-        <div id="admin-mobile-nav" hidden={!menuOpen} className="border-line border-t md:hidden">
+        <div id="admin-mobile-nav" hidden={!menuOpen} className="border-line border-t lg:hidden">
           <nav aria-label="Admin, mobile" className="grid gap-1 px-5 py-3">
             {visible.map((item) => (
               <Link

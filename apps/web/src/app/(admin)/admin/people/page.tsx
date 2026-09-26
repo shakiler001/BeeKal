@@ -4,6 +4,7 @@ import { Card } from '@/components/ui';
 import { adminApi } from '@/lib/admin/api';
 import { can, requireSession } from '@/lib/admin/session';
 import { AdminPageHeader } from '@/features/admin/page-header';
+import { PeopleManager } from '@/features/admin/people-manager';
 
 export const metadata = { title: 'People' };
 
@@ -20,38 +21,26 @@ export default async function PeoplePage() {
       <AdminPageHeader title="People" description="Who has access, and what each role can do." />
 
       {users && (
-        <section className="mt-8">
-          <h2 className="font-display mb-3 text-lg font-bold tracking-tight">Users</h2>
-          <Card padding="sm">
-            <ul className="divide-line divide-y">
-              {users.map((user) => (
-                <li key={user.id} className="flex flex-wrap items-center gap-3 py-3">
-                  <span className="min-w-0 flex-1">
-                    <span className="font-medium">{user.name}</span>
-                    <span className="text-ink-2 block text-[0.88rem]">{user.email}</span>
-                  </span>
-                  <span className="text-ink-2 text-[0.85rem]">
-                    {user.roles.map((r) => r.name).join(', ')}
-                  </span>
-                  <span
-                    className={
-                      user.status === 'ACTIVE'
-                        ? 'text-brand text-[0.78rem] font-bold tracking-wide uppercase'
-                        : 'text-ink-2 text-[0.78rem] font-bold tracking-wide uppercase'
-                    }
-                  >
-                    {user.status.toLowerCase()}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </section>
+        <PeopleManager
+          users={users}
+          roles={roles ?? []}
+          actorId={session.id}
+          canCreate={can(session, 'user:create')}
+          canUpdate={can(session, 'user:update')}
+          canDelete={can(session, 'user:delete')}
+        />
       )}
 
       {roles && (
         <section className="mt-8">
-          <h2 className="font-display mb-3 text-lg font-bold tracking-tight">Roles</h2>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-lg font-bold tracking-tight">Roles</h2>
+            {can(session, 'role:create') && (
+              <Link href="/admin/people/roles/new" className="text-brand font-semibold underline">
+                Create role
+              </Link>
+            )}
+          </div>
           <p className="text-ink-2 mb-4 max-w-[60ch] text-[0.95rem]">
             Roles are data, not code. Change what a role can do here and everyone holding it is
             updated on their next request.

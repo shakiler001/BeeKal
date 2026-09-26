@@ -1,6 +1,10 @@
 import { SetMetadata } from '@nestjs/common';
 
 export const PERMISSION_KEY = 'beekal:permission';
+export const AUTHENTICATED_KEY = 'beekal:authenticated';
+
+/** Requires a live account/session, but no particular role grant. */
+export const Authenticated = () => SetMetadata(AUTHENTICATED_KEY, true);
 
 /**
  * Declares what a route needs.

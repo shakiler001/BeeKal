@@ -55,7 +55,7 @@ export class AccessController {
         description: true,
         isSystem: true,
         isOwner: true,
-        _count: { select: { users: true } },
+        _count: { select: { users: { where: { user: { deletedAt: null } } } } },
         permissions: { select: { scope: true, permission: { select: { key: true } } } },
       },
     });
@@ -175,7 +175,12 @@ export class AccessController {
   async deleteRole(@Param('id') id: string): Promise<{ id: string }> {
     const role = await this.prisma.role.findUnique({
       where: { id },
-      select: { id: true, isOwner: true, isSystem: true, _count: { select: { users: true } } },
+      select: {
+        id: true,
+        isOwner: true,
+        isSystem: true,
+        _count: { select: { users: { where: { user: { deletedAt: null } } } } },
+      },
     });
     if (!role) throw new NotFoundException({ code: 'NOT_FOUND', message: 'Role not found' });
 
@@ -193,7 +198,14 @@ export class AccessController {
       });
     }
 
-    await this.prisma.role.delete({ where: { id } });
+    await this.prisma.$transaction(async (tx) => {
+      // Soft-deleted accounts retain their audit history, but their obsolete
+      // memberships must not block deletion of a now-unused custom role.
+      await tx.userRole.deleteMany({
+        where: { roleId: id, user: { deletedAt: { not: null } } },
+      });
+      await tx.role.delete({ where: { id } });
+    });
     this.permissions.bumpVersion();
     return { id };
   }

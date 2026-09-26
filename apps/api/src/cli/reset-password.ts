@@ -33,6 +33,7 @@ import { hash } from 'argon2';
 import { createInterface } from 'node:readline';
 import { Writable } from 'node:stream';
 import { ARGON2_OPTIONS, checkPassword } from '../modules/identity/domain/password.js';
+import { issueToken, expiryFrom } from '../shared/crypto/index.js';
 
 /**
  * Find a database connection before doing anything else.
@@ -200,10 +201,16 @@ async function main(): Promise<void> {
   const now = new Date();
 
   if (args.revoke) {
+    const invitation = issueToken();
     await prisma.$transaction([
       prisma.user.update({
         where: { id: user.id },
-        data: { passwordHash: null, status: 'INVITED' },
+        data: {
+          passwordHash: null,
+          status: 'INVITED',
+          inviteTokenHash: invitation.hash,
+          inviteExpiresAt: expiryFrom(now, 48),
+        },
       }),
       prisma.session.updateMany({
         where: { userId: user.id, revokedAt: null },
@@ -221,11 +228,9 @@ async function main(): Promise<void> {
 
     console.info('');
     console.info('  Password cleared. The account is INVITED and has no password.');
-    console.info('  Set one with:');
+    console.info('  Set one within 48 hours with this one-time link:');
     console.info('');
-    console.info(`    curl -X POST <api>/api/auth/set-password \\`);
-    console.info(`      -H 'Content-Type: application/json' \\`);
-    console.info(`      -d '{"token":"${user.email}","password":"..."}'`);
+    console.info(`    /admin/setup?token=${invitation.raw}`);
     console.info('');
     return;
   }
@@ -247,7 +252,7 @@ async function main(): Promise<void> {
   const [, revoked] = await prisma.$transaction([
     prisma.user.update({
       where: { id: user.id },
-      data: { passwordHash, status: 'ACTIVE' },
+      data: { passwordHash, status: 'ACTIVE', inviteTokenHash: null, inviteExpiresAt: null },
     }),
     prisma.session.updateMany({
       where: { userId: user.id, revokedAt: null },

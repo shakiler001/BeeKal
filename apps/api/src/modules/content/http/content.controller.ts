@@ -728,7 +728,11 @@ export class ContentController {
           ? await this.prisma.problem.findUnique(where)
           : model === 'caseStudy'
             ? await this.prisma.caseStudy.findUnique(where)
-            : await this.prisma.faq.findUnique(where);
+            : model === 'article'
+              ? await this.prisma.article.findUnique(where)
+              : model === 'resource'
+                ? await this.prisma.resource.findUnique(where)
+                : await this.prisma.faq.findUnique(where);
 
     if (!found) throw notFound();
   }

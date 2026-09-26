@@ -37,7 +37,12 @@ export default async function RolePage({ params }: { params: Promise<{ id: strin
         />
       </div>
 
-      <RoleEditor role={role} permissions={permissions} canEdit={can(session, 'role:update')} />
+      <RoleEditor
+        role={role}
+        permissions={permissions}
+        canEdit={can(session, 'role:update')}
+        canDelete={can(session, 'role:delete') && !role.isSystem && role.userCount === 0}
+      />
     </>
   );
 }

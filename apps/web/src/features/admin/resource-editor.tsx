@@ -13,8 +13,7 @@ import { Button, Card, Field, Input, Select, Textarea } from '@/components/ui';
  *
  * Two fields decide whether it works at all, so both say what they mean here.
  * `fileUrl` is where the file actually lives; without it the resources page
- * lists the resource but offers nothing to download, which is worse than not
- * listing it. `isGated` decides whether an email is asked for, and defaults to
+ * prevents publishing the resource. `isGated` decides whether an email is asked for, and defaults to
  * asking — the other default would quietly give away the thing the exchange is
  * built on.
  */
@@ -246,8 +245,7 @@ export function ResourceEditor({
 
           {noFile && (
             <p className="text-ink-2 text-[0.9rem]">
-              Without this the resource is listed but there is nothing to download. Publishing it in
-              that state advertises something the site cannot hand over.
+              This resource needs a file or tool link before it can be published.
             </p>
           )}
 

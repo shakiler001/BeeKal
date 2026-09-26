@@ -7,7 +7,9 @@ export {
 } from './current-user.js';
 export {
   RequirePermission,
+  Authenticated,
   Public,
   PERMISSION_KEY,
+  AUTHENTICATED_KEY,
   PUBLIC_KEY,
 } from './require-permission.decorator.js';

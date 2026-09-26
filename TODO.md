@@ -144,18 +144,17 @@ working database-backed content.
 
 ## 3. Current handoff
 
-- Branch: `main`
-- Working tree was clean at review.
-- Local `main` matched `origin/main`.
-- Latest commit: `e96d40a` — articles and resources became database-driven and
-  editable.
-- Content-pipeline Steps 1–6 are implemented.
-- Step 6 passed types, lint, and unit tests in the previous session, but its
-  production build, accessibility suite, E2E suite, and real browser publishing
-  walkthrough were not completed.
-- The current local dependency tree is incomplete: root CLIs exist, but the web
-  Playwright package/CLI is missing. Restore dependencies before treating a
-  test failure as a product failure.
+- Branch: `codex/step6-resource-home-fidelity`; `main` remains at `e96d40a`.
+- Step 6's initial implementation is pushed as `0634546`; final Step 6 and
+  Step 7 changes are complete on this branch.
+- Content-pipeline Steps 1–7 are implemented and browser-verified.
+- The production build, API unit tests (109 passed), accessibility, and the
+  cleanly exiting browser suite pass (100 passed, 4 credential-gated skips).
+- A disposable Editor account completed the authenticated article/resource
+  publishing walkthrough; its user and content records were removed.
+- A disposable administrator completed the People invitation, role, suspension,
+  deletion, and sign-out walkthrough; its users and role were removed.
+- Next: P2/A1, the founder-reported admin chrome shift between screens.
 
 ---
 
@@ -165,35 +164,36 @@ working database-backed content.
 
 - [x] Restore the lockfile-defined dependencies with pnpm.
 - [x] Run `pnpm turbo build --filter=@beekal/web`.
-- [ ] Run `pnpm --filter @beekal/web test:a11y`.
-- [ ] Run `pnpm --filter @beekal/web test:e2e`.
-- [ ] Start the local stack and sign in as an account with article/resource
+- [x] Run the accessibility checks.
+- [x] Run the browser suite with `E2E_BASE_URL=http://localhost:3000`.
+- [x] Start the local stack and sign in as an account with article/resource
       create, update, and publish permissions.
-- [ ] Create a draft article using every supported block type.
-- [ ] Reopen the article and confirm text → blocks → text round-trips without
+- [x] Create a draft article using every supported block type.
+- [x] Reopen the article and confirm text → blocks → text round-trips without
       rewriting content.
-- [ ] Publish it and confirm it appears on `/insights` and its detail route.
-- [ ] Edit and republish it; confirm `publishedAt` does not move.
-- [ ] Create and publish a resource with a valid file/external URL.
-- [ ] Confirm it appears on `/resources` and its gated/ungated behavior matches
+- [x] Publish it and confirm it appears on `/insights` and its detail route.
+- [x] Edit and republish it; confirm `publishedAt` does not move.
+- [x] Create and publish a resource with a valid file/external URL.
+- [x] Confirm it appears on `/resources` and its gated/ungated behavior matches
       the saved value.
-- [ ] Confirm drafts remain absent from public routes and sitemap output.
-- [ ] Remove or clearly identify verification records after the walkthrough.
-- [ ] Fix failures before starting Step 7.
+- [x] Confirm drafts remain absent from public routes and sitemap output.
+- [x] Remove verification records after the walkthrough.
+- [x] Fix failures before starting Step 7.
 
-2026-09-25 verification note: the empty local content tables caused the old
-article route to 404. The seed now inserts three existing articles, the score
-tool, and three unfinished resources as drafts. A gated resource now has a
-detail/download flow and the public API redacts its file URL. The browser
-runner displayed all 96 checks passing with two workers, but hung during
-shutdown; the E2E gate is not complete until it exits cleanly. The authenticated
-editor walkthrough is still pending. Do not reset the existing Owner password.
+2026-09-25 verification note: the browser suite exits cleanly when pointed at
+the existing Docker site (`$env:E2E_BASE_URL='http://localhost:3000'` then
+`pnpm --filter @beekal/web exec playwright test --workers=2`). The separate
+authenticated walkthrough found that article/resource update and delete
+mistakenly checked the FAQ table; this is fixed and unit-tested. The disposable
+Editor account and records were deleted. Existing Owner credentials were not
+changed.
 
-The founder reported homepage drift from the legacy HTML. The paired
-Today/With Beekal rows and cobalt band have been restored. Compare the hero
-animation and graphics visually at desktop and mobile widths before marking
-the homepage parity work complete. Preserve the deliberate Today/Tomorrow hero
-labels from commit `bcebcd6`.
+The paired Today/With Beekal rows and cobalt band are restored. A side-by-side
+desktop comparison found the hero diagram and connector animation faithful to
+the legacy HTML, with deliberate newer typography and spacing. Today/Tomorrow
+interaction and reduced-motion state are covered by browser tests. Founder
+visual review at desktop/mobile is still useful; preserve the deliberate
+Today/Tomorrow labels from commit `bcebcd6`.
 
 ### P1 — Step 7: complete People management
 
@@ -203,63 +203,71 @@ second Owner is also the practical recovery path for account lockout.
 
 #### Invitation and first-time setup
 
-- [ ] Replace the current email-as-setup-token behavior with a random,
+- [x] Replace the current email-as-setup-token behavior with a random,
       expiring, single-use invitation token.
-- [ ] Store only the token hash, never the raw invitation token.
-- [ ] Add a first-time password/setup page and its BFF route.
-- [ ] Deliver the invitation through the existing mail/outbox boundary, or
+- [x] Store only the token hash, never the raw invitation token.
+- [x] Add a first-time password/setup page and its BFF route.
+- [x] Deliver the invitation through the existing mail boundary, or
       provide a deliberately labelled local-development copy-link fallback.
-- [ ] Make expired, reused, missing, and already-completed invitations return
+- [x] Make expired, reused, missing, and already-completed invitations return
       safe, useful messages without revealing unrelated accounts.
-- [ ] Audit invitation creation and password setup without logging secrets.
+- [x] Audit invitation creation and password setup without logging secrets.
 
 #### User administration
 
-- [ ] Add `POST /api/admin/users` proxy route.
-- [ ] Add `PATCH` and `DELETE /api/admin/users/[id]` proxy routes.
-- [ ] Add an **Invite person** action gated by `user:create`.
-- [ ] Build an invite form for name, email, and one-or-more roles using shared
+- [x] Add `POST /api/admin/users` proxy route.
+- [x] Add `PATCH` and `DELETE /api/admin/users/[id]` proxy routes.
+- [x] Add an **Invite person** action gated by `user:create`.
+- [x] Build an invite form for name, email, and one-or-more roles using shared
       contracts.
-- [ ] Make each user row open an editor/detail view.
-- [ ] Allow name and role assignment changes when `user:update` is present.
-- [ ] Allow suspension/reactivation with clear consequences.
-- [ ] Allow deletion only with explicit confirmation and `user:delete`.
-- [ ] Explain Owner protection before submission and render API refusals inline.
-- [ ] Prevent self-suspension and self-deletion in the UI as well as the API.
-- [ ] Show invited, active, and suspended states clearly.
-- [ ] Show last login and MFA state where useful, without making unfinished MFA
+- [x] Make each user row open an editor/detail view.
+- [x] Allow name and role assignment changes when `user:update` is present.
+- [x] Allow suspension/reactivation with clear consequences.
+- [x] Allow deletion only with explicit confirmation and `user:delete`.
+- [x] Explain Owner protection before submission and render API refusals inline.
+- [x] Prevent self-suspension and self-deletion in the UI as well as the API.
+- [x] Show invited, active, and suspended states clearly.
+- [x] Show last login and MFA state where useful, without making unfinished MFA
       controls look functional.
-- [ ] Refresh server-rendered data after successful mutations.
+- [x] Refresh server-rendered data after successful mutations.
 
 #### Finish the role workflow the documentation already promises
 
-The API supports role creation and deletion, but the web app currently exposes
-only update/delete proxying and only an edit screen.
+At the start of Step 7, the API supported role creation and deletion, but the
+web app exposed only update/delete proxying and an edit screen.
 
-- [ ] Add the missing role-collection BFF route for creation.
-- [ ] Add **Create role** to People when `role:create` is present.
-- [ ] Reuse the permission matrix and plain-English summary for new roles.
-- [ ] Surface role deletion when `role:delete` is present.
-- [ ] Refuse protected/system roles and roles still assigned to users, showing
+- [x] Add the missing role-collection BFF route for creation.
+- [x] Add **Create role** to People when `role:create` is present.
+- [x] Reuse the permission matrix and plain-English summary for new roles.
+- [x] Surface role deletion when `role:delete` is present.
+- [x] Refuse protected/system roles and roles still assigned to users, showing
       the API’s reassignment guidance.
-- [ ] Decide whether seeded non-Owner system roles are intentionally deletable;
+- [x] Decide whether seeded non-Owner system roles are intentionally deletable;
       make code, copy, and Logic Library agree.
 
 #### Step 7 tests and acceptance
 
-- [ ] Unit-test invitation-token creation, hashing, expiry, and single use.
-- [ ] Test invite payload and user-update validation through shared contracts.
-- [ ] Test role assignment invalidates effective-permission caches.
-- [ ] Test suspension revokes live sessions immediately.
-- [ ] Test the last active Owner cannot be suspended, deleted, or demoted.
-- [ ] Test a user cannot suspend or delete themselves.
-- [ ] Test controls are absent—not merely disabled—without their permission.
-- [ ] Add authenticated browser coverage for invite → setup → login.
-- [ ] Add authenticated browser coverage for role assignment and suspension.
-- [ ] Verify the People workflow at tablet width and in both themes.
-- [ ] Run build, lint, typecheck, unit, accessibility, and E2E suites.
-- [ ] Update `ROADMAP.md`, `docs/08-content-pipeline.md`, and affected Logic
+- [x] Unit-test invitation-token creation, hashing, expiry, and single use.
+- [x] Test invite payload and user-update validation through shared contracts.
+- [x] Test role assignment invalidates effective-permission caches.
+- [x] Test suspension revokes live sessions immediately.
+- [x] Test the last active Owner cannot be suspended, deleted, or demoted.
+- [x] Test a user cannot suspend or delete themselves.
+- [x] Test controls are absent—not merely disabled—without their permission.
+- [x] Add authenticated browser coverage for invite → setup → login.
+- [x] Add authenticated browser coverage for role assignment and suspension.
+- [x] Verify the People workflow at tablet width and in both themes.
+- [x] Run build, lint, typecheck, unit, accessibility, and E2E suites.
+- [x] Update `ROADMAP.md`, `docs/08-content-pipeline.md`, and affected Logic
       Library entries in the same commit.
+
+2026-09-26 verification: the disposable People browser flow passed end to end,
+including role changes on an existing session, immediate suspension, custom
+role deletion after user soft-delete, and revocation of the old session on
+sign-out. The tablet header overflow and invalid `0.0.0.0` sign-out redirect
+were fixed. The ordinary browser suite exited with 100 passed and four skipped
+credential-gated entries. The authenticated content walkthrough passed again.
+No temporary users, roles, content, or invitation URLs remain.
 
 ### P2 — A1: stabilise the admin chrome
 

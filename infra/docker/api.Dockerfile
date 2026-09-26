@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.7
 # Beekal API — multi-stage, non-root, no build toolchain in the final image.
 
 FROM node:24-alpine AS base

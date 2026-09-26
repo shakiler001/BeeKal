@@ -111,7 +111,7 @@ export default async function HomePage() {
       {/* ---------- The transformation, shown not claimed ---------- */}
       <Section tone="band" className="bg-[var(--cobalt)]" id="outcome">
         <Wrap>
-          <Eyebrow>The difference</Eyebrow>
+          <Eyebrow className="text-white/90">The difference</Eyebrow>
           <h2 className="max-w-[24ch] text-[clamp(1.75rem,1.3rem+2vw,2.6rem)] leading-[1.12] font-bold tracking-[-0.035em]">
             What changes when the business runs as one system.
           </h2>

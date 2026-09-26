@@ -203,9 +203,19 @@ describe('canEditRole', () => {
     ).toBe(true);
   });
 
-  it('places no special restriction on any other role', () => {
+  it('protects seeded system roles from deletion', () => {
     expect(
       canEditRole(editorRole, { removingPermissions: ['role:update'], deleting: true }).allowed,
+    ).toBe(false);
+  });
+
+  it('allows editing a seeded non-Owner role and deleting a custom role', () => {
+    expect(canEditRole(editorRole, { removingPermissions: [], deleting: false }).allowed).toBe(
+      true,
+    );
+    expect(
+      canEditRole({ isOwner: false, isSystem: false }, { removingPermissions: [], deleting: true })
+        .allowed,
     ).toBe(true);
   });
 });

@@ -6,7 +6,7 @@
  * default credential in production (docs/04 section 5).
  */
 import { PrismaClient, type Scope } from '@prisma/client';
-import { randomBytes } from 'node:crypto';
+import { issueToken, expiryFrom } from '../src/shared/crypto/index.js';
 import { PERMISSIONS } from '../src/modules/access/permissions.catalog.js';
 import { ROLES, resolveGrants } from '../src/modules/access/roles.catalog.js';
 import { seedContent } from './seed-content.js';
@@ -87,31 +87,29 @@ async function seedOwner(): Promise<void> {
 
   const ownerRole = await prisma.role.findFirstOrThrow({ where: { isOwner: true } });
 
-  const user = await prisma.user.create({
+  const setupToken = issueToken();
+  await prisma.user.create({
     data: {
       email,
       name,
       status: 'INVITED',
       passwordHash: null,
+      inviteTokenHash: setupToken.hash,
+      inviteExpiresAt: expiryFrom(new Date(), 48),
       roles: { create: { roleId: ownerRole.id } },
     },
   });
-
-  const setupToken = randomBytes(32).toString('base64url');
 
   console.info(`  owner: ${email} created (INVITED)`);
   console.info('');
   console.info('  ┌─────────────────────────────────────────────────────────────');
   console.info('  │ One-time setup link — set a password, then enable MFA.');
-  console.info(`  │ /admin/setup?token=${setupToken}`);
+  console.info(`  │ /admin/setup?token=${setupToken.raw}`);
   console.info('  │ Shown once. No default password exists for this account.');
   console.info('  └─────────────────────────────────────────────────────────────');
   console.info('');
 
-  // Phase 3 wires this token into the sessions table with an expiry. Until the
-  // auth module exists, the link is printed for the operator and nothing
-  // consumes it yet.
-  void user;
+  // Only the hash is stored; this raw link is printed once for the operator.
 }
 
 const SETTINGS: Array<{

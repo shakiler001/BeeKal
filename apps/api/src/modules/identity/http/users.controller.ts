@@ -9,6 +9,8 @@ import {
   Param,
   Patch,
   Post,
+  Inject,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import { InviteUserSchema, UserUpdateSchema, type AdminUser } from '@beekal/contracts';
 import { PrismaService } from '../../../shared/prisma.service.js';
@@ -16,12 +18,16 @@ import { PermissionsService } from '../../access/infrastructure/permissions.serv
 import { checkOwnerProtection } from '../../access/domain/effective-permissions.js';
 import { Audit } from '../../../shared/audit/index.js';
 import { CurrentUser, RequirePermission, type AuthUser } from '../../../shared/auth/index.js';
+import { issueToken, expiryFrom } from '../../../shared/crypto/index.js';
+import { MAILER, type Mailer } from '../../messaging/ports/mailer.port.js';
+import { env } from '../../../config/env.js';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly prisma: PrismaService,
     private readonly permissions: PermissionsService,
+    @Inject(MAILER) private readonly mailer: Mailer,
   ) {}
 
   @Get()
@@ -55,7 +61,7 @@ export class UsersController {
   @Post()
   @RequirePermission('user:create')
   @Audit('user.invited', 'User')
-  async invite(@Body() body: unknown): Promise<{ id: string; setupToken: string }> {
+  async invite(@Body() body: unknown): Promise<{ id: string; setupUrl?: string }> {
     const parsed = InviteUserSchema.safeParse(body);
     if (!parsed.success) {
       throw new BadRequestException({
@@ -74,6 +80,9 @@ export class UsersController {
 
     await this.assertRolesExist(parsed.data.roleIds);
 
+    this.assertInvitationDeliveryConfigured();
+
+    const token = issueToken();
     const user = await this.prisma.user.create({
       data: {
         email: parsed.data.email,
@@ -82,6 +91,8 @@ export class UsersController {
         // No password is set. The invitee sets their own; a default credential
         // in a repo is a default credential in production.
         passwordHash: null,
+        inviteTokenHash: token.hash,
+        inviteExpiresAt: expiryFrom(new Date(), 48),
         roles: { create: parsed.data.roleIds.map((roleId) => ({ roleId })) },
       },
       select: { id: true, email: true },
@@ -89,8 +100,71 @@ export class UsersController {
 
     this.permissions.bumpVersion();
 
-    // Phase 4 emails this. Until then the operator passes it on.
-    return { id: user.id, setupToken: user.email };
+    return this.sendInvitation(user.id, user.email, parsed.data.name, token.raw);
+  }
+
+  @Post(':id/reinvite')
+  @RequirePermission('user:update')
+  @Audit('user.reinvited', 'User')
+  async reinvite(@Param('id') id: string): Promise<{ id: string; setupUrl?: string }> {
+    this.assertInvitationDeliveryConfigured();
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        status: true,
+        passwordHash: true,
+        deletedAt: true,
+      },
+    });
+    if (!user || user.deletedAt || user.status !== 'INVITED' || user.passwordHash) {
+      throw new NotFoundException({
+        code: 'INVITE_NOT_FOUND',
+        message: 'No pending invitation found',
+      });
+    }
+    const token = issueToken();
+    await this.prisma.user.update({
+      where: { id },
+      data: { inviteTokenHash: token.hash, inviteExpiresAt: expiryFrom(new Date(), 48) },
+    });
+    return this.sendInvitation(id, user.email, user.name, token.raw);
+  }
+
+  private async sendInvitation(id: string, email: string, name: string, rawToken: string) {
+    const setupUrl = `${env().APP_URL}/admin/setup?token=${rawToken}`;
+    const delivery = await this.mailer.send({
+      to: { email, name },
+      subject: 'Your Beekal invitation',
+      text: `You have been invited to Beekal. Set your password within 48 hours:\n\n${setupUrl}\n\nIf you did not expect this, ignore this message.`,
+      idempotencyKey: `user-invite-${id}-${new Date().toISOString()}`,
+    });
+    if (!delivery.ok) {
+      throw new ServiceUnavailableException({
+        code: 'INVITE_DELIVERY_FAILED',
+        message:
+          'The account was created but the invitation could not be delivered. Contact support before retrying.',
+      });
+    }
+    // Console mail is local-only; let the operator copy the link explicitly.
+    const appHost = new URL(env().APP_URL).hostname;
+    const localConsole =
+      env().MAIL_DRIVER === 'console' && ['localhost', '127.0.0.1'].includes(appHost);
+    return localConsole ? { id, setupUrl } : { id };
+  }
+
+  private assertInvitationDeliveryConfigured() {
+    if (
+      env().MAIL_DRIVER === 'console' &&
+      !['localhost', '127.0.0.1'].includes(new URL(env().APP_URL).hostname)
+    ) {
+      throw new ServiceUnavailableException({
+        code: 'INVITE_MAIL_NOT_CONFIGURED',
+        message: 'Configure SMTP before inviting people on a public site.',
+      });
+    }
   }
 
   @Patch(':id')
@@ -114,11 +188,25 @@ export class UsersController {
       select: {
         id: true,
         status: true,
+        passwordHash: true,
+        deletedAt: true,
         roles: { select: { role: { select: { id: true, isOwner: true } } } },
       },
     });
-    if (!target) {
+    if (!target || target.deletedAt) {
       throw new NotFoundException({ code: 'NOT_FOUND', message: 'User not found' });
+    }
+    if (parsed.data.status === 'INVITED' && target.passwordHash) {
+      throw new BadRequestException({
+        code: 'INVALID_STATUS',
+        message: 'An account with a password cannot be returned to invited. Suspend it instead.',
+      });
+    }
+    if (parsed.data.status === 'ACTIVE' && !target.passwordHash) {
+      throw new BadRequestException({
+        code: 'PASSWORD_REQUIRED',
+        message: 'The invitee must finish password setup before activation.',
+      });
     }
 
     const targetIsOwner = target.roles.some((r) => r.role.isOwner);

@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.7
 # Beekal web — Next.js standalone output, so it runs on any Node host.
 
 FROM node:24-alpine AS base

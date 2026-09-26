@@ -24,6 +24,7 @@ import { PermissionsService } from '../../access/infrastructure/permissions.serv
 import { env } from '../../../config/env.js';
 import {
   CurrentUser,
+  Authenticated,
   Public,
   RequirePermission,
   type AuthUser,
@@ -72,7 +73,7 @@ export class AuthController {
     return { ok: true };
   }
 
-  @Public()
+  @Authenticated()
   @Post('logout')
   @HttpCode(200)
   async logout(
@@ -95,7 +96,7 @@ export class AuthController {
    * section they cannot use (docs/04 section 4).
    */
   @Get('me')
-  @RequirePermission('setting:read')
+  @Authenticated()
   async me(@CurrentUser() user: AuthUser): Promise<SessionUser> {
     const record = await this.prisma.user.findUniqueOrThrow({
       where: { id: user.id },
@@ -131,8 +132,6 @@ export class AuthController {
       });
     }
 
-    // The invite token IS the email for now; a signed, expiring token arrives
-    // with the invitation email in Phase 4.
     const result = await this.auth.setInitialPassword(parsed.data.token, parsed.data.password);
     if (!result.ok) {
       throw new BadRequestException({ code: 'SET_PASSWORD_FAILED', message: result.reason });

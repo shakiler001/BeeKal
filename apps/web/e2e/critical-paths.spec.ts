@@ -25,6 +25,47 @@ test.describe('the site works without JavaScript', () => {
   });
 });
 
+test.describe('hero transformation', () => {
+  test('Today and Tomorrow move the diagram between scattered and connected states', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const control = page.getByRole('group', { name: /your business today/i });
+    const today = control.getByRole('button', { name: 'Today' });
+    const tomorrow = control.getByRole('button', { name: 'Tomorrow' });
+    const hub = page.getByRole('img', { name: /six scattered tools/i }).locator('[class*="hub"]');
+
+    await today.click();
+    await expect(today).toHaveAttribute('aria-pressed', 'true');
+    await expect
+      .poll(() => hub.evaluate((element) => Number((element as HTMLElement).style.opacity)))
+      .toBe(0);
+
+    await tomorrow.click();
+    await expect(tomorrow).toHaveAttribute('aria-pressed', 'true');
+    await expect
+      .poll(() => hub.evaluate((element) => Number((element as HTMLElement).style.opacity)))
+      .toBeGreaterThan(0.99);
+  });
+});
+
+test.describe('hero with reduced motion', () => {
+  test.use({ reducedMotion: 'reduce' });
+
+  test('starts in the connected Tomorrow state without waiting for animation', async ({ page }) => {
+    await page.goto('/');
+    const control = page.getByRole('group', { name: /your business today/i });
+    await expect(control.getByRole('button', { name: 'Tomorrow' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    const hub = page.getByRole('img', { name: /six scattered tools/i }).locator('[class*="hub"]');
+    await expect
+      .poll(() => hub.evaluate((element) => Number((element as HTMLElement).style.opacity)))
+      .toBe(1);
+  });
+});
+
 test.describe('lead form', () => {
   test('rejects an incomplete submission and says why', async ({ page }) => {
     await page.goto('/contact');

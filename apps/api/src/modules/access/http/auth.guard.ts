@@ -11,7 +11,11 @@ import { PermissionsService } from '../infrastructure/permissions.service.js';
 import { hashToken, isExpired } from '../../../shared/crypto/index.js';
 import { can, scopeFor } from '../domain/effective-permissions.js';
 import { env } from '../../../config/env.js';
-import { PERMISSION_KEY, PUBLIC_KEY } from '../../../shared/auth/require-permission.decorator.js';
+import {
+  AUTHENTICATED_KEY,
+  PERMISSION_KEY,
+  PUBLIC_KEY,
+} from '../../../shared/auth/require-permission.decorator.js';
 import type { AuthenticatedRequest, AuthUser } from '../../../shared/auth/current-user.js';
 
 /**
@@ -38,6 +42,12 @@ export class AuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const user = await this.authenticate(request);
+
+    const authenticatedOnly = this.reflector.getAllAndOverride<boolean>(AUTHENTICATED_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (authenticatedOnly) return true;
 
     const required = this.reflector.getAllAndOverride<string>(PERMISSION_KEY, [
       context.getHandler(),

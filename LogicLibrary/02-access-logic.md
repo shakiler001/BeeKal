@@ -38,8 +38,10 @@ is not in the table (`UNKNOWN_PERMISSION`).
 
 ## ACC-02 — Roles are rows
 
-**Rule.** A role can be created, renamed, re-scoped and deleted through
-`/admin/people/roles/:id` with no code change, no migration and no deploy.
+**Rule.** A custom role can be created, renamed, re-scoped and deleted through
+`/admin/people/roles` with no code change, no migration and no deploy. Seeded
+system roles may be edited but not deleted, because the next seed would
+recreate them. The Owner role has additional lockout protection.
 
 **Why.** This is the literal reading of the requirement. A `users.role` enum
 fails on the first real request — _"let the new marketing hire edit articles
@@ -145,7 +147,9 @@ publication (403, _"You can edit this, but publishing needs an editor"_).
 
 **Rule.** No controller contains `if (user.role === ...)`. Requirements are
 declared with `@RequirePermission('resource:action')` and evaluated in one
-place.
+place. `/auth/me` and logout use `@Authenticated()` because every active
+account needs those session operations even if a custom role has no Settings
+grant. Public routes use `@Public()` explicitly.
 
 **Why.** Scattered checks cannot be audited. One evaluation point means the
 whole policy is greppable, and a missing check is visible as a missing
@@ -262,15 +266,15 @@ the error card, where it previously returned 500 and the framework page.
 
 ---
 
-## The two hard-coded rules
+## Hard-coded guardrails
 
-Everything above is data-driven. Exactly two access rules are compiled in, and
-both exist to make lockout impossible:
+Everything above is data-driven except the following guardrails:
 
 | Rule                                                                                     | Effect                                                                  |
 | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | [INV-02](01-invariants.md#inv-02--the-last-owner-cannot-be-removed-suspended-or-demoted) | The last Owner cannot be removed, suspended or demoted                  |
 | `canEditRole()`                                                                          | The Owner role cannot be deleted, or lose `role:update` / `user:update` |
+| `canEditRole()` for seeded roles                                                         | Seeded system roles cannot be deleted; the next seed would recreate them |
 
 Plus two conveniences that prevent self-inflicted lockout: you cannot delete or
 suspend your own account.
@@ -279,7 +283,7 @@ suspend your own account.
 
 ## Seeded roles
 
-Starting points. All editable; none special-cased in code except Owner.
+Starting points. All editable; none deletable. Owner has additional protection.
 
 | Role     | Shape                                          | Grants |
 | -------- | ---------------------------------------------- | ------ |

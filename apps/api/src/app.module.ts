@@ -53,6 +53,7 @@ function prettyTransportAvailable(): boolean {
             'req.body.passwordHash',
             'req.body.current',
             'req.body.confirm',
+            'req.body.token',
           ],
           remove: true,
         },

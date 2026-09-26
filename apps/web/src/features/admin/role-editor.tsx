@@ -29,10 +29,12 @@ export function RoleEditor({
   role,
   permissions,
   canEdit,
+  canDelete,
 }: {
   role: Role;
   permissions: Permission[];
   canEdit: boolean;
+  canDelete: boolean;
 }) {
   const router = useRouter();
   const [name, setName] = useState(role.name);
@@ -78,8 +80,9 @@ export function RoleEditor({
     setSaving(true);
     setError('');
     try {
-      const res = await fetch(`/api/admin/roles/${role.id}`, {
-        method: 'PATCH',
+      const creating = role.id === 'new';
+      const res = await fetch(creating ? '/api/admin/roles' : `/api/admin/roles/${role.id}`, {
+        method: creating ? 'POST' : 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
@@ -94,7 +97,34 @@ export function RoleEditor({
         return;
       }
 
+      if (creating) {
+        const created = (await res.json()) as { id: string };
+        router.push(`/admin/people/roles/${created.id}`);
+        router.refresh();
+        return;
+      }
+
       setSaved(true);
+      router.refresh();
+    } catch {
+      setError('Could not reach the server.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function remove() {
+    if (!window.confirm(`Delete the ${role.name} role? This cannot be undone.`)) return;
+    setSaving(true);
+    setError('');
+    try {
+      const res = await fetch(`/api/admin/roles/${role.id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const body = (await res.json().catch(() => ({}))) as { message?: string };
+        setError(body.message ?? 'Could not delete this role');
+        return;
+      }
+      router.push('/admin/people');
       router.refresh();
     } catch {
       setError('Could not reach the server.');
@@ -221,11 +251,18 @@ export function RoleEditor({
           </p>
         </Card>
 
-        {canEdit && (
+        {(canEdit || canDelete) && (
           <div className="grid gap-2">
-            <Button onClick={() => void save()} disabled={saving} full>
-              {saving ? 'Saving…' : 'Save role'}
-            </Button>
+            {canEdit && (
+              <Button onClick={() => void save()} disabled={saving} full>
+                {saving ? 'Saving…' : role.id === 'new' ? 'Create role' : 'Save role'}
+              </Button>
+            )}
+            {canDelete && (
+              <Button type="button" onClick={() => void remove()} disabled={saving} full>
+                Delete role
+              </Button>
+            )}
             {saved && (
               <p role="status" className="text-brand text-center text-[0.9rem] font-medium">
                 Saved. Everyone holding this role is updated.
