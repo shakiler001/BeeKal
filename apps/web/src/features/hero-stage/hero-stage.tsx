@@ -83,9 +83,6 @@ const css = {
   lines: styles['lines'] ?? '',
   pulse: styles['pulse'] ?? '',
   hub: styles['hub'] ?? '',
-  bee: styles['bee'] ?? '',
-  speedLines: styles['speedLines'] ?? '',
-  speedLine: styles['speedLine'] ?? '',
   chip: styles['chip'] ?? '',
   on: styles['on'] ?? '',
   off: styles['off'] ?? '',
@@ -110,8 +107,6 @@ export function HeroStage() {
   const ringPathRef = useRef<SVGPathElement>(null);
   const pulsesRef = useRef<SVGGElement>(null);
   const hubRef = useRef<HTMLDivElement>(null);
-  const beeRef = useRef<HTMLSpanElement>(null);
-  const speedLineRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const chipRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const pathRefs = useRef<(SVGPathElement | null)[]>([]);
 
@@ -218,19 +213,13 @@ export function HeroStage() {
       cancelAnimationFrame(pulseRaf);
       pulseRaf = 0;
       pulses!.replaceChildren();
-      if (beeRef.current) beeRef.current.style.transform = '';
-      speedLineRefs.current.forEach((line) => {
-        if (line) line.style.opacity = '0';
-      });
     }
 
-    /** Six repeating signals feed the hub; the bee surges forward as its trail quickens. */
+    /** Six repeating signals feed a stationary hub. */
     function startFlow(): void {
       if (reduce || !connected || !stageVisible || document.hidden || pulseRaf) return;
       clearPulses();
       const t0 = performance.now();
-      let previous = t0;
-      let surgePhase = 0;
       const dots = nodes.map(() => {
         const c = document.createElementNS(SVG_NS, 'circle');
         c.setAttribute('r', '1.15');
@@ -247,21 +236,6 @@ export function HeroStage() {
         }
 
         const elapsed = t - t0;
-        // A bounded increase in forward surges reads as momentum, not a spin.
-        const cyclesPerSecond = 0.35 + 0.75 * (1 - Math.exp(-elapsed / 5000));
-        surgePhase += ((t - previous) / 1000) * cyclesPerSecond;
-        previous = t;
-        const surge = (1 - Math.cos(surgePhase * 2 * Math.PI)) / 2;
-        if (beeRef.current) {
-          beeRef.current.style.transform = `translate(${(surge * 6).toFixed(2)}px, ${(-surge * 2).toFixed(2)}px)`;
-        }
-        speedLineRefs.current.forEach((line, i) => {
-          if (!line) return;
-          const phase = (surgePhase + i / 3) % 1;
-          line.style.transform = `translateX(${-phase * 18}px) scaleX(${1 - phase * 0.35})`;
-          line.style.opacity = String(Math.min(0.85, phase * 4, (1 - phase) * 2));
-        });
-
         dots.forEach((c, i) => {
           const time = elapsed - i * 110;
           const k = time < 0 ? -1 : (time % 1450) / 900;
@@ -441,20 +415,7 @@ export function HeroStage() {
         </svg>
 
         <div ref={hubRef} aria-hidden className={css.hub}>
-          <span className={css.speedLines}>
-            {[0, 1, 2].map((index) => (
-              <span
-                key={index}
-                ref={(el) => {
-                  speedLineRefs.current[index] = el;
-                }}
-                className={css.speedLine}
-              />
-            ))}
-          </span>
-          <span ref={beeRef} className={css.bee}>
-            <Bee />
-          </span>
+          <Bee />
         </div>
 
         {CHIPS.map((c, i) => (

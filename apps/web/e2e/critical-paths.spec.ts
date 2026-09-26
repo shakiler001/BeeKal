@@ -48,15 +48,14 @@ test.describe('hero transformation', () => {
       .toBeGreaterThan(0.99);
   });
 
-  test('connected nodes keep sending signals and the bee surges forward until Today', async ({
+  test('connected nodes keep sending signals while the bee stays still', async ({
     page,
   }) => {
     await page.goto('/');
     const stage = page.getByRole('img', { name: /six scattered tools/i });
     const control = page.getByRole('group', { name: /your business today/i });
     const signals = stage.locator('circle[class*="pulse"]');
-    const bee = stage.locator('[class*="bee"]');
-    const speedLines = stage.locator('[class*="speedLine_"]');
+    const bee = stage.locator('[class*="hub"] svg');
 
     await control.getByRole('button', { name: 'Tomorrow' }).click();
     await expect(signals).toHaveCount(6);
@@ -67,15 +66,8 @@ test.describe('hero transformation', () => {
       .poll(() => signals.evaluateAll((dots) => dots.some((dot) => dot.getAttribute('opacity') !== '0')))
       .toBe(true);
 
-    const firstTransform = await bee.evaluate((element) => (element as HTMLElement).style.transform);
-    expect(firstTransform).toMatch(/^translate\(/);
-    await expect
-      .poll(() => bee.evaluate((element) => (element as HTMLElement).style.transform))
-      .not.toBe(firstTransform);
-    await expect(speedLines).toHaveCount(3);
-    await expect
-      .poll(() => speedLines.evaluateAll((lines) => lines.some((line) => Number((line as HTMLElement).style.opacity) > 0)))
-      .toBe(true);
+    await expect(bee).not.toHaveAttribute('style', /transform/);
+    await expect(stage.locator('[class*="speedLine"]')).toHaveCount(0);
 
     await page.locator('#solutions').scrollIntoViewIfNeeded();
     await expect(signals).toHaveCount(0);
@@ -84,10 +76,7 @@ test.describe('hero transformation', () => {
 
     await control.getByRole('button', { name: 'Today' }).click();
     await expect(signals).toHaveCount(0);
-    await expect(bee).not.toHaveAttribute('style', /translate/);
-    await expect
-      .poll(() => speedLines.evaluateAll((lines) => lines.every((line) => (line as HTMLElement).style.opacity === '0')))
-      .toBe(true);
+    await expect(bee).not.toHaveAttribute('style', /transform/);
   });
 });
 
@@ -106,9 +95,6 @@ test.describe('hero with reduced motion', () => {
       .poll(() => hub.evaluate((element) => Number((element as HTMLElement).style.opacity)))
       .toBe(1);
     await expect(page.locator('circle[class*="pulse"]')).toHaveCount(0);
-    await expect
-      .poll(() => hub.locator('[class*="speedLine_"]').evaluateAll((lines) => lines.every((line) => getComputedStyle(line).opacity === '0')))
-      .toBe(true);
   });
 });
 
