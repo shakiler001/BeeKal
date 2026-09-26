@@ -18,6 +18,7 @@ FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
 COPY --from=deps /app/packages ./packages
+COPY --from=deps /root/.cache/node/corepack /root/.cache/node/corepack
 COPY . .
 RUN pnpm --filter @beekal/api db:generate \
  && pnpm turbo build --filter=@beekal/api \

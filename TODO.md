@@ -154,7 +154,11 @@ working database-backed content.
   publishing walkthrough; its user and content records were removed.
 - A disposable administrator completed the People invitation, role, suspension,
   deletion, and sign-out walkthrough; its users and role were removed.
-- Next: P2/A1, the founder-reported admin chrome shift between screens.
+- A1 is complete: the mobile menu no longer reflows the sticky header, and
+  Content no longer overflows narrow viewports. The authenticated chrome test
+  passes on mobile and desktop; the ordinary suite passes 100 tests with six
+  credential-gated skips.
+- Next: P3/A2, the founder-requested reusable admin panel and nested sidebar.
 
 ---
 
@@ -273,17 +277,50 @@ No temporary users, roles, content, or invitation URLs remain.
 
 Start only after Step 7, per the founder’s order recorded in `ROADMAP.md`.
 
-- [ ] Reproduce the shift/flash and record viewport, route pair, and whether it
+- [x] Reproduce the shift/flash and record viewport, route pair, and whether it
       occurs on client navigation, hard navigation, or both.
-- [ ] Measure the header and content positions before and after navigation.
-- [ ] Confirm the admin layout persists rather than remounting unexpectedly.
-- [ ] Check active-nav width, scrollbar appearance, font loading, page-header
+- [x] Measure the header and content positions before and after navigation.
+- [x] Confirm the admin layout persists rather than remounting unexpectedly.
+- [x] Check active-nav width, scrollbar appearance, font loading, page-header
       height, and loading states as possible causes.
-- [ ] Keep the topbar height and item positions stable across every admin page.
-- [ ] Keep the current section visually obvious.
-- [ ] Verify desktop, tablet, mobile menu, light theme, dark theme, keyboard
+- [x] Keep the topbar height and item positions stable across every admin page.
+- [x] Keep the current section visually obvious.
+- [x] Verify desktop, tablet, mobile menu, light theme, dark theme, keyboard
       navigation, and reduced motion.
-- [ ] Add a regression test that compares chrome geometry across route changes.
+- [x] Add a regression test that compares chrome geometry across route changes.
+
+2026-09-26 measurement: client navigation kept the shared header mounted and
+65px high at 1440px. The mobile menu increased it to 374px at 412px; making
+the menu an overlay removed that 309px reflow. `/admin/content` also produced
+913px document width at 320–412px due to an auto-minimum grid track; the
+explicit `minmax(0,1fr)` track removed it. Hard reloads, fonts ready, current
+section, theme, keyboard interaction, and reduced motion are browser-checked.
+
+### P3 — A2: reusable admin-panel design and navigation
+
+The founder requested a coherent, reusable panel with sidebar, logo/title,
+menus, child menus, and multiple navigation levels. Implement this after A1,
+using the existing admin layout and permission model rather than separate
+chrome on each page.
+
+- [ ] Define one typed navigation tree for Dashboard, Leads, Content (case
+      studies, categories, problem pages, articles, resources, FAQs), People
+      (users and roles), Settings, and Audit. Children inherit their parent
+      context; nodes with no accessible destination or descendants disappear.
+- [ ] Extract reusable `AdminSidebar`, `AdminNavTree`, `AdminTopbar`,
+      `AdminMobileDrawer`, and page-frame/breadcrumb components from the shell.
+- [ ] Keep brand mark and Beekal Admin title in a fixed-size brand area; provide
+      desktop sidebar and mobile overlay drawer without moving the main content.
+- [ ] Support nested expansion, active leaf and ancestor styling, URL-driven
+      initial expansion, meaningful icons/labels, and predictable back/close
+      behavior. Prefer no more than three visible levels; support deeper data
+      without turning navigation into a maze.
+- [ ] Specify spacing, colours, typography, hover/focus/selected states, and
+      loading/empty/error states as reusable admin design tokens/patterns.
+- [ ] Verify permission filtering, keyboard and screen-reader semantics,
+      desktop/tablet/mobile, light/dark, reduced motion, and no chrome shift.
+- [ ] Compare the resulting panel with the founder's preferred visual direction
+      before treating its styling as final.
 
 ---
 

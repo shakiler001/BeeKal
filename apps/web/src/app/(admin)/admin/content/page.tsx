@@ -76,7 +76,7 @@ export default async function ContentPage() {
         description="Everything here is live on the site. Published changes appear within seconds — no deploy."
       />
 
-      <div className="mt-8 grid gap-6">
+      <div className="mt-8 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6">
         {cases && (
           <section>
             <div className="mb-3 flex flex-wrap items-center gap-3">

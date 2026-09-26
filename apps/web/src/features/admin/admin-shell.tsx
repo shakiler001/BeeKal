@@ -56,9 +56,13 @@ export function AdminShell({
     <div className="bg-bg-alt min-h-dvh">
       <header className="bg-surface border-line sticky top-0 z-40 border-b">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-4 px-5">
-          <Link href="/admin" className="flex flex-none items-center gap-2.5">
+          <Link
+            href="/admin"
+            aria-label="Beekal Admin home"
+            className="flex flex-none items-center gap-2.5"
+          >
             <BeeMark title={null} className="h-7 w-auto" />
-            <span className="font-display text-[0.95rem] font-bold tracking-tight">
+            <span className="font-display hidden text-[0.95rem] font-bold tracking-tight min-[400px]:inline">
               Beekal <span className="text-ink-2 font-medium">Admin</span>
             </span>
           </Link>
@@ -124,18 +128,30 @@ export function AdminShell({
           </div>
         </div>
 
-        <div id="admin-mobile-nav" hidden={!menuOpen} className="border-line border-t lg:hidden">
+        <div
+          id="admin-mobile-nav"
+          hidden={!menuOpen}
+          className="bg-surface border-line absolute inset-x-0 top-full border-b shadow-lg lg:hidden"
+        >
           <nav aria-label="Admin, mobile" className="grid gap-1 px-5 py-3">
-            {visible.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="text-ink hover:bg-bg-alt flex min-h-11 items-center rounded-[var(--r-sm)] px-3 font-medium"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {visible.map((item) => {
+              const active =
+                item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  onClick={() => setMenuOpen(false)}
+                  className={cn(
+                    'flex min-h-11 items-center rounded-[var(--r-sm)] px-3 font-medium',
+                    active ? 'bg-brand-soft text-brand' : 'text-ink hover:bg-bg-alt',
+                  )}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       </header>

@@ -19,6 +19,7 @@ ENV NEXT_TELEMETRY_DISABLED=1 BUILD_STANDALONE=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 COPY --from=deps /app/packages ./packages
+COPY --from=deps /root/.cache/node/corepack /root/.cache/node/corepack
 COPY . .
 RUN pnpm turbo build --filter=@beekal/web
 

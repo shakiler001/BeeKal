@@ -22,8 +22,8 @@ Last updated: 2026-09-26
 Order set by the founder on 2026-09-24: finish the content pipeline first, then
 the admin's appearance.
 
-1. **[A1](#a1--the-admin-chrome-moves-between-screens)** — the admin chrome
-   shifts between screens _(next)_
+1. **[A2](#a2--a-reusable-admin-panel-and-navigation-system)** — reusable
+   sidebar and nested admin navigation _(next)_
 
 **Step 6 is verified.** The production build, accessibility checks, and browser
 suite pass. Pointing Playwright at the running Docker web app avoids the
@@ -46,15 +46,15 @@ that incorrectly looked for an FAQ when editing or deleting an article/resource.
 Making the public site editable without a deploy. Full detail, including the
 audit that prompted it, in [`docs/08-content-pipeline.md`](docs/08-content-pipeline.md).
 
-| #   | Step                                    | State       | Notes                                                                         |
-| --- | --------------------------------------- | ----------- | ----------------------------------------------------------------------------- |
-| 1   | Content layer + revalidation            | Done        | Tag-based cache, revalidated via the outbox                                   |
-| 2   | Case studies read from the database     | Done        |                                                                               |
-| 3   | Case study BFF + editor                 | Done        |                                                                               |
-| 4   | Categories read from the database, CRUD | Done        | Answers "can I add a sixth category" — yes                                    |
-| 5   | FAQs and problem pages                  | Done        | FAQs edited in place; problems get a form                                     |
-| 6   | Articles and resources                  | Done        | Makes Insights and Resources publishable                                      |
-| 7   | People: user CRUD and role assignment   | Done  | Secure invite/setup, user and role management, browser-verified                |
+| #   | Step                                    | State | Notes                                                           |
+| --- | --------------------------------------- | ----- | --------------------------------------------------------------- |
+| 1   | Content layer + revalidation            | Done  | Tag-based cache, revalidated via the outbox                     |
+| 2   | Case studies read from the database     | Done  |                                                                 |
+| 3   | Case study BFF + editor                 | Done  |                                                                 |
+| 4   | Categories read from the database, CRUD | Done  | Answers "can I add a sixth category" — yes                      |
+| 5   | FAQs and problem pages                  | Done  | FAQs edited in place; problems get a form                       |
+| 6   | Articles and resources                  | Done  | Makes Insights and Resources publishable                        |
+| 7   | People: user CRUD and role assignment   | Done  | Secure invite/setup, user and role management, browser-verified |
 
 ### 6 — Articles and resources
 
@@ -131,6 +131,39 @@ whether navigation is a full document load rather than a client transition.
 
 **Done when:** the chrome does not move, shift height, or flash between admin
 screens, and the current section stays obvious.
+
+**Completed 2026-09-26.** Authenticated browser measurements showed the admin
+layout persisted across client navigation and the desktop header stayed 65px
+high. On mobile, opening the menu enlarged the sticky header from 65px to
+374px and pushed the content down; the menu now overlays it. The mobile Content
+page also expanded to 913px because its grid track used an automatic minimum;
+it now remains within 320–412px viewports. Mobile active navigation has the
+same `aria-current` and selected styling as desktop. A production-browser
+regression covers desktop, tablet, mobile, light/dark, keyboard menu use,
+reduced motion, reload, active route, and shell geometry. The ordinary suite
+passes 100 tests with six credential-gated skips; the separate authenticated
+chrome test passes on mobile and desktop.
+
+### A2 — A reusable admin panel and navigation system
+
+**Requested:** 2026-09-26, by the founder. The admin should feel like one
+coherent product: stable sidebar, menu, nested and multi-level child menus,
+logo/title, and consistent UI and UX on every screen.
+
+**Plan:** Replace the flat, topbar-only navigation with one permission-aware
+navigation tree shared by a persistent desktop sidebar and an overlay mobile
+drawer. Extract reusable shell parts (brand, sidebar, topbar, navigation tree,
+breadcrumbs/page heading, and content frame) with shared spacing and colour
+tokens. The current route must highlight its leaf and ancestors; expanding one
+branch must not shift the content frame. Content types and People roles provide
+the first real nested routes. Keep unavailable sections hidden according to the
+existing permission map. Do not create empty menu levels merely to demonstrate
+depth.
+
+**Done when:** the shell is reused by every admin route; nested levels work by
+mouse, touch, and keyboard; mobile navigation overlays rather than reflows;
+focus, active, and expanded states are clear in light/dark and reduced-motion
+modes; and browser tests cover routes, permissions, and geometry.
 
 ---
 
