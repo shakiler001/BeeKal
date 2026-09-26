@@ -95,15 +95,49 @@
 }
 
 .bee {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   width: 84%;
-  transform-origin: center;
+  will-change: transform;
 }
 
 .bee svg {
   width: 100%;
   height: auto;
+}
+
+/* Three short streaks recede left while the mark stays pointed forward. */
+.speedLines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.speedLine {
+  position: absolute;
+  left: -18%;
+  width: 35%;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0;
+  transform-origin: right center;
+}
+
+.speedLine:nth-child(1) {
+  top: 35%;
+}
+
+.speedLine:nth-child(2) {
+  top: 52%;
+  width: 27%;
+}
+
+.speedLine:nth-child(3) {
+  top: 68%;
+  width: 22%;
 }
 
 .chip {
