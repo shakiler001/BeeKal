@@ -12,7 +12,8 @@ import styles from './hero-stage.module.css';
  * value interaction on the site — it states the whole proposition without a
  * sentence — so the port preserves every detail of how it behaves:
  *
- *  - plays once, on entering the viewport, never on a loop
+ *  - the convergence plays once on entering the viewport; the connected
+ *    system keeps sending signals while it is visible
  *  - has a timeout fallback, so it still plays if IntersectionObserver never
  *    fires (which happens when the hero is already fully visible on load in
  *    some browsers)
@@ -82,6 +83,7 @@ const css = {
   lines: styles['lines'] ?? '',
   pulse: styles['pulse'] ?? '',
   hub: styles['hub'] ?? '',
+  bee: styles['bee'] ?? '',
   chip: styles['chip'] ?? '',
   on: styles['on'] ?? '',
   off: styles['off'] ?? '',
@@ -106,6 +108,7 @@ export function HeroStage() {
   const ringPathRef = useRef<SVGPathElement>(null);
   const pulsesRef = useRef<SVGGElement>(null);
   const hubRef = useRef<HTMLDivElement>(null);
+  const beeRef = useRef<HTMLSpanElement>(null);
   const chipRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const pathRefs = useRef<(SVGPathElement | null)[]>([]);
 
@@ -134,6 +137,8 @@ export function HeroStage() {
 
     let raf = 0;
     let pulseRaf = 0;
+    let connected = false;
+    let stageVisible = true;
 
     /**
      * Resting geometry. The radius tightens below 470px so the chips, which
@@ -208,14 +213,18 @@ export function HeroStage() {
 
     function clearPulses(): void {
       cancelAnimationFrame(pulseRaf);
+      pulseRaf = 0;
       pulses!.replaceChildren();
+      if (beeRef.current) beeRef.current.style.transform = '';
     }
 
-    /** Amber dots running each chip's line into the hub, once, on arrival. */
-    function pulse(): void {
-      if (reduce) return;
+    /** Six repeating signals feed the hub; its bee ramps up to a capped speed. */
+    function startFlow(): void {
+      if (reduce || !connected || !stageVisible || document.hidden || pulseRaf) return;
       clearPulses();
       const t0 = performance.now();
+      let previous = t0;
+      let rotation = 0;
       const dots = nodes.map(() => {
         const c = document.createElementNS(SVG_NS, 'circle');
         c.setAttribute('r', '1.15');
@@ -226,11 +235,23 @@ export function HeroStage() {
       });
 
       const tick = (t: number): void => {
-        let live = false;
+        if (viewRef.current !== 'tomorrow' || !stageVisible || document.hidden) {
+          clearPulses();
+          return;
+        }
+
+        const elapsed = t - t0;
+        // Start calm, then settle at roughly one revolution every three seconds.
+        // The cap keeps a long-lived page from becoming a visual blur.
+        const degreesPerSecond = 20 + 100 * (1 - Math.exp(-elapsed / 5000));
+        rotation = (rotation + ((t - previous) / 1000) * degreesPerSecond) % 360;
+        previous = t;
+        if (beeRef.current) beeRef.current.style.transform = `rotate(${rotation}deg)`;
+
         dots.forEach((c, i) => {
-          const k = (t - t0 - i * 110) / 850;
-          if (k < 1) live = true;
-          if (k <= 0 || k >= 1) {
+          const time = elapsed - i * 110;
+          const k = time < 0 ? -1 : (time % 1450) / 900;
+          if (k < 0 || k >= 1) {
             c.setAttribute('opacity', '0');
             return;
           }
@@ -238,10 +259,9 @@ export function HeroStage() {
           const e = ease(k);
           c.setAttribute('cx', String(lerp(q.x, HUB.x, e)));
           c.setAttribute('cy', String(lerp(q.y, HUB.y, e)));
-          c.setAttribute('opacity', '1');
+          c.setAttribute('opacity', String(Math.min(1, k * 8, (1 - k) * 8)));
         });
-        if (live && viewRef.current === 'tomorrow') pulseRaf = requestAnimationFrame(tick);
-        else clearPulses();
+        pulseRaf = requestAnimationFrame(tick);
       };
       pulseRaf = requestAnimationFrame(tick);
     }
@@ -249,6 +269,7 @@ export function HeroStage() {
     function go(target: 0 | 1, dur = 1000, announce = false): void {
       cancelAnimationFrame(raf);
       clearPulses();
+      connected = false;
 
       const next: View = target ? 'tomorrow' : 'today';
       viewRef.current = next;
@@ -280,7 +301,10 @@ export function HeroStage() {
         });
         render();
         if (!done) raf = requestAnimationFrame(tick);
-        else if (target) pulse();
+        else if (target) {
+          connected = true;
+          startFlow();
+        }
       };
       raf = requestAnimationFrame(tick);
     }
@@ -294,6 +318,25 @@ export function HeroStage() {
       render();
     };
     window.addEventListener('resize', onResize);
+
+    const onVisibilityChange = (): void => {
+      if (document.hidden) clearPulses();
+      else startFlow();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    let flowObserver: IntersectionObserver | undefined;
+    if (!reduce && typeof IntersectionObserver !== 'undefined') {
+      flowObserver = new IntersectionObserver(
+        (entries) => {
+          stageVisible = entries[0]?.isIntersecting ?? false;
+          if (stageVisible) startFlow();
+          else clearPulses();
+        },
+        { threshold: 0.05 },
+      );
+      flowObserver.observe(stage);
+    }
 
     let observer: IntersectionObserver | undefined;
     let fallback = 0;
@@ -341,11 +384,13 @@ export function HeroStage() {
 
     return () => {
       cancelAnimationFrame(raf);
-      cancelAnimationFrame(pulseRaf);
+      clearPulses();
       window.clearTimeout(fallback);
       window.clearTimeout(start);
       window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       observer?.disconnect();
+      flowObserver?.disconnect();
     };
   }, []);
 
@@ -382,7 +427,9 @@ export function HeroStage() {
         </svg>
 
         <div ref={hubRef} aria-hidden className={css.hub}>
-          <Bee />
+          <span ref={beeRef} className={css.bee}>
+            <Bee />
+          </span>
         </div>
 
         {CHIPS.map((c, i) => (

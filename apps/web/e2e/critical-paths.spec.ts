@@ -47,6 +47,39 @@ test.describe('hero transformation', () => {
       .poll(() => hub.evaluate((element) => Number((element as HTMLElement).style.opacity)))
       .toBeGreaterThan(0.99);
   });
+
+  test('connected nodes keep sending signals and the bee keeps moving until Today', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const stage = page.getByRole('img', { name: /six scattered tools/i });
+    const control = page.getByRole('group', { name: /your business today/i });
+    const signals = stage.locator('circle[class*="pulse"]');
+    const bee = stage.locator('[class*="bee"]');
+
+    await control.getByRole('button', { name: 'Tomorrow' }).click();
+    await expect(signals).toHaveCount(6);
+    // A single wave used to disappear; after two cycles all six send again.
+    await page.waitForTimeout(3100);
+    await expect(signals).toHaveCount(6);
+    await expect
+      .poll(() => signals.evaluateAll((dots) => dots.some((dot) => dot.getAttribute('opacity') !== '0')))
+      .toBe(true);
+
+    const firstTransform = await bee.evaluate((element) => (element as HTMLElement).style.transform);
+    await expect
+      .poll(() => bee.evaluate((element) => (element as HTMLElement).style.transform))
+      .not.toBe(firstTransform);
+
+    await page.locator('#solutions').scrollIntoViewIfNeeded();
+    await expect(signals).toHaveCount(0);
+    await stage.scrollIntoViewIfNeeded();
+    await expect(signals).toHaveCount(6);
+
+    await control.getByRole('button', { name: 'Today' }).click();
+    await expect(signals).toHaveCount(0);
+    await expect(bee).not.toHaveAttribute('style', /rotate/);
+  });
 });
 
 test.describe('hero with reduced motion', () => {
@@ -63,6 +96,7 @@ test.describe('hero with reduced motion', () => {
     await expect
       .poll(() => hub.evaluate((element) => Number((element as HTMLElement).style.opacity)))
       .toBe(1);
+    await expect(page.locator('circle[class*="pulse"]')).toHaveCount(0);
   });
 });
 

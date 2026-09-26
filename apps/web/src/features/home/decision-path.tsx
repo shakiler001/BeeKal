@@ -87,6 +87,23 @@ function ChoiceMap() {
   );
 }
 
+function SolutionName({ name }: { name: string }) {
+  const parts = /^(Beekal)\s+(.+)$/i.exec(name.trim());
+
+  return (
+    <span className="block">
+      {parts && (
+        <span className="text-ink-2 block text-[0.72rem] font-semibold tracking-[0.09em]">
+          {parts[1]}
+        </span>
+      )}
+      <strong className="font-display text-brand block text-[1.5rem] leading-tight font-bold tracking-[-0.025em]">
+        {parts ? parts[2] : name}
+      </strong>
+    </span>
+  );
+}
+
 /** The paid diagnostic is the decision product; delivery services come afterward. */
 export function DecisionPath({
   assessment,
@@ -211,9 +228,7 @@ export function DecisionPath({
                     </span>
                     <span className="flex items-end justify-between gap-4">
                       <span>
-                        <strong className="font-display block text-[1.15rem]">
-                          {solution.name}
-                        </strong>
+                        <SolutionName name={solution.name} />
                         <span className="text-ink-2 mt-1 block text-[0.92rem]">
                           {solution.cardHeadline}
                         </span>
@@ -233,8 +248,10 @@ export function DecisionPath({
                 className="border-line hover:border-brand mt-4 flex flex-wrap items-center justify-between gap-4 rounded-[var(--r-md)] border px-6 py-5 transition-colors sm:px-7"
               >
                 <span>
-                  <strong className="font-display text-[1.1rem]">{care.name}</strong>
-                  <span className="text-ink-2 ml-3 text-[0.92rem]">{care.cardHeadline}</span>
+                  <SolutionName name={care.name} />
+                  <span className="text-ink-2 mt-1 block text-[0.92rem]">
+                    {care.cardHeadline}
+                  </span>
                 </span>
                 <span className="text-brand text-[0.9rem] font-semibold">Keep improving ↗</span>
               </Link>

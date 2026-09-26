@@ -40,3 +40,20 @@ test('home illustrations do not cause narrow-screen overflow', async ({ page }) 
     expect(pageWidth, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(viewport);
   }
 });
+
+test('solution cards make the capability clearer than the brand prefix', async ({ page }) => {
+  await page.goto('/');
+
+  for (const capability of ['Build', 'Modernize', 'Automate', 'AI', 'Care']) {
+    const link = page.locator(`#solutions a[href="/solutions/${capability.toLowerCase()}"]`);
+    const brand = link.getByText('Beekal', { exact: true });
+    const name = link.getByText(capability, { exact: true });
+    await expect(brand).toBeVisible();
+    await expect(name).toBeVisible();
+    const sizes = await Promise.all([
+      brand.evaluate((element) => parseFloat(getComputedStyle(element).fontSize)),
+      name.evaluate((element) => parseFloat(getComputedStyle(element).fontSize)),
+    ]);
+    expect(sizes[1]).toBeGreaterThan(sizes[0]);
+  }
+});

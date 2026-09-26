@@ -147,6 +147,15 @@ credential-gated skips. It covers the legacy hero interaction, home links,
 320/412/768px overflow, and light/dark accessibility on mobile and desktop.
 Founder visual review is welcome; keep A2 next.
 
+**Founder follow-up, completed 2026-09-26:** In the connected Tomorrow state,
+each of the six nodes now keeps sending a signal into the centre. The bee
+accelerates gradually to a bounded cruising speed. Both animations stop on
+Today, pause while the diagram or tab is out of view, and stay off for reduced
+motion. In the "After the plan" capability links, the Beekal prefix is smaller
+and Build, Modernize, Automate, AI and Care lead visually. Mobile and desktop
+browser regressions cover the repeating flow and name hierarchy. A2 remains
+the next planned work after founder visual review.
+
 ---
 
 ## Admin panel

@@ -94,8 +94,15 @@
   transform: translate(-50%, -50%) scale(0.8);
 }
 
-.hub svg {
+.bee {
+  display: grid;
+  place-items: center;
   width: 84%;
+  transform-origin: center;
+}
+
+.bee svg {
+  width: 100%;
   height: auto;
 }
 
