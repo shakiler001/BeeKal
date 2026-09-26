@@ -79,23 +79,22 @@ tiers in [01-strategy-offers-and-copy.md](01-strategy-offers-and-copy.md).
 **Job:** in eight seconds, make the visitor think _"that is us"_, then route them.
 **Budget:** 550 words visible. The demo has roughly 3,100.
 
-| #   | Section                                          | Tier | Budget | Source             | Change                                                                         |
-| --- | ------------------------------------------------ | ---- | ------ | ------------------ | ------------------------------------------------------------------------------ |
-| 1   | Hero: H1, lede, two CTAs, before/after animation | 1    | 45     | demo hero          | **Keep as is.** The H1 and the animation are the strongest assets on the page. |
-| 2   | Trust strip: location, email, reply time         | 1    | 25     | demo               | Keep                                                                           |
-| 3   | Buyer's-own-words pull quote                     | 1    | 20     | demo               | Keep. Best line on the site.                                                   |
-| 4   | Five problem cards, linking to `/problems/*`     | 2    | 120    | demo `#problems`   | Keep the five, cut each body to one sentence, **make each a link**             |
-| 5   | Before / After transformation                    | 2    | 80     | demo `#outcome`    | Keep, tighten                                                                  |
-| 6   | Five solution cards, linking to `/solutions/*`   | 2    | 100    | demo `#solutions`  | Keep names and one line each; details move to their own pages                  |
-| 7   | Assessment teaser                                | 1    | 60     | demo `#assessment` | **Reduce to a teaser.** The full section becomes `/assessment`                 |
-| 8   | Two case study cards plus "see all"              | 2    | 70     | demo `#cases`      | **Cut from five to two.** The other three live at `/work`                      |
-| 9   | Score tool teaser                                | 1    | 30     | demo `#score`      | **Teaser only.** Tool moves to `/score`                                        |
-| 10  | Founder strip                                    | 2    | 60     | demo `#founder`    | Condense; full version at `/about`                                             |
-| 11  | Final CTA plus form                              | 1    | 50     | demo `#start`      | Keep                                                                           |
+| #   | Section                                                | Job                                        |
+| --- | ------------------------------------------------------ | ------------------------------------------ |
+| 1   | Hero, Today/Tomorrow animation, quote and trust facts  | Recognition and immediate next actions     |
+| 2   | Five symptom links plus one handoff illustration       | Self-identification; route to problems     |
+| 3   | Three-step Assessment decision graphic and offer facts | Explain the paid diagnostic and de-risk it |
+| 4   | Compact capability index with all live solution links  | Show delivery options after the decision   |
+| 5   | Two clearly labelled case studies                      | Show thinking without inventing proof      |
+| 6   | Final founder-led CTA                                  | Convert a visitor ready to talk            |
 
-**Removed from the homepage entirely:** the method steps (to `/method`), the risk
-section (to `/about#risk`), the seven-question FAQ (to `/assessment`), three case
-studies (to `/work`), the nine-slider tool (to `/score`).
+The 2026-09-26 homepage revision removed the repeated five-row before/after
+table, full problem-card copy, full solution-card copy and separate Assessment
+teaser. The hero already shows the transformation. The Score remains a short
+cold-intent link beside the symptoms; the full tool stays on `/score`. Solution
+and problem landing pages keep their detailed copy and editable data source.
+The method steps remain on `/method`, risk on `/about#risk`, FAQ on
+`/assessment`, and the full case library on `/work`.
 
 ### 3.2 `/assessment`
 

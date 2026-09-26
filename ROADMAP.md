@@ -19,8 +19,8 @@ Last updated: 2026-09-26
 
 ## Now
 
-Order set by the founder on 2026-09-24: finish the content pipeline first, then
-the admin's appearance.
+The founder paused the admin redesign to mature the public homepage. That
+homepage pass is complete; the reusable admin panel remains next.
 
 1. **[A2](#a2--a-reusable-admin-panel-and-navigation-system)** — reusable
    sidebar and nested admin navigation _(next)_
@@ -115,6 +115,37 @@ header overflowed at tablet width, and sign-out redirected to the container's
 
 Also the practical fix for [FAI-06](LogicLibrary/07-failure-modes.md): a second
 Owner is a better answer to lockout than a recovery CLI.
+
+---
+
+## Public website
+
+### H1 — Homepage visual and business hierarchy
+
+**Requested:** 2026-09-26, by the founder. The homepage was still too text-heavy;
+“What we fix” and “Solutions” repeated the same idea. Add an infographic,
+timeline or flow illustration, and improve the buying story as well as the UI.
+
+**Implemented:** The legacy Today/Tomorrow hero remains. Five live problem
+records now appear as a concise symptom selector next to an illustrative
+handoff diagram. The repeated before/after table and separate Assessment
+teaser became one three-step visual path: trace real work, rank fixes, then
+choose who builds. It states that the Assessment is paid and fixed-scope,
+shows duration, client time and document count, and makes ownership of the
+roadmap explicit. Solution records remain linked as a compact capability index
+**after** the decision, with Care visually separated as continuity. The free
+Score entry moved beside the symptoms. Case-study integrity labels remain.
+
+**Done when:** the revised home renders without horizontal overflow at 320px,
+passes light/dark accessibility, retains the hero's Today/Tomorrow behavior,
+and routes the problem, Score, Assessment, solution and proof links correctly.
+
+**Completed 2026-09-26.** The production web build is live locally. The main
+content measures 537 visible words against the 550-word ceiling; first-load JS
+remains about 123KB. The full browser suite passed 104 tests with six
+credential-gated skips. It covers the legacy hero interaction, home links,
+320/412/768px overflow, and light/dark accessibility on mobile and desktop.
+Founder visual review is welcome; keep A2 next.
 
 ---
 

@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Bridge } from '@/components/patterns';
-import { Button, Card, Eyebrow, Section, SectionHeader, Tag, Wrap } from '@/components/ui';
+import { Button, Eyebrow, Section, SectionHeader, Wrap } from '@/components/ui';
 import { HeroStage } from '@/features/hero-stage/hero-stage';
-import { ASSESSMENT, BEFORE_AFTER, SITE } from '@/content/site';
+import { ProblemSignals } from '@/features/home/problem-signals';
+import { DecisionPath } from '@/features/home/decision-path';
+import { ASSESSMENT, SITE } from '@/content/site';
 import { getProblems } from '@/lib/content/problems';
 import { getSolutions } from '@/lib/content/solutions';
 import { getFeaturedCaseStudies } from '@/lib/content/case-studies';
@@ -14,12 +16,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * The homepage is a router, not a brochure.
- *
- * Budget: ~550 visible words. The demo had roughly 3,100 on one page. Long-form
- * content lives on the pages it belongs to; this page's job is to make a
- * visitor think "that is us" in eight seconds, then send them somewhere that
- * finishes the argument (docs/02 section 3.1).
+ * The homepage helps a buyer recognize a symptom, understand the decision path,
+ * then choose a deeper page. The hero keeps the legacy Today/Tomorrow graphic;
+ * the sections below give different information instead of repeating it.
  */
 export default async function HomePage() {
   const [featuredCases, solutions, problems] = await Promise.all([
@@ -27,6 +26,7 @@ export default async function HomePage() {
     getSolutions(),
     getProblems(),
   ]);
+
   return (
     <>
       <Section className="pt-[clamp(32px,4vw,56px)]">
@@ -81,156 +81,21 @@ export default async function HomePage() {
         </Wrap>
       </Section>
 
-      {/* ---------- Problems: self-identify, then route ---------- */}
-      <Section tone="alt" id="problems">
+      <ProblemSignals problems={problems} />
+      <DecisionPath assessment={ASSESSMENT} solutions={solutions} />
+
+      <Section tone="alt" id="proof">
         <Wrap>
           <SectionHeader
-            eyebrow="What we fix"
-            title="Every project starts with the problem, not the technology."
-            lede="Pick the one that sounds like your week."
-          />
-
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {problems.map((p) => (
-              <li key={p.key}>
-                <Link href={`/problems/${p.slug}`} className="block h-full">
-                  <Card interactive className="h-full">
-                    <p className="font-display text-[1.05rem] leading-snug font-semibold tracking-[-0.015em]">
-                      {p.cardHeadline}
-                    </p>
-                    <p className="text-brand mt-2 font-semibold">{p.cardAnswer}</p>
-                    <p className="text-ink-2 mt-2 text-[0.95rem]">{p.cardBody}</p>
-                  </Card>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Wrap>
-      </Section>
-
-      {/* ---------- The transformation, shown not claimed ---------- */}
-      <Section tone="band" className="bg-[var(--cobalt)]" id="outcome">
-        <Wrap>
-          <Eyebrow className="text-white/90">The difference</Eyebrow>
-          <h2 className="max-w-[24ch] text-[clamp(1.75rem,1.3rem+2vw,2.6rem)] leading-[1.12] font-bold tracking-[-0.035em]">
-            What changes when the business runs as one system.
-          </h2>
-
-          <div className="mt-10 max-w-[1000px]">
-            <div
-              aria-hidden="true"
-              className="hidden grid-cols-[1fr_64px_1fr] pb-3 text-[0.95rem] font-medium text-white/90 sm:grid"
-            >
-              <span>Today</span>
-              <span />
-              <span>With Beekal</span>
-            </div>
-            {BEFORE_AFTER.before.map((before, index) => (
-              <div
-                key={before}
-                className="grid gap-1 border-t border-white/25 py-5 sm:grid-cols-[1fr_64px_1fr] sm:items-center"
-              >
-                <p className="text-[1.06rem] text-white/90">
-                  <span className="font-semibold sm:hidden">Today: </span>
-                  {before}
-                </p>
-                <span aria-hidden="true" className="hidden sm:grid sm:place-items-center">
-                  <i className="bg-accent block size-3 rounded-full shadow-[0_0_0_5px_rgba(255,184,28,0.25)]" />
-                </span>
-                <p className="font-display text-[clamp(1.15rem,1rem+0.85vw,1.6rem)] leading-tight font-semibold tracking-[-0.02em]">
-                  {BEFORE_AFTER.after[index]}
-                </p>
-              </div>
-            ))}
-          </div>
-        </Wrap>
-      </Section>
-
-      {/* ---------- Solutions ---------- */}
-      <Section id="solutions">
-        <Wrap>
-          <SectionHeader
-            eyebrow="Solutions"
-            title="Five ways we improve how you operate."
-            lede="Named, so you know what you are buying — and so we know what we are selling."
-          />
-
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {solutions.map((s) => (
-              <li key={s.key}>
-                <Link href={`/solutions/${s.slug}`} className="block h-full">
-                  <Card interactive className="h-full">
-                    <h3 className="font-display text-[1.15rem] font-bold tracking-[-0.02em]">
-                      <span className="text-ink-2 font-medium">Beekal </span>
-                      <span className="text-brand">{s.name.replace('Beekal ', '')}</span>
-                    </h3>
-                    <p className="font-display mt-3 leading-snug font-semibold">{s.cardHeadline}</p>
-                    <p className="text-ink-2 mt-2 text-[0.95rem]">{s.cardBody}</p>
-                  </Card>
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <Bridge href="/assessment">
-            Before you commit to anyone, see what should be fixed first.
-          </Bridge>
-        </Wrap>
-      </Section>
-
-      {/* ---------- Assessment teaser ---------- */}
-      <Section tone="alt">
-        <Wrap>
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-            <div>
-              <SectionHeader
-                eyebrow="The first step"
-                title="See what to fix first, before you spend on building."
-                lede={ASSESSMENT.lede}
-              />
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Button asChild>
-                  <Link href="/assessment">How the assessment works</Link>
-                </Button>
-                <span className="text-ink-2 text-[0.92rem]">{ASSESSMENT.riskReversal[0]}</span>
-              </div>
-            </div>
-
-            <Card padding="lg">
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-5">
-                <Fact label="Duration" value={ASSESSMENT.duration} />
-                <Fact label="Your time" value={ASSESSMENT.clientHours} />
-                <Fact label="Price" value={ASSESSMENT.priceRange || 'Fixed, agreed first'} />
-                <Fact label="You receive" value={`${ASSESSMENT.documentCount} documents`} />
-              </dl>
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {ASSESSMENT.examines.slice(0, 6).map((e) => (
-                  <li key={e}>
-                    <Tag>{e}</Tag>
-                  </li>
-                ))}
-                <li>
-                  <Tag>+{ASSESSMENT.examines.length - 6} more</Tag>
-                </li>
-              </ul>
-            </Card>
-          </div>
-        </Wrap>
-      </Section>
-
-      {/* ---------- Proof ---------- */}
-      <Section>
-        <Wrap>
-          <SectionHeader
-            eyebrow="Case studies"
-            title="Proof means results, not screenshots."
-            lede="Every Beekal case answers the same eight questions, including the one most agencies leave out: what we would do differently."
+            eyebrow="See the work"
+            title="Judge the thinking, not the screenshots."
+            lede="See the choices and what we would do differently."
           />
 
           <ul className="mt-10 grid gap-5 lg:grid-cols-2">
-            {featuredCases.map((c) => (
-              <li key={c.slug}>
-                <CaseCard caseStudy={c} />
+            {featuredCases.map((caseStudy) => (
+              <li key={caseStudy.slug}>
+                <CaseCard caseStudy={caseStudy} />
               </li>
             ))}
           </ul>
@@ -241,25 +106,6 @@ export default async function HomePage() {
         </Wrap>
       </Section>
 
-      {/* ---------- Score teaser ---------- */}
-      <Section tone="alt">
-        <Wrap>
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
-            <SectionHeader
-              eyebrow="Free tool"
-              title="How mature is your business system?"
-              lede="Nine questions, two minutes. You get your level, your weakest dimensions and where to look first. No email required to see the result."
-            />
-            <div className="flex flex-wrap gap-3 lg:justify-end">
-              <Button asChild variant="ghost">
-                <Link href="/score">Score your business</Link>
-              </Button>
-            </div>
-          </div>
-        </Wrap>
-      </Section>
-
-      {/* ---------- Final CTA ---------- */}
       <Section tone="band">
         <Wrap>
           <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
@@ -269,8 +115,7 @@ export default async function HomePage() {
                 Find what is slowing your business down.
               </h2>
               <p className="mt-4 max-w-[46ch] text-white/80">
-                Tell us what you are trying to fix. We will say whether an assessment is the right
-                first step — or if it is not.
+                Tell us the bottleneck. We will say if an Assessment makes sense.
               </p>
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
@@ -282,16 +127,5 @@ export default async function HomePage() {
         </Wrap>
       </Section>
     </>
-  );
-}
-
-function Fact({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt className="text-ink-2 text-[0.82rem] font-semibold tracking-[0.06em] uppercase">
-        {label}
-      </dt>
-      <dd className="font-display tabular mt-1 text-[1.05rem] font-semibold">{value}</dd>
-    </div>
   );
 }

@@ -5,7 +5,7 @@ This is the execution checklist for the next coding sessions. It supplements
 records the business context, implementation scope, verification, and handoff
 details needed to do the next work correctly.
 
-Last reviewed: 2026-09-25. `ROADMAP.md` remains the source of truth for
+Last reviewed: 2026-09-26. `ROADMAP.md` remains the source of truth for
 priority and shipped state; this file is the detailed execution checklist.
 Current work is on `codex/step6-resource-home-fidelity`; `main` remains at
 `e96d40a`.
@@ -158,7 +158,12 @@ working database-backed content.
   Content no longer overflows narrow viewports. The authenticated chrome test
   passes on mobile and desktop; the ordinary suite passes 100 tests with six
   credential-gated skips.
-- Next: P3/A2, the founder-requested reusable admin panel and nested sidebar.
+- H1 is complete in the local production web build: the homepage replaces
+  repetitive problem/outcome/solution/Assessment blocks with a symptom selector,
+  handoff graphic, three-step decision path, and compact capability index. The
+  main content is 537 visible words; the browser suite passes 104 tests with
+  six credential-gated skips.
+- Next: P4/A2, the founder-requested reusable admin panel and nested sidebar.
 
 ---
 
@@ -296,10 +301,31 @@ the menu an overlay removed that 309px reflow. `/admin/content` also produced
 explicit `minmax(0,1fr)` track removed it. Hard reloads, fonts ready, current
 section, theme, keyboard interaction, and reduced motion are browser-checked.
 
-### P3 — A2: reusable admin-panel design and navigation
+### P3 — H1: mature the homepage visually and commercially
+
+The founder found the home page too text-heavy and the old “What we fix” and
+“Solutions” grids conceptually redundant. Keep the original Today/Tomorrow
+hero but give the sections below it distinct jobs.
+
+- [x] Keep the legacy hero graphic and its Today/Tomorrow interaction.
+- [x] Turn five editable problem records into concise symptom links with one
+      concrete handoff illustration, rather than five paragraphs of answers.
+- [x] Replace the redundant before/after table and Assessment teaser with a
+      visual decision path: map work, rank fixes, choose who builds.
+- [x] State the paid, fixed-scope Assessment honestly, using the existing
+      duration, client-time, document-count and price setting.
+- [x] Keep all live solution links, but show them as delivery options after the
+      decision; separate Care as continuing improvement.
+- [x] Keep Score as a cold-intent route and preserve case-study example labels.
+- [x] Verify desktop/mobile, light/dark accessibility, 320px overflow, all
+      destination links, and the unchanged Today/Tomorrow interaction.
+- [ ] Review the composition with the founder on `localhost:3000` before
+      treating the visual direction as final.
+
+### P4 — A2: reusable admin-panel design and navigation
 
 The founder requested a coherent, reusable panel with sidebar, logo/title,
-menus, child menus, and multiple navigation levels. Implement this after A1,
+menus, child menus, and multiple navigation levels. Implement this after H1,
 using the existing admin layout and permission model rather than separate
 chrome on each page.
 
