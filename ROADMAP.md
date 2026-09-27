@@ -13,7 +13,7 @@ start, without reading a transcript.
 roadmap that is wrong in between, and a stale one is worse than none because it
 is believed. If a step changes shape while being built, change the row.
 
-Last updated: 2026-09-26
+Last updated: 2026-09-27
 
 ---
 
@@ -188,6 +188,24 @@ than verified client results. Category labels and the full detailed cases remain
 **Verified:** the shared cards, navigation, narrow-screen layout, and light/dark
 accessibility passed the browser suite (112 passed; six credential-gated skips).
 Keep A2 next after founder review.
+
+### H4 — Assessment, Method, and inner-page refinement
+
+**Requested:** 2026-09-27, by the founder. Extend the homepage and work-page
+visual polish to Assessment, Method, and the inner pages, especially with a
+clearer illustration of the Method.
+
+**Implemented:** Method now presents its five stages as one connected process
+with purpose-built line illustrations and a clearer grouping of the six
+engagement practices. Assessment separates what is examined from the 11
+documents the client owns, and gives the illustrative roadmap a clearer visual
+hierarchy. Solution and problem detail pages use more measured headlines;
+those pages and case studies share the refreshed homepage CTA styling.
+
+**Verified:** desktop and narrow-screen visual review; typecheck and targeted
+lint; browser suite (118 passed, six credential-gated admin skips), including
+light/dark accessibility and new inner-page journeys. Keep A2 next after
+founder visual review.
 
 ---
 

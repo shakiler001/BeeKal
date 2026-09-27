@@ -64,6 +64,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
             title={problem.pageHeadline}
             lede={problem.pageIntro}
             headingLevel="h1"
+            className="max-w-[64ch]"
           />
         </Wrap>
       </Section>
@@ -137,10 +138,10 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
               )}
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
-              <Button asChild>
+              <Button asChild className="font-display rounded-[var(--r-sm)]">
                 <Link href="/contact?intent=talk">Describe your problem</Link>
               </Button>
-              <Button asChild variant="ghost">
+              <Button asChild variant="ghost" className="font-display rounded-[var(--r-sm)]">
                 <Link href="/score">Score your business</Link>
               </Button>
             </div>

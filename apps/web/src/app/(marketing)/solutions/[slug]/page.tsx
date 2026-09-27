@@ -61,12 +61,13 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
             title={solution.pageHeadline}
             lede={solution.pageIntro}
             headingLevel="h1"
+            className="max-w-[64ch]"
           />
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild>
+            <Button asChild className="font-display rounded-[var(--r-sm)]">
               <Link href="/contact?intent=assessment">Request an assessment</Link>
             </Button>
-            <Button asChild variant="ghost">
+            <Button asChild variant="ghost" className="font-display rounded-[var(--r-sm)]">
               <Link href="/contact?intent=talk">Describe your problem</Link>
             </Button>
           </div>
@@ -188,7 +189,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
               )}
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
-              <Button asChild>
+              <Button asChild className="font-display rounded-[var(--r-sm)]">
                 <Link href="/assessment">How the assessment works</Link>
               </Button>
             </div>

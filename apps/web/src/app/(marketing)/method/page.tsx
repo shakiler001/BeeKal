@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Bridge } from '@/components/patterns';
-import { Button, Card, Section, SectionHeader, Wrap } from '@/components/ui';
-import { METHOD } from '@/content/site';
+import { Button, Section, SectionHeader, Wrap } from '@/components/ui';
+import { MethodFlow } from '@/features/method/method-flow';
 
 export const metadata: Metadata = {
   title: 'How We Work',
@@ -13,28 +13,43 @@ export const metadata: Metadata = {
 
 const ENGAGEMENT = [
   {
-    title: 'Scope, in writing',
-    body: 'What is included, what is not, and what happens when something changes. Agreed before work starts.',
+    label: 'Clear agreements',
+    items: [
+      {
+        title: 'Scope, in writing',
+        body: 'What is included, what is not, and what happens when something changes. Agreed before work starts.',
+      },
+      {
+        title: 'One named person',
+        body: 'You talk to the person doing the thinking. Not an account manager relaying messages.',
+      },
+    ],
   },
   {
-    title: 'Milestones that ship',
-    body: 'Each one delivers working software you can use, not a status report you have to read.',
+    label: 'Working delivery',
+    items: [
+      {
+        title: 'Milestones that ship',
+        body: 'Each one delivers working software you can use, not a status report you have to read.',
+      },
+      {
+        title: 'Documentation as you go',
+        body: 'Written while it is fresh, not reconstructed at the end when nobody remembers why.',
+      },
+    ],
   },
   {
-    title: 'One named person',
-    body: 'You talk to the person doing the thinking. Not an account manager relaying messages.',
-  },
-  {
-    title: 'Documentation as you go',
-    body: 'Written while it is fresh, not reconstructed at the end when nobody remembers why.',
-  },
-  {
-    title: 'You own everything',
-    body: 'Code, accounts, infrastructure, documentation. From day one, not on request.',
-  },
-  {
-    title: 'A plan for after launch',
-    body: 'Support and improvement discussed before go-live, so nothing is abandoned at the finish line.',
+    label: 'Control after launch',
+    items: [
+      {
+        title: 'You own everything',
+        body: 'Code, accounts, infrastructure, documentation. From day one, not on request.',
+      },
+      {
+        title: 'A plan for after launch',
+        body: 'Support and improvement discussed before go-live, so nothing is abandoned at the finish line.',
+      },
+    ],
   },
 ];
 
@@ -48,23 +63,10 @@ export default function MethodPage() {
             title="We understand the business before we build anything."
             lede="Technology is a means, not the product. Jumping to code before the real problem is understood is the most common and most expensive mistake in this industry."
             headingLevel="h1"
+            className="max-w-[65ch]"
           />
 
-          <ol className="mt-12 grid gap-4 md:grid-cols-3 lg:grid-cols-5">
-            {METHOD.map((step) => (
-              <li key={step.n}>
-                <Card className="h-full">
-                  <span className="text-brand tabular font-display text-[1.8rem] leading-none font-extrabold">
-                    {step.n}
-                  </span>
-                  <h2 className="font-display mt-3 text-lg font-bold tracking-tight">
-                    {step.name}
-                  </h2>
-                  <p className="text-ink-2 mt-2 text-[0.95rem] leading-relaxed">{step.body}</p>
-                </Card>
-              </li>
-            ))}
-          </ol>
+          <MethodFlow />
         </Wrap>
       </Section>
 
@@ -78,16 +80,25 @@ export default function MethodPage() {
             most of them.
           </p>
 
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {ENGAGEMENT.map((e) => (
-              <li key={e.title}>
-                <Card className="h-full">
-                  <h3 className="font-display font-bold tracking-tight">{e.title}</h3>
-                  <p className="text-ink-2 mt-2 text-[0.95rem] leading-relaxed">{e.body}</p>
-                </Card>
+          <ol className="border-line bg-line mt-8 grid gap-px overflow-hidden rounded-[var(--r-lg)] border lg:grid-cols-3">
+            {ENGAGEMENT.map((group, index) => (
+              <li key={group.label} className="bg-surface p-6 sm:p-7">
+                <span className="text-brand tabular text-[0.75rem] font-bold tracking-[0.09em] uppercase">
+                  {String(index + 1).padStart(2, '0')} / {group.label}
+                </span>
+                <ul className="mt-6 space-y-6">
+                  {group.items.map((item) => (
+                    <li key={item.title}>
+                      <h3 className="font-display text-[1.02rem] font-semibold tracking-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-ink-2 mt-2 text-[0.94rem] leading-[1.55]">{item.body}</p>
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
-          </ul>
+          </ol>
         </Wrap>
       </Section>
 
@@ -104,7 +115,7 @@ export default function MethodPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
-              <Button asChild>
+              <Button asChild className="font-display rounded-[var(--r-sm)]">
                 <Link href="/assessment">How the assessment works</Link>
               </Button>
             </div>

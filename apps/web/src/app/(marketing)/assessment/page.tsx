@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Bridge } from '@/components/patterns';
-import { Accordion, Button, Card, Dots, Section, SectionHeader, Tag, Wrap } from '@/components/ui';
+import { Accordion, Button, Card, Dots, Section, SectionHeader, Wrap } from '@/components/ui';
 import { CheckIcon } from '@/components/brand';
 import { ASSESSMENT } from '@/content/site';
 import { getFaqs } from '@/lib/content/faqs';
@@ -76,6 +76,7 @@ export default async function AssessmentPage() {
                 title="See what to fix first, before you spend on building."
                 lede={ASSESSMENT.lede}
                 headingLevel="h1"
+                className="max-w-none"
               />
               <p className="text-ink-2 mt-5 max-w-[52ch] leading-relaxed">
                 It is a paid, structured engagement with real documents at the end. You leave with a
@@ -90,7 +91,7 @@ export default async function AssessmentPage() {
               </dl>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Button asChild>
+                <Button asChild className="font-display rounded-[var(--r-sm)]">
                   <Link href="/contact?intent=assessment">Request an assessment</Link>
                 </Button>
                 <span className="text-ink-2 text-[0.92rem]">{ASSESSMENT.riskReversal[0]}</span>
@@ -99,18 +100,23 @@ export default async function AssessmentPage() {
 
             {/* Proof of format: what a deliverable actually looks like. */}
             <Card padding="none" className="overflow-hidden">
-              <div className="border-line bg-bg-alt flex items-baseline justify-between gap-3 border-b px-5 py-3">
-                <span className="font-display text-[0.95rem] font-semibold">
-                  Prioritized roadmap
+              <div className="border-line bg-bg-alt flex flex-wrap items-end justify-between gap-3 border-b px-6 py-5">
+                <span>
+                  <span className="text-brand block text-[0.72rem] font-bold tracking-[0.09em] uppercase">
+                    Sample deliverable
+                  </span>
+                  <strong className="font-display mt-1 block text-[1.08rem] font-semibold">
+                    Prioritized roadmap
+                  </strong>
                 </span>
-                <small className="text-ink-2 text-[0.78rem]">
+                <small className="text-ink-2 text-[0.76rem]">
                   Illustrative format, not client data
                 </small>
               </div>
               {ROADMAP_SAMPLE.map((row, i) => (
                 <div
                   key={row.what}
-                  className={`grid gap-2 px-5 py-4 ${i > 0 ? 'border-line border-t' : ''}`}
+                  className={`grid gap-2 px-6 py-4 ${i > 0 ? 'border-line border-t' : ''}`}
                 >
                   <span className="text-brand text-[0.78rem] font-bold tracking-[0.08em] uppercase">
                     {row.when}
@@ -126,7 +132,7 @@ export default async function AssessmentPage() {
                   </span>
                 </div>
               ))}
-              <p className="border-line text-ink-2 border-t px-5 py-3 text-[0.85rem]">
+              <p className="border-line text-ink-2 border-t px-6 py-3 text-[0.85rem]">
                 Every item is ranked by impact and effort, so you know what to do first.
               </p>
             </Card>
@@ -137,42 +143,57 @@ export default async function AssessmentPage() {
       {/* What we examine / what you receive */}
       <Section tone="alt">
         <Wrap>
-          <div className="grid gap-10 lg:grid-cols-2">
-            <div>
-              <h2 className="text-[clamp(1.5rem,1.2rem+1.4vw,2.1rem)] leading-tight font-bold tracking-[-0.03em]">
-                What we examine
-              </h2>
-              <p className="text-ink-2 mt-3">Nothing is assumed. Everything is checked.</p>
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {ASSESSMENT.examines.map((e) => (
-                  <li key={e}>
-                    <Tag>{e}</Tag>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <SectionHeader
+            eyebrow="Scope and outputs"
+            title="A map of the work. A plan you own."
+            lede="We look across the operation, then turn what we find into decisions you can act on."
+            className="max-w-[62ch]"
+          />
 
-            <div>
-              <h2 className="text-[clamp(1.5rem,1.2rem+1.4vw,2.1rem)] leading-tight font-bold tracking-[-0.03em]">
-                What you receive
-              </h2>
-              <p className="text-ink-2 mt-3">
-                Every document is yours to keep — whoever ends up building the fix.
-              </p>
-              <ul className="mt-6 space-y-3">
-                {ASSESSMENT.deliverables.map((d) => (
-                  <li key={d.name} className="flex items-start gap-3">
-                    <CheckIcon className="text-brand mt-1 size-5 flex-none" />
-                    <span>
-                      <span className="font-medium">{d.name}</span>
-                      <span className="text-ink-2 block text-[0.9rem] italic">
-                        &ldquo;{d.answers}&rdquo;
-                      </span>
+          <div className="border-line bg-surface mt-9 rounded-[var(--r-md)] border p-6 sm:p-8">
+            <h3 className="font-display text-[1.18rem] font-semibold tracking-tight">
+              What we examine
+            </h3>
+            <p className="text-ink-2 mt-2 text-[0.94rem] leading-relaxed">
+              Nothing is assumed. These are the areas we check with your team.
+            </p>
+            <ul className="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
+              {ASSESSMENT.examines.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-[0.94rem] leading-snug">
+                  <span
+                    aria-hidden="true"
+                    className="bg-accent mt-[0.45em] size-1.5 flex-none rounded-full"
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-12">
+            <h2 className="text-[clamp(1.5rem,1.2rem+1.4vw,2.1rem)] leading-tight font-bold tracking-[-0.03em]">
+              The {ASSESSMENT.documentCount} documents you keep
+            </h2>
+            <p className="text-ink-2 mt-3 max-w-[60ch] leading-relaxed">
+              Each answers a decision. They stay yours, whoever builds the fix.
+            </p>
+            <ol aria-label="Assessment documents" className="mt-7 grid gap-x-10 sm:grid-cols-2">
+              {ASSESSMENT.deliverables.map((deliverable, index) => (
+                <li key={deliverable.name} className="border-line flex gap-4 border-t py-4">
+                  <span className="text-brand tabular w-7 flex-none text-[0.78rem] font-bold">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span>
+                    <strong className="font-display block text-[0.96rem] leading-snug font-semibold">
+                      {deliverable.name}
+                    </strong>
+                    <span className="text-ink-2 mt-1 block text-[0.89rem] leading-relaxed">
+                      {deliverable.answers}
                     </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                  </span>
+                </li>
+              ))}
+            </ol>
           </div>
         </Wrap>
       </Section>
@@ -231,7 +252,7 @@ export default async function AssessmentPage() {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Button asChild>
+            <Button asChild className="font-display rounded-[var(--r-sm)]">
               <Link href="/contact?intent=assessment">Request an assessment</Link>
             </Button>
             <span className="text-ink-2 text-[0.92rem]">

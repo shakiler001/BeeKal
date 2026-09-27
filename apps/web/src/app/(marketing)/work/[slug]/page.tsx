@@ -152,11 +152,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
               Recognise any of this in your own operation?
             </h2>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button asChild>
+              <Button asChild className="font-display rounded-[var(--r-sm)]">
                 <Link href="/contact?intent=assessment">Request an assessment</Link>
               </Button>
               {solution && (
-                <Button asChild variant="ghost">
+                <Button asChild variant="ghost" className="font-display rounded-[var(--r-sm)]">
                   <Link href={`/solutions/${solution.slug}`}>More on {solution.name}</Link>
                 </Button>
               )}
