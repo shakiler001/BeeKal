@@ -57,3 +57,18 @@ test('solution cards make the capability clearer than the brand prefix', async (
     expect(sizes[1]).toBeGreaterThan(sizes[0]);
   }
 });
+
+test('home example scenarios are readable and do not present illustrative results as proof', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const proof = page.locator('#proof');
+  await expect(proof.getByText('Example scenario', { exact: true })).toHaveCount(2);
+  await expect(proof).toContainText('not verified client results');
+  await expect(proof).not.toContainText('~2 hours');
+  await expect(proof.getByRole('link', { name: /see all case studies/i })).toBeVisible();
+
+  const steps = page.locator('#problems ol').last().locator('li');
+  await expect(steps).toHaveCount(4);
+  await expect(page.locator('#problems')).toContainText('Three manual handoffs for one answer.');
+});

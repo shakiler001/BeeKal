@@ -157,6 +157,23 @@ and Build, Modernize, Automate, AI and Care lead visually. Mobile and desktop
 browser regressions cover the repeating flow and name hierarchy. A2 remains
 the next planned work after founder visual review.
 
+### H2 — Homepage visual refinement
+
+**Requested:** 2026-09-27, by the founder. Make the homepage more professional,
+especially buttons, typography, spacing, and the example-scenario section.
+
+**Implemented:** Homepage calls to action share a measured corner radius and
+type treatment. The hero headline and trust strip have calmer weight and
+spacing. The everyday handoff illustration is now a readable four-step flow.
+The work previews use a consistent friction/approach hierarchy, a single
+section-level disclosure, and no illustrative result metrics on the homepage.
+The repeated solution-section lede was removed. The full case pages retain
+their detailed content and integrity labels.
+
+**Verified:** 320/412/768px overflow checks, light/dark accessibility, and
+the homepage journeys pass on mobile and desktop. Keep A2 next after visual
+review.
+
 ---
 
 ## Admin panel

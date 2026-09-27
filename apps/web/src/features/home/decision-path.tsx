@@ -196,7 +196,11 @@ export function DecisionPath({
               </div>
             </dl>
             <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:items-start">
-              <Button asChild variant="accent" className="w-full sm:w-auto">
+              <Button
+                asChild
+                variant="accent"
+                className="font-display w-full rounded-[var(--r-sm)] sm:w-auto"
+              >
                 <Link href="/assessment">See the Assessment</Link>
               </Button>
               <span className="text-[0.78rem] text-white">
@@ -210,11 +214,7 @@ export function DecisionPath({
       {solutions.length > 0 && (
         <Section id="solutions">
           <Wrap>
-            <SectionHeader
-              eyebrow="After the plan"
-              title="Use only the help the work calls for."
-              lede="Only what the roadmap calls for."
-            />
+            <SectionHeader eyebrow="After the plan" title="Use only the help the work calls for." />
 
             <ul className="border-line bg-line mt-9 grid gap-px overflow-hidden rounded-[var(--r-lg)] border sm:grid-cols-2">
               {buildOptions.map((solution, index) => (
@@ -249,9 +249,7 @@ export function DecisionPath({
               >
                 <span>
                   <SolutionName name={care.name} />
-                  <span className="text-ink-2 mt-1 block text-[0.92rem]">
-                    {care.cardHeadline}
-                  </span>
+                  <span className="text-ink-2 mt-1 block text-[0.92rem]">{care.cardHeadline}</span>
                 </span>
                 <span className="text-brand text-[0.9rem] font-semibold">Keep improving ↗</span>
               </Link>

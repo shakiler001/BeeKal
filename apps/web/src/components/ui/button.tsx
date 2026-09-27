@@ -18,14 +18,14 @@ const button = cva(
     'inline-flex items-center justify-center gap-[0.5em]',
     'rounded-full border-[1.5px] border-transparent',
     'text-center font-semibold leading-tight no-underline',
-    'cursor-pointer transition-[background-color,border-color,color] duration-200',
+    'cursor-pointer transition-[background-color,border-color,color,filter] duration-200',
     'disabled:cursor-not-allowed disabled:opacity-55',
   ],
   {
     variants: {
       variant: {
         primary: 'bg-brand text-on-brand hover:bg-brand-hover',
-        ghost: 'text-ink border-field hover:border-ink bg-transparent',
+        ghost: 'text-ink border-field hover:border-brand hover:bg-brand-soft bg-transparent',
         accent: 'bg-accent text-on-accent hover:brightness-95',
       },
       size: {

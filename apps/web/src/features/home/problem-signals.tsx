@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Problem } from '@/content/problems';
-import { Eyebrow, Section, SectionHeader, Wrap } from '@/components/ui';
+import { Button, Eyebrow, Section, SectionHeader, Wrap } from '@/components/ui';
 
 /** Symptoms route to their own pages; the diagram explains why handoffs matter. */
 export function ProblemSignals({ problems }: { problems: Problem[] }) {
@@ -12,12 +12,11 @@ export function ProblemSignals({ problems }: { problems: Problem[] }) {
             eyebrow="Find your starting point"
             title="Where does the work get stuck?"
           />
-          <Link
-            href="/score"
-            className="border-field text-brand hover:border-brand inline-flex min-h-11 items-center gap-3 rounded-full border px-5 font-semibold transition-colors"
-          >
-            Not sure? Take the 2-minute score <span aria-hidden="true">↗</span>
-          </Link>
+          <Button asChild variant="ghost" size="sm" className="font-display rounded-[var(--r-sm)]">
+            <Link href="/score">
+              Take the 2-minute score <span aria-hidden="true">→</span>
+            </Link>
+          </Button>
         </div>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
@@ -54,34 +53,27 @@ export function ProblemSignals({ problems }: { problems: Problem[] }) {
               The delay lives between tools, not inside them.
             </p>
 
-            <div
-              className="relative mt-7 grid grid-cols-2 gap-3 sm:gap-4"
-              role="img"
-              aria-label="An example order passes between an inbox, a spreadsheet, an approval thread and a hand-built report"
-            >
-              <span
-                aria-hidden="true"
-                className="absolute inset-[24%] rounded-full border border-dashed border-white/30"
-              />
+            <ol className="mt-7 overflow-hidden rounded-[var(--r-sm)] border border-white/20 bg-white/5">
               {['Inbox', 'Spreadsheet', 'Approval thread', 'Report'].map((place, index) => (
-                <div
+                <li
                   key={place}
-                  aria-hidden="true"
-                  className="relative z-10 flex min-h-24 flex-col justify-between rounded-[var(--r-sm)] border border-white/20 bg-white/10 p-4 backdrop-blur-sm"
+                  className="flex min-h-[52px] items-center gap-4 border-b border-white/15 px-4 py-2 last:border-b-0"
                 >
-                  <span className="text-accent tabular text-[0.78rem] font-bold">
+                  <span className="text-accent tabular w-7 flex-none text-[0.75rem] font-bold">
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <span className="font-display text-[1.02rem] font-semibold">{place}</span>
-                </div>
+                  <span className="font-display flex-1 text-[0.96rem] font-medium">{place}</span>
+                  {index < 3 && (
+                    <span aria-hidden="true" className="text-accent text-lg">
+                      ↓
+                    </span>
+                  )}
+                </li>
               ))}
-              <span
-                aria-hidden="true"
-                className="bg-accent text-foot absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-full px-3 py-1.5 text-[0.75rem] font-bold whitespace-nowrap shadow-lg"
-              >
-                Manual handoff
-              </span>
-            </div>
+            </ol>
+            <p className="text-accent mt-4 text-[0.84rem] font-semibold">
+              Three manual handoffs for one answer.
+            </p>
           </div>
         </div>
       </Wrap>
