@@ -8,11 +8,11 @@
  */
 export function IllustrativeBadge() {
   return (
-    <p className="flex flex-wrap items-center gap-2 text-[0.78rem]">
-      <span className="bg-accent text-on-accent rounded-full px-2.5 py-1 font-bold tracking-wide uppercase">
+    <p className="flex flex-wrap items-center gap-2.5 text-[0.82rem]">
+      <span className="bg-brand-soft text-brand rounded-md px-2.5 py-1 text-[0.7rem] leading-none font-bold tracking-[0.08em] uppercase">
         Example scenario
       </span>
-      <span className="text-ink-2">Named clients replace these as they approve.</span>
+      <span className="text-ink-2">Illustrative, not a verified client result.</span>
     </p>
   );
 }

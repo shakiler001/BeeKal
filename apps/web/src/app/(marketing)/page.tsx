@@ -8,7 +8,7 @@ import { ASSESSMENT, SITE } from '@/content/site';
 import { getProblems } from '@/lib/content/problems';
 import { getSolutions } from '@/lib/content/solutions';
 import { getFeaturedCaseStudies } from '@/lib/content/case-studies';
-import { FeaturedCaseCard } from '@/features/home/featured-case-card';
+import { CaseCard } from '@/features/case-studies/case-card';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -92,7 +92,7 @@ export default async function HomePage() {
           <ul className="mt-9 grid gap-5 lg:grid-cols-2 lg:gap-6">
             {featuredCases.map((caseStudy) => (
               <li key={caseStudy.slug}>
-                <FeaturedCaseCard caseStudy={caseStudy} />
+                <CaseCard caseStudy={caseStudy} />
               </li>
             ))}
           </ul>

@@ -5,37 +5,43 @@ import { getSolutions } from '@/lib/content/solutions';
 import { CaseCard } from '@/features/case-studies/case-card';
 
 export const metadata: Metadata = {
-  title: 'Case Studies',
+  title: 'Work and Example Scenarios',
   description:
-    'Every Beekal case study answers the same eight questions, including the one most agencies leave out: what we would do differently.',
+    'Explore the thinking behind Beekal work and illustrative scenarios, from the friction to a practical approach.',
   alternates: { canonical: '/work' },
 };
 
 export default async function WorkPage() {
   const [caseStudies, solutions] = await Promise.all([getCaseStudies(), getSolutions()]);
   const solutionName = new Map(solutions.map((s) => [s.key, s.name]));
-  const allIllustrative = caseStudies.every((c) => c.isIllustrative);
+  const allIllustrative = caseStudies.length > 0 && caseStudies.every((c) => c.isIllustrative);
+  const hasIllustrative = caseStudies.some((c) => c.isIllustrative);
 
   return (
-    <Section>
+    <Section tone="alt">
       <Wrap>
         <SectionHeader
-          eyebrow="Case studies"
-          title="Proof means results, not screenshots."
-          lede="Every Beekal case answers the same eight questions, including the one most agencies leave out: what we would do differently."
+          eyebrow="Work and examples"
+          title="See the thinking behind each approach."
+          lede="Start with the friction. Then see the system we would design around the work."
           headingLevel="h1"
         />
 
-        {allIllustrative && (
-          <p className="border-accent bg-bg-alt text-ink-2 mt-8 max-w-[62ch] border-l-4 py-4 pl-5 text-[0.95rem] leading-relaxed">
-            <strong className="text-ink">These are example scenarios, not client results.</strong>{' '}
-            They show the format every Beekal case study follows, and the kind of problem we take
-            on. Real, named cases replace them as clients approve — we do not publish a client
-            result without written permission, and we do not invent one to fill the gap.
-          </p>
+        {hasIllustrative && (
+          <div className="border-line bg-surface mt-8 max-w-[64ch] rounded-[var(--r-sm)] border px-5 py-4 sm:px-6">
+            <p className="text-ink text-[0.95rem] leading-relaxed">
+              <strong>
+                {allIllustrative
+                  ? 'These are illustrative scenarios, not client results.'
+                  : 'Marked scenarios are illustrative, not client results.'}
+              </strong>{' '}
+              They show proposed approaches; figures on their detail pages are hypothetical, not
+              verified outcomes.
+            </p>
+          </div>
         )}
 
-        <ul className="mt-10 grid gap-5 lg:grid-cols-2">
+        <ul className="mt-10 grid gap-6 lg:grid-cols-2">
           {caseStudies.map((c) => (
             // The card is `h-full`, which resolves against the whole grid
             // item. With a label above it inside the same item, it was as tall
@@ -49,7 +55,7 @@ export default async function WorkPage() {
                 reading "undefined" is worse than no heading.
               */}
               {solutionName.has(c.solutionKey) && (
-                <p className="text-ink-2 mb-2 text-[0.8rem] font-bold tracking-[0.09em] uppercase">
+                <p className="text-ink-2 mb-3 text-[0.75rem] font-bold tracking-[0.09em] uppercase">
                   {solutionName.get(c.solutionKey)}
                 </p>
               )}

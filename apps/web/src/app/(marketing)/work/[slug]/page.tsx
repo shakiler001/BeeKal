@@ -118,12 +118,23 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 <span className="mt-1 block">{c.before}</span>
               </Part>
               <Part title="Diagnosis">{c.diagnosis}</Part>
-              <Part title="What Beekal changed">{c.whatChanged}</Part>
-              <Part title="How it was built">{c.howBuilt}</Part>
+              <Part title={c.isIllustrative ? 'Proposed change' : 'What Beekal changed'}>
+                {c.whatChanged}
+              </Part>
+              <Part title={c.isIllustrative ? 'Illustrative build plan' : 'How it was built'}>
+                {c.howBuilt}
+              </Part>
             </div>
 
             <Card padding="lg" className="lg:sticky lg:top-[calc(var(--head)+24px)]">
-              <h2 className="font-display text-lg font-bold tracking-tight">Result</h2>
+              <h2 className="font-display text-lg font-bold tracking-tight">
+                {c.isIllustrative ? 'Illustrative outcomes' : 'Results'}
+              </h2>
+              {c.isIllustrative && (
+                <p className="text-ink-2 mt-2 text-[0.85rem] leading-relaxed">
+                  Hypothetical, not verified client results.
+                </p>
+              )}
               <div className="mt-4">
                 {c.results.map((r) => (
                   <Metric key={r.label} value={r.value} label={r.label} />

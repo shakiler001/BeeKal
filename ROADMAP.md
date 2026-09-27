@@ -174,6 +174,21 @@ their detailed content and integrity labels.
 the homepage journeys pass on mobile and desktop. Keep A2 next after visual
 review.
 
+### H3 — Work-page alignment
+
+**Requested:** 2026-09-27, by the founder. Bring `/work` into line with the
+cleaner homepage scenario presentation.
+
+**Implemented:** The homepage, work index, and solution-page previews now use
+one shared card. The work index has a calmer introduction, a concise disclosure,
+and previews that show friction and approach without hypothetical result figures.
+Illustrative detail pages label their outcome figures as hypothetical rather
+than verified client results. Category labels and the full detailed cases remain.
+
+**Verified:** the shared cards, navigation, narrow-screen layout, and light/dark
+accessibility passed the browser suite (112 passed; six credential-gated skips).
+Keep A2 next after founder review.
+
 ---
 
 ## Admin panel

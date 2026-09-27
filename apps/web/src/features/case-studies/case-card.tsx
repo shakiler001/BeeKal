@@ -1,27 +1,45 @@
 import Link from 'next/link';
-import { Card } from '@/components/ui';
 import type { CaseStudy } from '@/content/case-studies';
-import { IllustrativeBadge } from './illustrative-badge';
 
+/** A concise preview shared by the homepage, work index, and solution pages. */
 export function CaseCard({ caseStudy: c }: { caseStudy: CaseStudy }) {
   return (
-    <Link href={`/work/${c.slug}`} className="block h-full">
-      <Card interactive className="flex h-full flex-col">
-        {c.isIllustrative && <IllustrativeBadge />}
-        <h3 className="font-display mt-3 text-[1.2rem] leading-snug font-bold tracking-[-0.025em]">
-          {c.title}
-        </h3>
-        <p className="text-ink-2 mt-2 text-[0.9rem]">{c.context}</p>
-        <p className="mt-4 text-[0.98rem]">{c.problem}</p>
+    <Link
+      href={`/work/${c.slug}`}
+      className="border-line bg-surface hover:border-brand group flex h-full flex-col rounded-[var(--r-md)] border p-6 transition-colors sm:p-8"
+    >
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <span className="bg-brand-soft text-brand rounded-md px-2.5 py-1 text-[0.7rem] leading-none font-bold tracking-[0.08em] uppercase">
+          {c.isIllustrative ? 'Example scenario' : 'Client story'}
+        </span>
+        <span className="text-ink-2 text-[0.82rem] leading-snug">{c.clientName ?? c.context}</span>
+      </div>
 
-        <dl className="border-line-2 mt-auto grid gap-1 border-t pt-4">
-          <dt className="sr">Result</dt>
-          <dd className="text-brand tabular font-display text-[1.25rem] font-bold tracking-[-0.03em]">
-            {c.results[0]?.value}
-          </dd>
-          <dd className="text-ink-2 text-[0.9rem]">{c.results[0]?.label}</dd>
-        </dl>
-      </Card>
+      <h3 className="font-display mt-5 max-w-[28ch] text-[clamp(1.28rem,1.15rem+0.45vw,1.52rem)] leading-[1.25] font-semibold tracking-[-0.025em]">
+        {c.title}
+      </h3>
+
+      <div className="border-line mt-6 grid gap-5 border-t pt-5 sm:grid-cols-2 sm:gap-6">
+        <div>
+          <p className="text-ink-2 text-[0.72rem] font-bold tracking-[0.08em] uppercase">
+            The friction
+          </p>
+          <p className="mt-2 text-[0.94rem] leading-[1.5]">{c.beforeLead}</p>
+        </div>
+        <div>
+          <p className="text-ink-2 text-[0.72rem] font-bold tracking-[0.08em] uppercase">
+            {c.isIllustrative ? 'Proposed approach' : 'The approach'}
+          </p>
+          <p className="mt-2 line-clamp-3 text-[0.94rem] leading-[1.5]">{c.whatChanged}</p>
+        </div>
+      </div>
+
+      <span className="text-brand mt-auto inline-flex items-center gap-2 pt-7 text-[0.9rem] font-semibold">
+        Explore the thinking
+        <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+          →
+        </span>
+      </span>
     </Link>
   );
 }
