@@ -207,6 +207,21 @@ lint; browser suite (118 passed, six credential-gated admin skips), including
 light/dark accessibility and new inner-page journeys. Keep A2 next after
 founder visual review.
 
+### H5 — Score controls and narrow-screen actions
+
+**Requested:** 2026-09-27, by the founder. Make the maturity sliders' five
+positions discoverable without cluttering them with numbers, and make buttons
+less heavy on narrow screens.
+
+**Implemented:** Each score slider now has five subtle dots directly on its
+track. Shared primary buttons use the site's 13px corner radius and reduce to
+a compact, still-tappable 44px minimum height on narrow screens; desktop
+sizing remains unchanged.
+
+**Verified:** light/dark desktop and mobile visual review, typecheck, targeted
+lint, and the browser suite (122 passed; six credential-gated admin skips).
+Keep A2 next after founder visual review.
+
 ---
 
 ## Admin panel

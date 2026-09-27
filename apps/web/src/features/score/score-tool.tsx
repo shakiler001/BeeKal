@@ -229,7 +229,7 @@ function Dimension({
 
       <p className="text-ink-2 mt-0.5 text-[0.92rem]">{d.question}</p>
 
-      <div className="mt-3">
+      <div className="relative mt-3">
         <input
           id={`score-${d.key}`}
           type="range"
@@ -247,15 +247,15 @@ function Dimension({
           // other value.
           onPointerUp={(e) => onChange(Number(e.currentTarget.value))}
           onKeyUp={(e) => onChange(Number(e.currentTarget.value))}
-          className={cn('accent-brand h-11 w-full cursor-pointer', !answered && 'opacity-50')}
+          className={cn('accent-brand block h-11 w-full cursor-pointer', !answered && 'opacity-50')}
         />
         <div
           aria-hidden="true"
-          data-score-scale
-          className="text-ink tabular pointer-events-none flex justify-between px-1 text-[0.78rem] font-semibold opacity-40 select-none"
+          data-score-points
+          className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-[3px] opacity-40"
         >
           {SCORE_POINTS.map((point) => (
-            <span key={point}>{point}</span>
+            <span key={point} className="bg-surface border-brand size-2.5 rounded-full border" />
           ))}
         </div>
       </div>

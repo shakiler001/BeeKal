@@ -7,8 +7,9 @@ import { cn } from '@/lib/cn';
  * Ported from the demo's `.btn` family.
  *
  * Two details carried over deliberately:
- *  - min-height 52px (44px for sm). Both clear the 44px tap target minimum,
- *    which is the real constraint on a mid-tier Android (docs/05 section 2.3).
+ *  - Default buttons are 44px on narrow screens and 52px from md upward.
+ *    Both preserve the 44px tap target minimum on a mid-tier Android
+ *    (docs/05 section 2.3), without making full-width mobile CTAs feel bulky.
  *  - The ghost variant borders on --field, not --line. --field is the token
  *    that satisfies WCAG 1.4.11 non-text contrast; --line is decorative and
  *    would fail against the background.
@@ -16,7 +17,7 @@ import { cn } from '@/lib/cn';
 const button = cva(
   [
     'inline-flex items-center justify-center gap-[0.5em]',
-    'rounded-full border-[1.5px] border-transparent',
+    'rounded-[var(--r-sm)] border-[1.5px] border-transparent',
     'text-center font-semibold leading-tight no-underline',
     'cursor-pointer transition-[background-color,border-color,color,filter] duration-200',
     'disabled:cursor-not-allowed disabled:opacity-55',
@@ -29,7 +30,7 @@ const button = cva(
         accent: 'bg-accent text-on-accent hover:brightness-95',
       },
       size: {
-        md: 'min-h-[52px] px-6 py-[13px] text-base',
+        md: 'min-h-11 px-5 py-2.5 text-[0.95rem] md:min-h-[52px] md:px-6 md:py-[13px] md:text-base',
         sm: 'min-h-[44px] px-[18px] py-[9px] text-[0.95rem]',
       },
       full: {

@@ -124,17 +124,32 @@ test.describe('lead form', () => {
     await page.goto('/contact?intent=talk');
     await expect(page.getByRole('radio', { name: /describe a problem/i })).toBeChecked();
   });
+
+  test('keeps the primary form action compact on narrow screens', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/contact?intent=assessment');
+
+    const action = page.getByRole('button', { name: 'Request an assessment' });
+    const mobile = await action.evaluate((element) => ({
+      height: element.getBoundingClientRect().height,
+      radius: getComputedStyle(element).borderTopLeftRadius,
+    }));
+    expect(mobile.height).toBeGreaterThanOrEqual(44);
+    expect(mobile.height).toBeLessThan(52);
+    expect(mobile.radius).toBe('13px');
+  });
 });
 
 test.describe('maturity score', () => {
-  test('shows a subtle 1 to 5 scale beneath every slider', async ({ page }) => {
+  test('shows five subtle stops on every slider track', async ({ page }) => {
     await page.goto('/score');
 
-    const scales = page.locator('[data-score-scale]');
-    await expect(scales).toHaveCount(9);
-    for (const scale of await scales.all()) {
-      await expect(scale.locator('span')).toHaveText(['1', '2', '3', '4', '5']);
-      await expect(scale).toHaveClass(/opacity-40/);
+    const pointRows = page.locator('[data-score-points]');
+    await expect(pointRows).toHaveCount(9);
+    for (const row of await pointRows.all()) {
+      await expect(row.locator('span')).toHaveCount(5);
+      await expect(row).toHaveClass(/opacity-40/);
+      await expect(row).toHaveAttribute('aria-hidden', 'true');
     }
   });
 
