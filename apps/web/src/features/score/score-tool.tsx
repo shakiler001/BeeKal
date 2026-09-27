@@ -14,6 +14,8 @@ import { cn } from '@/lib/cn';
 import { ScoreRadar } from './score-radar';
 import { ScoreReportOptIn } from './score-report-optin';
 
+const SCORE_POINTS = [1, 2, 3, 4, 5] as const;
+
 /**
  * The Business System Maturity Score, ported from the demo.
  *
@@ -227,25 +229,36 @@ function Dimension({
 
       <p className="text-ink-2 mt-0.5 text-[0.92rem]">{d.question}</p>
 
-      <input
-        id={`score-${d.key}`}
-        type="range"
-        min={1}
-        max={5}
-        step={1}
-        value={value ?? 3}
-        // aria-valuetext says what the number MEANS. "3" alone tells a screen
-        // reader user nothing about their business.
-        aria-valuetext={answered ? `${value} of 5: ${anchor}` : 'Not answered'}
-        onChange={(e) => onChange(Number(e.target.value))}
-        // An unanswered slider sits at 3, so someone whose honest answer IS 3
-        // would change nothing and never register an answer. Committing on
-        // release and on keyboard interaction makes "3" selectable like any
-        // other value.
-        onPointerUp={(e) => onChange(Number(e.currentTarget.value))}
-        onKeyUp={(e) => onChange(Number(e.currentTarget.value))}
-        className={cn('accent-brand mt-3 h-11 w-full cursor-pointer', !answered && 'opacity-50')}
-      />
+      <div className="mt-3">
+        <input
+          id={`score-${d.key}`}
+          type="range"
+          min={1}
+          max={5}
+          step={1}
+          value={value ?? 3}
+          // aria-valuetext says what the number MEANS. "3" alone tells a screen
+          // reader user nothing about their business.
+          aria-valuetext={answered ? `${value} of 5: ${anchor}` : 'Not answered'}
+          onChange={(e) => onChange(Number(e.target.value))}
+          // An unanswered slider sits at 3, so someone whose honest answer IS 3
+          // would change nothing and never register an answer. Committing on
+          // release and on keyboard interaction makes "3" selectable like any
+          // other value.
+          onPointerUp={(e) => onChange(Number(e.currentTarget.value))}
+          onKeyUp={(e) => onChange(Number(e.currentTarget.value))}
+          className={cn('accent-brand h-11 w-full cursor-pointer', !answered && 'opacity-50')}
+        />
+        <div
+          aria-hidden="true"
+          data-score-scale
+          className="text-ink tabular pointer-events-none flex justify-between px-1 text-[0.78rem] font-semibold opacity-40 select-none"
+        >
+          {SCORE_POINTS.map((point) => (
+            <span key={point}>{point}</span>
+          ))}
+        </div>
+      </div>
 
       <p className="text-ink-2 mt-1 text-[0.88rem] italic">
         {anchor ?? 'Move the slider to answer.'}

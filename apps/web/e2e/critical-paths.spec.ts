@@ -48,9 +48,7 @@ test.describe('hero transformation', () => {
       .toBeGreaterThan(0.99);
   });
 
-  test('connected nodes keep sending signals while the bee stays still', async ({
-    page,
-  }) => {
+  test('connected nodes keep sending signals while the bee stays still', async ({ page }) => {
     await page.goto('/');
     const stage = page.getByRole('img', { name: /six scattered tools/i });
     const control = page.getByRole('group', { name: /your business today/i });
@@ -63,7 +61,9 @@ test.describe('hero transformation', () => {
     await page.waitForTimeout(3100);
     await expect(signals).toHaveCount(6);
     await expect
-      .poll(() => signals.evaluateAll((dots) => dots.some((dot) => dot.getAttribute('opacity') !== '0')))
+      .poll(() =>
+        signals.evaluateAll((dots) => dots.some((dot) => dot.getAttribute('opacity') !== '0')),
+      )
       .toBe(true);
 
     await expect(bee).not.toHaveAttribute('style', /transform/);
@@ -127,6 +127,17 @@ test.describe('lead form', () => {
 });
 
 test.describe('maturity score', () => {
+  test('shows a subtle 1 to 5 scale beneath every slider', async ({ page }) => {
+    await page.goto('/score');
+
+    const scales = page.locator('[data-score-scale]');
+    await expect(scales).toHaveCount(9);
+    for (const scale of await scales.all()) {
+      await expect(scale.locator('span')).toHaveText(['1', '2', '3', '4', '5']);
+      await expect(scale).toHaveClass(/opacity-40/);
+    }
+  });
+
   test('withholds a result until six are answered, then shows one', async ({ page }) => {
     await page.goto('/score');
 
